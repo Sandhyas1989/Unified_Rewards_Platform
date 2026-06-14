@@ -1,0 +1,148 @@
+<svg width="1300" height="640" viewBox="0 0 1300 640" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#888780" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="1300" height="640" fill="#FFFFFF"/>
+
+  <!-- Title -->
+  <text x="650" y="24" text-anchor="middle" font-size="15" font-weight="700" fill="#222">Component 03 — Data &amp; Storage Architecture · Private VNet · Azure Data Services</text>
+  <text x="650" y="40" text-anchor="middle" font-size="10" fill="#5F5E5A">EF Core 8 provider model · cache-aside · Managed Identity · cloud targets with local-dev equivalents in [ ]</text>
+
+  <!-- ============================================================= -->
+  <!-- TIER 1 — Top row: three amber store cards                     -->
+  <!-- ============================================================= -->
+  <!-- Card width ~405, gap ~12, start x=32 -->
+
+  <!-- Redis -->
+  <g>
+    <rect x="32" y="58" width="405" height="78" rx="8" fill="#FAEEDA" stroke="#854F0B" stroke-width="1.5"/>
+    <rect x="44" y="70" width="30" height="30" rx="5" fill="#FAC775" stroke="#BA7517" stroke-width="1.2"/>
+    <text x="59" y="90" text-anchor="middle" font-size="14" font-weight="700" fill="#412402">R</text>
+    <text x="86" y="84" font-size="13" font-weight="700" fill="#412402">Azure Redis Cache</text>
+    <text x="86" y="102" font-size="8" fill="#412402">Premium · Zone-redundant · Cache-aside</text>
+    <text x="86" y="115" font-size="8" fill="#412402">TTL 15 / 30 / 60 min</text>
+    <text x="86" y="128" font-size="8" fill="#854F0B">[IMemoryCache local]</text>
+  </g>
+
+  <!-- Cosmos DB -->
+  <g>
+    <rect x="449" y="58" width="405" height="78" rx="8" fill="#FAEEDA" stroke="#854F0B" stroke-width="1.5"/>
+    <rect x="461" y="70" width="30" height="30" rx="5" fill="#FAC775" stroke="#BA7517" stroke-width="1.2"/>
+    <text x="476" y="90" text-anchor="middle" font-size="14" font-weight="700" fill="#412402">C</text>
+    <text x="503" y="84" font-size="13" font-weight="700" fill="#412402">Azure Cosmos DB</text>
+    <text x="503" y="102" font-size="8" fill="#412402">NoSQL · Multi-region write · AES-256</text>
+    <text x="503" y="115" font-size="8" fill="#412402">BenefitPlans · CompensationRules</text>
+    <text x="503" y="128" font-size="8" fill="#854F0B">[EF In-Memory local]</text>
+  </g>
+
+  <!-- Blob Storage -->
+  <g>
+    <rect x="866" y="58" width="405" height="78" rx="8" fill="#FAEEDA" stroke="#854F0B" stroke-width="1.5"/>
+    <rect x="878" y="70" width="30" height="30" rx="5" fill="#FAC775" stroke="#BA7517" stroke-width="1.2"/>
+    <text x="893" y="90" text-anchor="middle" font-size="14" font-weight="700" fill="#412402">B</text>
+    <text x="920" y="84" font-size="13" font-weight="700" fill="#412402">Azure Blob Storage</text>
+    <text x="920" y="102" font-size="8" fill="#412402">Geo-redundant (GRS) · SSE</text>
+    <text x="920" y="115" font-size="8" fill="#412402">documents · receipts · payslips · reports</text>
+    <text x="920" y="128" font-size="8" fill="#854F0B">[Local FS local]</text>
+  </g>
+
+  <!-- ============================================================= -->
+  <!-- TIER 2 — Backend Services band with 7 module tiles            -->
+  <!-- ============================================================= -->
+  <g>
+    <rect x="32" y="270" width="1239" height="100" rx="10" fill="#E6F1FB" stroke="#185FA5" stroke-width="1.5"/>
+    <text x="48" y="290" font-size="12" font-weight="700" fill="#0C447C">BACKEND SERVICES · Azure Kubernetes Service (AKS)</text>
+
+    <!-- 7 tiles: width 168, gap 8, start x=40 -->
+    <!-- x positions: 40, 216, 392, 568, 744, 920, 1096 -->
+
+    <g>
+      <rect x="40" y="300" width="168" height="58" rx="6" fill="#B5D4F4" stroke="#185FA5" stroke-width="1.2"/>
+      <text x="124" y="333" text-anchor="middle" font-size="11" font-weight="700" fill="#0C447C">User Management</text>
+    </g>
+    <g>
+      <rect x="216" y="300" width="168" height="58" rx="6" fill="#B5D4F4" stroke="#185FA5" stroke-width="1.2"/>
+      <text x="300" y="333" text-anchor="middle" font-size="11" font-weight="700" fill="#0C447C">Benefits</text>
+    </g>
+    <g>
+      <rect x="392" y="300" width="168" height="58" rx="6" fill="#B5D4F4" stroke="#185FA5" stroke-width="1.2"/>
+      <text x="476" y="333" text-anchor="middle" font-size="11" font-weight="700" fill="#0C447C">Compensation</text>
+    </g>
+    <g>
+      <rect x="568" y="300" width="168" height="58" rx="6" fill="#B5D4F4" stroke="#185FA5" stroke-width="1.2"/>
+      <text x="652" y="333" text-anchor="middle" font-size="11" font-weight="700" fill="#0C447C">Claims &amp; Documents</text>
+    </g>
+    <g>
+      <rect x="744" y="300" width="168" height="58" rx="6" fill="#B5D4F4" stroke="#185FA5" stroke-width="1.2"/>
+      <text x="828" y="333" text-anchor="middle" font-size="11" font-weight="700" fill="#0C447C">Payroll</text>
+    </g>
+    <g>
+      <rect x="920" y="300" width="168" height="58" rx="6" fill="#B5D4F4" stroke="#185FA5" stroke-width="1.2"/>
+      <text x="1004" y="333" text-anchor="middle" font-size="11" font-weight="700" fill="#0C447C">Promotions</text>
+    </g>
+    <g>
+      <rect x="1096" y="300" width="168" height="58" rx="6" fill="#B5D4F4" stroke="#185FA5" stroke-width="1.2"/>
+      <text x="1180" y="333" text-anchor="middle" font-size="11" font-weight="700" fill="#0C447C">Reporting &amp; Audit</text>
+    </g>
+  </g>
+
+  <!-- ============================================================= -->
+  <!-- TIER 3 — Bottom row: Azure SQL + Key Vault                    -->
+  <!-- ============================================================= -->
+
+  <!-- Azure SQL Database -->
+  <g>
+    <rect x="160" y="470" width="520" height="140" rx="8" fill="#FAEEDA" stroke="#854F0B" stroke-width="1.5"/>
+    <rect x="174" y="484" width="30" height="30" rx="5" fill="#FAC775" stroke="#BA7517" stroke-width="1.2"/>
+    <text x="189" y="504" text-anchor="middle" font-size="14" font-weight="700" fill="#412402">S</text>
+    <text x="216" y="498" font-size="13" font-weight="700" fill="#412402">Azure SQL Database</text>
+    <text x="216" y="516" font-size="8" fill="#854F0B">Zone-redundant · Geo-replica · TDE · [SQLite local]</text>
+    <line x1="174" y1="526" x2="666" y2="526" stroke="#BA7517" stroke-width="0.8" stroke-dasharray="3 2"/>
+    <text x="174" y="544" font-size="9" fill="#412402">Users · Employees · Managers</text>
+    <text x="174" y="562" font-size="9" fill="#412402">Claims · ClaimWorkflows · Documents</text>
+    <text x="174" y="580" font-size="9" fill="#412402">PayrollRecords · PaySlips</text>
+    <text x="174" y="598" font-size="9" fill="#412402">Reports · AuditEntries</text>
+  </g>
+
+  <!-- Azure Key Vault (red) -->
+  <g>
+    <rect x="760" y="470" width="420" height="140" rx="8" fill="#FAECE7" stroke="#993C1D" stroke-width="1.5"/>
+    <rect x="774" y="484" width="30" height="30" rx="5" fill="#F5C4B3" stroke="#993C1D" stroke-width="1.2"/>
+    <text x="789" y="504" text-anchor="middle" font-size="14" font-weight="700" fill="#4A1B0C">K</text>
+    <text x="816" y="498" font-size="13" font-weight="700" fill="#4A1B0C">Azure Key Vault</text>
+    <text x="816" y="516" font-size="8" fill="#993C1D">HSM-backed · Managed Identity auth</text>
+    <line x1="774" y1="526" x2="1166" y2="526" stroke="#993C1D" stroke-width="0.8" stroke-dasharray="3 2"/>
+    <text x="774" y="546" font-size="9" fill="#4A1B0C">JWT signing key · connection strings</text>
+    <text x="774" y="564" font-size="9" fill="#4A1B0C">external API keys</text>
+    <text x="774" y="582" font-size="9" fill="#993C1D">[user-secrets local]</text>
+  </g>
+
+  <!-- ============================================================= -->
+  <!-- CONNECTIONS                                                   -->
+  <!-- ============================================================= -->
+
+  <!-- Backend → Redis (up-left) -->
+  <line x1="235" y1="270" x2="235" y2="136" stroke="#888780" stroke-width="1.2" marker-end="url(#arr)"/>
+  <text x="242" y="208" font-size="7" fill="#5F5E5A">cache-aside (read-through / write-through)</text>
+
+  <!-- Backend → Cosmos DB (up-center) -->
+  <line x1="651" y1="270" x2="651" y2="136" stroke="#888780" stroke-width="1.2" marker-end="url(#arr)"/>
+  <text x="658" y="208" font-size="7" fill="#5F5E5A">EF Core read / write</text>
+
+  <!-- Backend → Blob (up-right) -->
+  <line x1="1068" y1="270" x2="1068" y2="136" stroke="#888780" stroke-width="1.2" marker-end="url(#arr)"/>
+  <text x="1075" y="208" font-size="7" fill="#5F5E5A">store / fetch documents</text>
+
+  <!-- Backend → Azure SQL (down-left) -->
+  <line x1="420" y1="370" x2="420" y2="470" stroke="#888780" stroke-width="1.2" marker-end="url(#arr)"/>
+  <text x="427" y="425" font-size="7" fill="#5F5E5A">EF Core 8 · LINQ</text>
+
+  <!-- Backend → Key Vault (down-right) -->
+  <line x1="970" y1="370" x2="970" y2="470" stroke="#888780" stroke-width="1.2" marker-end="url(#arr)"/>
+  <text x="977" y="425" font-size="7" fill="#5F5E5A">Managed Identity (no secrets in config)</text>
+
+</svg>

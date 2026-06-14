@@ -1,0 +1,65 @@
+# AKS deployment manifest for the Employee Profile Service (template for all services).
+# Applied in the cloud (kubectl/Helm via Codespaces, Cloud Shell, or CI) — not on the dev laptop.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: employee-profile
+  labels: { app: employee-profile }
+spec:
+  replicas: 2
+  selector:
+    matchLabels: { app: employee-profile }
+  template:
+    metadata:
+      labels: { app: employee-profile }
+    spec:
+      containers:
+        - name: employee-profile
+          image: <acr-name>.azurecr.io/employee-profile:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: ASPNETCORE_URLS
+              value: "http://+:8080"
+            # Connection string injected from Azure Key Vault via the CSI driver (not stored here).
+            - name: ConnectionStrings__Default
+              valueFrom:
+                secretKeyRef: { name: employee-profile-secrets, key: db-connection }
+          readinessProbe:
+            httpGet: { path: /health, port: 8080 }
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: { path: /health, port: 8080 }
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          resources:
+            requests: { cpu: "100m", memory: "128Mi" }
+            limits: { cpu: "500m", memory: "512Mi" }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: employee-profile
+spec:
+  selector: { app: employee-profile }
+  ports:
+    - port: 80
+      targetPort: 8080
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: employee-profile-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: employee-profile
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target: { type: Utilization, averageUtilization: 70 }

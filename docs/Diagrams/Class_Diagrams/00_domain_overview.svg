@@ -1,0 +1,146 @@
+<svg width="1300" height="580" xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif">
+
+  <!-- White background -->
+  <rect width="1300" height="580" fill="white"/>
+
+  <defs>
+    <!-- Solid arrowhead (dark) -->
+    <marker id="arr-solid" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1a1a2e"/>
+    </marker>
+    <!-- Dashed arrowhead (medium gray) -->
+    <marker id="arr-dashed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#444"/>
+    </marker>
+    <!-- Drop shadow filter -->
+    <filter id="shadow" x="-5%" y="-5%" width="115%" height="130%">
+      <feDropShadow dx="1" dy="2" stdDeviation="2" flood-color="#00000022"/>
+    </filter>
+  </defs>
+
+  <!-- ═══════════════════════════════ TITLE ═══════════════════════════════ -->
+  <text x="650" y="34" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e" letter-spacing="0.3">Unified Rewards Platform – Domain Interaction Map</text>
+  <line x1="200" y1="41" x2="1100" y2="41" stroke="#ccc" stroke-width="1"/>
+
+  <!-- ═══════════════════════════════ NODES ═══════════════════════════════ -->
+
+  <!-- USER MANAGEMENT  (x1=30, y1=240, w=178, h=100) -->
+  <rect x="30" y="240" width="178" height="100" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="30" y="240" width="178" height="28" rx="6" fill="#2563eb"/>
+  <rect x="30" y="255" width="178" height="13" fill="#2563eb"/>
+  <text x="119" y="258" text-anchor="middle" font-size="12" font-weight="bold" fill="white">User Management</text>
+  <line x1="30" y1="268" x2="208" y2="268" stroke="#93c5fd" stroke-width="0.8"/>
+  <text x="119" y="284" text-anchor="middle" font-size="10" fill="#1e3a8a">Employee  |  Manager</text>
+  <text x="119" y="299" text-anchor="middle" font-size="10" fill="#1e3a8a">HRAdmin  |  FinanceUser</text>
+  <text x="119" y="326" text-anchor="middle" font-size="9" fill="#3b82f6" font-style="italic">(core identity domain)</text>
+
+  <!-- BENEFITS  (x1=295, y1=50, w=178, h=78) -->
+  <rect x="295" y="50" width="178" height="78" rx="6" fill="#fef9c3" stroke="#ca8a04" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="295" y="50" width="178" height="26" rx="6" fill="#ca8a04"/>
+  <rect x="295" y="63" width="178" height="13" fill="#ca8a04"/>
+  <text x="384" y="68" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Benefits</text>
+  <line x1="295" y1="76" x2="473" y2="76" stroke="#fde68a" stroke-width="0.8"/>
+  <text x="384" y="95" text-anchor="middle" font-size="10" fill="#713f12">BenefitPlan</text>
+  <text x="384" y="112" text-anchor="middle" font-size="10" fill="#713f12">Enrollment  |  Eligibility</text>
+
+  <!-- COMPENSATION  (x1=505, y1=175, w=188, h=82) -->
+  <rect x="505" y="175" width="188" height="82" rx="6" fill="#ede9fe" stroke="#7c3aed" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="505" y="175" width="188" height="26" rx="6" fill="#7c3aed"/>
+  <rect x="505" y="188" width="188" height="13" fill="#7c3aed"/>
+  <text x="599" y="193" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Compensation</text>
+  <line x1="505" y1="201" x2="693" y2="201" stroke="#c4b5fd" stroke-width="0.8"/>
+  <text x="599" y="220" text-anchor="middle" font-size="10" fill="#4c1d95">CTCBreakdown</text>
+  <text x="599" y="236" text-anchor="middle" font-size="10" fill="#4c1d95">Components  |  Rules</text>
+
+  <!-- CLAIMS & DOCUMENTS  (x1=505, y1=315, w=200, h=88) -->
+  <rect x="505" y="315" width="200" height="88" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="505" y="315" width="200" height="26" rx="6" fill="#dc2626"/>
+  <rect x="505" y="328" width="200" height="13" fill="#dc2626"/>
+  <text x="605" y="333" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Claims &amp; Documents</text>
+  <line x1="505" y1="341" x2="705" y2="341" stroke="#fca5a5" stroke-width="0.8"/>
+  <text x="605" y="360" text-anchor="middle" font-size="10" fill="#7f1d1d">Claim  |  Workflow</text>
+  <text x="605" y="376" text-anchor="middle" font-size="10" fill="#7f1d1d">Document  |  Receipt  |  OCR</text>
+  <text x="605" y="395" text-anchor="middle" font-size="9" fill="#ef4444" font-style="italic">(+ approval workflow)</text>
+
+  <!-- PAYROLL  (x1=785, y1=150, w=180, h=82) -->
+  <rect x="785" y="150" width="180" height="82" rx="6" fill="#dbeafe" stroke="#1d4ed8" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="785" y="150" width="180" height="26" rx="6" fill="#1d4ed8"/>
+  <rect x="785" y="163" width="180" height="13" fill="#1d4ed8"/>
+  <text x="875" y="168" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Payroll</text>
+  <line x1="785" y1="176" x2="965" y2="176" stroke="#93c5fd" stroke-width="0.8"/>
+  <text x="875" y="196" text-anchor="middle" font-size="10" fill="#1e3a8a">PayrollRecord</text>
+  <text x="875" y="212" text-anchor="middle" font-size="10" fill="#1e3a8a">Settlement  |  PaySlip</text>
+
+  <!-- REPORTING & AUDIT  (x1=1045, y1=195, w=210, h=88) -->
+  <rect x="1045" y="195" width="210" height="88" rx="6" fill="#e0f2fe" stroke="#0c4a6e" stroke-width="2.5" filter="url(#shadow)"/>
+  <rect x="1045" y="195" width="210" height="26" rx="6" fill="#0c4a6e"/>
+  <rect x="1045" y="208" width="210" height="13" fill="#0c4a6e"/>
+  <text x="1150" y="213" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Reporting &amp; Audit</text>
+  <line x1="1045" y1="221" x2="1255" y2="221" stroke="#7dd3fc" stroke-width="0.8"/>
+  <text x="1150" y="241" text-anchor="middle" font-size="10" fill="#0c4a6e">ClaimSummary  |  Audit</text>
+  <text x="1150" y="257" text-anchor="middle" font-size="10" fill="#0c4a6e">CompensationReport</text>
+  <text x="1150" y="275" text-anchor="middle" font-size="9" fill="#0284c7" font-style="italic">(FinanceUser generates reports)</text>
+
+  <!-- PROMOTIONS  (x1=785, y1=400, w=185, h=78) -->
+  <rect x="785" y="400" width="185" height="78" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="785" y="400" width="185" height="26" rx="6" fill="#d97706"/>
+  <rect x="785" y="413" width="185" height="13" fill="#d97706"/>
+  <text x="877" y="418" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Promotions</text>
+  <line x1="785" y1="426" x2="970" y2="426" stroke="#fde68a" stroke-width="0.8"/>
+  <text x="877" y="446" text-anchor="middle" font-size="10" fill="#78350f">Promotion</text>
+  <text x="877" y="462" text-anchor="middle" font-size="10" fill="#78350f">Eligibility  |  Nomination</text>
+
+
+  <!-- ═══════════════════════════ SOLID ARROWS (Direct dependency) ══════════════════════════ -->
+
+  <!-- 1. User Management → Benefits  "enrolls" -->
+  <path d="M 208,260 H 252 V 89 H 295" fill="none" stroke="#1a1a2e" stroke-width="1.8" marker-end="url(#arr-solid)"/>
+  <text x="256" y="77" font-size="9.5" fill="#1a1a2e" font-weight="600">enrolls</text>
+
+  <!-- 2. User Management → Compensation  "owns CTC" -->
+  <path d="M 208,276 H 462 V 216 H 505" fill="none" stroke="#1a1a2e" stroke-width="1.8" marker-end="url(#arr-solid)"/>
+  <text x="296" y="270" font-size="9.5" fill="#1a1a2e" font-weight="600">owns CTC</text>
+
+  <!-- 3. User Management → Claims & Documents  "submits / reviews" -->
+  <path d="M 208,304 H 462 V 359 H 505" fill="none" stroke="#1a1a2e" stroke-width="1.8" marker-end="url(#arr-solid)"/>
+  <text x="225" y="320" font-size="9.5" fill="#1a1a2e" font-weight="600">submits / reviews</text>
+
+  <!-- 4. User Management → Promotions  "manages" -->
+  <path d="M 208,320 H 248 V 439 H 785" fill="none" stroke="#1a1a2e" stroke-width="1.8" marker-end="url(#arr-solid)"/>
+  <text x="255" y="455" font-size="9.5" fill="#1a1a2e" font-weight="600">manages</text>
+
+
+  <!-- ════════════════════ DASHED ARROWS (Indirect / data flow) ════════════════════ -->
+
+  <!-- 5. Benefits → Payroll  "benefit deductions" -->
+  <path d="M 473,89 H 738 V 168 H 785" fill="none" stroke="#444" stroke-width="1.6" stroke-dasharray="7,3.5" marker-end="url(#arr-dashed)"/>
+  <text x="530" y="82" font-size="9.5" fill="#444" font-weight="600">benefit deductions</text>
+
+  <!-- 6. Compensation → Payroll  "drives payroll" -->
+  <path d="M 693,216 H 738 V 191 H 785" fill="none" stroke="#444" stroke-width="1.6" stroke-dasharray="7,3.5" marker-end="url(#arr-dashed)"/>
+  <text x="698" y="209" font-size="9.5" fill="#444" font-weight="600">drives payroll</text>
+
+  <!-- 7. Claims & Documents → Payroll  "settles claims" -->
+  <path d="M 705,340 H 754 V 210 H 785" fill="none" stroke="#444" stroke-width="1.6" stroke-dasharray="7,3.5" marker-end="url(#arr-dashed)"/>
+  <text x="711" y="298" font-size="9.5" fill="#444" font-weight="600">settles claims</text>
+
+  <!-- 8. Claims & Documents → Reporting & Audit  "claim data" -->
+  <path d="M 705,360 H 985 V 253 H 1045" fill="none" stroke="#444" stroke-width="1.6" stroke-dasharray="7,3.5" marker-end="url(#arr-dashed)"/>
+  <text x="810" y="382" font-size="9.5" fill="#444" font-weight="600">claim data</text>
+
+  <!-- 9. Payroll → Reporting & Audit  "payroll data" -->
+  <path d="M 965,191 H 1005 V 230 H 1045" fill="none" stroke="#444" stroke-width="1.6" stroke-dasharray="7,3.5" marker-end="url(#arr-dashed)"/>
+  <text x="970" y="183" font-size="9.5" fill="#444" font-weight="600">payroll data</text>
+
+
+  <!-- ═══════════════════════════════ LEGEND ═══════════════════════════════ -->
+  <rect x="1050" y="490" width="215" height="68" rx="5" fill="white" stroke="#bbb" stroke-width="1.2"/>
+  <text x="1157" y="506" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a1a2e">Legend</text>
+  <!-- Solid -->
+  <line x1="1065" y1="522" x2="1108" y2="522" stroke="#1a1a2e" stroke-width="1.8" marker-end="url(#arr-solid)"/>
+  <text x="1118" y="526" font-size="9.5" fill="#1a1a2e">Direct dependency</text>
+  <!-- Dashed -->
+  <line x1="1065" y1="544" x2="1108" y2="544" stroke="#444" stroke-width="1.6" stroke-dasharray="7,3.5" marker-end="url(#arr-dashed)"/>
+  <text x="1118" y="548" font-size="9.5" fill="#444">Indirect / data flow</text>
+
+</svg>

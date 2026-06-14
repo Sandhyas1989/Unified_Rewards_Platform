@@ -1,0 +1,151 @@
+<svg width="1000" height="660" viewBox="0 0 1000 660" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+<defs>
+  <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="#888780" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+</defs>
+
+<!-- TITLE -->
+<text x="500" y="24" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1a18">Unified Rewards Platform — System Architecture Overview (Component 00)</text>
+<text x="500" y="40" text-anchor="middle" font-size="10" fill="#5F5E5A">7 Modules · 4 Roles · ASP.NET Core 8 · React 18 (Webpack 5 Module Federation) · EF Core 8 · Microsoft Azure</text>
+
+<!-- CLIENT & EDGE LAYER -->
+<rect x="20" y="50" width="960" height="64" rx="8" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+<text x="32" y="65" font-size="9" font-weight="700" fill="#2C2C2A">CLIENT &amp; EDGE LAYER</text>
+<rect x="32" y="70" width="460" height="38" rx="5" fill="#FBFAF6" stroke="#888780" stroke-width="0.6"/>
+<text x="262" y="86" text-anchor="middle" font-size="9" font-weight="600" fill="#2C2C2A">Browser / Device</text>
+<text x="262" y="100" text-anchor="middle" font-size="7.5" fill="#5F5E5A">Employee · Manager · HR Admin · Finance/Audit</text>
+<rect x="508" y="70" width="460" height="38" rx="5" fill="#FBFAF6" stroke="#888780" stroke-width="0.6"/>
+<text x="738" y="86" text-anchor="middle" font-size="9" font-weight="600" fill="#2C2C2A">Azure Front Door</text>
+<text x="738" y="100" text-anchor="middle" font-size="7.5" fill="#5F5E5A">WAF · CDN · SSL/TLS · Global routing</text>
+<line x1="500" y1="114" x2="500" y2="130" stroke="#888780" stroke-width="1" marker-end="url(#arr)"/>
+<text x="510" y="125" font-size="7" fill="#888780">HTTPS</text>
+
+<!-- FRONTEND TIER -->
+<rect x="20" y="130" width="960" height="70" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="1"/>
+<text x="32" y="145" font-size="9" font-weight="700" fill="#085041">FRONTEND TIER — Azure Static Web Apps · React 18 + Webpack 5 Module Federation</text>
+<rect x="32"  y="151" width="176" height="42" rx="5" fill="#C9EEE1" stroke="#0F6E56" stroke-width="0.6"/>
+<text x="120" y="167" text-anchor="middle" font-size="8" font-weight="600" fill="#085041">Shell Host</text>
+<text x="120" y="180" text-anchor="middle" font-size="7" fill="#0F6E56">Router · JWT Context · :3000</text>
+<text x="120" y="190" text-anchor="middle" font-size="7" fill="#1D9E75">Role-based routing</text>
+<rect x="222" y="151" width="176" height="42" rx="5" fill="#C9EEE1" stroke="#0F6E56" stroke-width="0.6"/>
+<text x="310" y="170" text-anchor="middle" font-size="8" font-weight="600" fill="#085041">Employee Remote</text>
+<text x="310" y="183" text-anchor="middle" font-size="7" fill="#0F6E56">Self-Service · :3001</text>
+<rect x="412" y="151" width="176" height="42" rx="5" fill="#C9EEE1" stroke="#0F6E56" stroke-width="0.6"/>
+<text x="500" y="170" text-anchor="middle" font-size="8" font-weight="600" fill="#085041">Manager Remote</text>
+<text x="500" y="183" text-anchor="middle" font-size="7" fill="#0F6E56">Approvals · :3002</text>
+<rect x="602" y="151" width="176" height="42" rx="5" fill="#C9EEE1" stroke="#0F6E56" stroke-width="0.6"/>
+<text x="690" y="170" text-anchor="middle" font-size="8" font-weight="600" fill="#085041">HR Admin Remote</text>
+<text x="690" y="183" text-anchor="middle" font-size="7" fill="#0F6E56">Console · :3003</text>
+<rect x="792" y="151" width="176" height="42" rx="5" fill="#C9EEE1" stroke="#0F6E56" stroke-width="0.6"/>
+<text x="880" y="170" text-anchor="middle" font-size="8" font-weight="600" fill="#085041">Finance Remote</text>
+<text x="880" y="183" text-anchor="middle" font-size="7" fill="#0F6E56">Reports · Audit · :3004</text>
+<line x1="500" y1="200" x2="500" y2="216" stroke="#888780" stroke-width="1" marker-end="url(#arr)"/>
+<text x="510" y="211" font-size="7" fill="#888780">REST / JSON + JWT Bearer</text>
+
+<!-- API GATEWAY -->
+<rect x="20" y="216" width="960" height="64" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="1"/>
+<text x="32" y="231" font-size="9" font-weight="700" fill="#3C3489">API GATEWAY — Azure API Management (APIM)</text>
+<rect x="32"  y="237" width="222" height="36" rx="4" fill="#DEDCFB" stroke="#534AB7" stroke-width="0.6"/>
+<text x="143" y="251" text-anchor="middle" font-size="8" font-weight="600" fill="#3C3489">Auth Offload</text>
+<text x="143" y="263" text-anchor="middle" font-size="7" fill="#534AB7">JWT validation</text>
+<rect x="270" y="237" width="222" height="36" rx="4" fill="#DEDCFB" stroke="#534AB7" stroke-width="0.6"/>
+<text x="381" y="251" text-anchor="middle" font-size="8" font-weight="600" fill="#3C3489">Rate Limiting &amp; Throttling</text>
+<rect x="508" y="237" width="222" height="36" rx="4" fill="#DEDCFB" stroke="#534AB7" stroke-width="0.6"/>
+<text x="619" y="251" text-anchor="middle" font-size="8" font-weight="600" fill="#3C3489">API Versioning</text>
+<text x="619" y="263" text-anchor="middle" font-size="7" fill="#534AB7">/api/v1/</text>
+<rect x="746" y="237" width="222" height="36" rx="4" fill="#DEDCFB" stroke="#534AB7" stroke-width="0.6"/>
+<text x="857" y="251" text-anchor="middle" font-size="8" font-weight="600" fill="#3C3489">CORS Policy &amp; Routing</text>
+<line x1="500" y1="280" x2="500" y2="296" stroke="#888780" stroke-width="1" marker-end="url(#arr)"/>
+
+<!-- BACKEND SERVICES -->
+<rect x="20" y="296" width="960" height="92" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<text x="32" y="311" font-size="9" font-weight="700" fill="#0C447C">BACKEND SERVICES — Azure Kubernetes Service (AKS) · ASP.NET Core 8 · MediatR CQRS · 7 Modules</text>
+<rect x="32"  y="318" width="124" height="62" rx="5" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
+<text x="94"  y="333" text-anchor="middle" font-size="8" font-weight="600" fill="#042C53">User Management</text>
+<text x="94"  y="346" text-anchor="middle" font-size="7" fill="#0C447C">/api/v1/users</text>
+<text x="94"  y="357" text-anchor="middle" font-size="7" fill="#0C447C">Profile · RBAC</text>
+<text x="94"  y="372" text-anchor="middle" font-size="7" fill="#185FA5">IMemCache 15m</text>
+<rect x="166" y="318" width="124" height="62" rx="5" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
+<text x="228" y="333" text-anchor="middle" font-size="8" font-weight="600" fill="#042C53">Benefits</text>
+<text x="228" y="346" text-anchor="middle" font-size="7" fill="#0C447C">/api/v1/benefits</text>
+<text x="228" y="357" text-anchor="middle" font-size="7" fill="#0C447C">Catalogue · Enroll</text>
+<text x="228" y="372" text-anchor="middle" font-size="7" fill="#185FA5">IMemCache 30m</text>
+<rect x="300" y="318" width="124" height="62" rx="5" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
+<text x="362" y="333" text-anchor="middle" font-size="8" font-weight="600" fill="#042C53">Compensation</text>
+<text x="362" y="346" text-anchor="middle" font-size="7" fill="#0C447C">/api/v1/compensation</text>
+<text x="362" y="357" text-anchor="middle" font-size="7" fill="#0C447C">NRules · CTC</text>
+<text x="362" y="372" text-anchor="middle" font-size="7" fill="#185FA5">IMemCache 60m</text>
+<rect x="434" y="318" width="124" height="62" rx="5" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
+<text x="496" y="333" text-anchor="middle" font-size="8" font-weight="600" fill="#042C53">Claims &amp; Documents</text>
+<text x="496" y="346" text-anchor="middle" font-size="7" fill="#0C447C">/api/v1/claims</text>
+<text x="496" y="357" text-anchor="middle" font-size="7" fill="#0C447C">State Machine</text>
+<text x="496" y="372" text-anchor="middle" font-size="7" fill="#185FA5">OCR (Tesseract)</text>
+<rect x="568" y="318" width="124" height="62" rx="5" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
+<text x="630" y="333" text-anchor="middle" font-size="8" font-weight="600" fill="#042C53">Payroll</text>
+<text x="630" y="346" text-anchor="middle" font-size="7" fill="#0C447C">/api/v1/payroll</text>
+<text x="630" y="357" text-anchor="middle" font-size="7" fill="#0C447C">GET payslip (sync)</text>
+<text x="630" y="372" text-anchor="middle" font-size="7" fill="#185FA5">Settlement async · Polly</text>
+<rect x="702" y="318" width="124" height="62" rx="5" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
+<text x="764" y="333" text-anchor="middle" font-size="8" font-weight="600" fill="#042C53">Promotions</text>
+<text x="764" y="346" text-anchor="middle" font-size="7" fill="#0C447C">/api/v1/promotions</text>
+<text x="764" y="357" text-anchor="middle" font-size="7" fill="#0C447C">Nominate</text>
+<text x="764" y="372" text-anchor="middle" font-size="7" fill="#185FA5">Eligibility</text>
+<rect x="836" y="318" width="124" height="62" rx="5" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
+<text x="898" y="333" text-anchor="middle" font-size="8" font-weight="600" fill="#042C53">Reporting &amp; Audit</text>
+<text x="898" y="346" text-anchor="middle" font-size="7" fill="#0C447C">/api/v1/reports</text>
+<text x="898" y="357" text-anchor="middle" font-size="7" fill="#0C447C">LINQ · ClosedXML</text>
+<text x="898" y="372" text-anchor="middle" font-size="7" fill="#185FA5">Internal audit trail</text>
+<line x1="380" y1="388" x2="380" y2="404" stroke="#888780" stroke-width="1" marker-end="url(#arr)"/>
+<text x="388" y="399" font-size="7" fill="#888780">read / write · cache · store docs (EF Core 8)</text>
+<line x1="700" y1="388" x2="700" y2="404" stroke="#888780" stroke-width="1" marker-end="url(#arr)"/>
+<text x="708" y="399" font-size="7" fill="#888780">events · audit · push payroll</text>
+
+<!-- DATA LAYER -->
+<rect x="20" y="404" width="624" height="84" rx="8" fill="#FAEEDA" stroke="#854F0B" stroke-width="1"/>
+<text x="32" y="419" font-size="9" font-weight="700" fill="#412402">DATA LAYER — Private VNet · No public internet · EF Core 8 provider model</text>
+<rect x="32"  y="425" width="118" height="56" rx="5" fill="#FAC775" stroke="#BA7517" stroke-width="0.5"/>
+<text x="91"  y="441" text-anchor="middle" font-size="7.5" font-weight="600" fill="#412402">Azure Cosmos DB</text>
+<text x="91"  y="453" text-anchor="middle" font-size="7" fill="#633806">Benefits · Comp Rules</text>
+<text x="91"  y="464" text-anchor="middle" font-size="7" fill="#412402">[EF In-Memory local]</text>
+<rect x="156" y="425" width="118" height="56" rx="5" fill="#FAC775" stroke="#BA7517" stroke-width="0.5"/>
+<text x="215" y="441" text-anchor="middle" font-size="7.5" font-weight="600" fill="#412402">Azure Redis Cache</text>
+<text x="215" y="453" text-anchor="middle" font-size="7" fill="#633806">TTL 15 / 30 / 60 min</text>
+<text x="215" y="464" text-anchor="middle" font-size="7" fill="#412402">[IMemoryCache local]</text>
+<rect x="280" y="425" width="118" height="56" rx="5" fill="#FAC775" stroke="#BA7517" stroke-width="0.5"/>
+<text x="339" y="441" text-anchor="middle" font-size="7.5" font-weight="600" fill="#412402">Azure Blob Storage</text>
+<text x="339" y="453" text-anchor="middle" font-size="7" fill="#633806">Documents · Receipts</text>
+<text x="339" y="464" text-anchor="middle" font-size="7" fill="#412402">PaySlips · [Local FS]</text>
+<rect x="404" y="425" width="118" height="56" rx="5" fill="#FAC775" stroke="#BA7517" stroke-width="0.5"/>
+<text x="463" y="441" text-anchor="middle" font-size="7.5" font-weight="600" fill="#412402">Azure Key Vault</text>
+<text x="463" y="453" text-anchor="middle" font-size="7" fill="#633806">JWT keys · Secrets</text>
+<text x="463" y="464" text-anchor="middle" font-size="7" fill="#412402">[user-secrets local]</text>
+<rect x="528" y="425" width="108" height="56" rx="5" fill="#FAC775" stroke="#BA7517" stroke-width="0.5"/>
+<text x="582" y="441" text-anchor="middle" font-size="7.5" font-weight="600" fill="#412402">Azure SQL</text>
+<text x="582" y="453" text-anchor="middle" font-size="7" fill="#633806">Claims · Employees</text>
+<text x="582" y="464" text-anchor="middle" font-size="7" fill="#412402">Payroll · Reports [SQLite]</text>
+
+<!-- INTEGRATION & EXTERNAL -->
+<rect x="656" y="404" width="324" height="84" rx="8" fill="#FAECE7" stroke="#993C1D" stroke-width="1"/>
+<text x="668" y="419" font-size="9" font-weight="700" fill="#4A1B0C">INTEGRATION &amp; EXTERNAL SYSTEMS</text>
+<rect x="668" y="425" width="100" height="26" rx="4" fill="#F5C4B3" stroke="#D85A30" stroke-width="0.5"/>
+<text x="718" y="438" text-anchor="middle" font-size="7.5" font-weight="600" fill="#4A1B0C">Azure Event Hub</text>
+<text x="718" y="448" text-anchor="middle" font-size="6.5" fill="#71270F">Audit stream</text>
+<rect x="774" y="425" width="100" height="26" rx="4" fill="#F5C4B3" stroke="#D85A30" stroke-width="0.5"/>
+<text x="824" y="438" text-anchor="middle" font-size="7.5" font-weight="600" fill="#4A1B0C">Azure Service Bus</text>
+<text x="824" y="448" text-anchor="middle" font-size="6.5" fill="#71270F">Claim lifecycle events</text>
+<rect x="880" y="425" width="94" height="26" rx="4" fill="#F5C4B3" stroke="#D85A30" stroke-width="0.5"/>
+<text x="927" y="438" text-anchor="middle" font-size="7.5" font-weight="600" fill="#4A1B0C">Azure AD / Entra</text>
+<text x="927" y="448" text-anchor="middle" font-size="6.5" fill="#71270F">JWT · SSO · MFA</text>
+<rect x="668" y="453" width="151" height="28" rx="4" fill="#F5C4B3" stroke="#D85A30" stroke-width="0.5"/>
+<text x="743" y="466" text-anchor="middle" font-size="7.5" font-weight="600" fill="#4A1B0C">External Payroll System</text>
+<text x="743" y="476" text-anchor="middle" font-size="6.5" fill="#71270F">SAP / ADP / Workday · REST API</text>
+<rect x="825" y="453" width="149" height="28" rx="4" fill="#F5C4B3" stroke="#D85A30" stroke-width="0.5"/>
+<text x="899" y="466" text-anchor="middle" font-size="7.5" font-weight="600" fill="#4A1B0C">Azure Communication Services</text>
+<text x="899" y="476" text-anchor="middle" font-size="6.5" fill="#71270F">Email · [smtp4dev local]</text>
+
+<!-- FOOTNOTE -->
+<text x="20" y="506" font-size="7.5" fill="#5F5E5A">Aligned to canonical 7-module taxonomy: (1) User Management (2) Benefits (3) Compensation (4) Claims &amp; Documents (5) Payroll (6) Promotions (7) Reporting &amp; Audit.</text>
+<text x="20" y="518" font-size="7.5" fill="#5F5E5A">Each module = one AKS microservice with its own controller. Payroll exposes GET payslips on-demand (sync) while the monthly settlement run executes asynchronously via Background Jobs / Azure Functions.</text>
+
+</svg>

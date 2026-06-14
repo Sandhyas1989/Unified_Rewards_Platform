@@ -1,0 +1,699 @@
+<svg width="1520" height="2188" viewBox="0 0 1520 2188" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+<defs>
+  <marker id="tri" viewBox="0 0 14 12" refX="12" refY="6" markerWidth="13" markerHeight="11" orient="auto"><path d="M1 1 L12 6 L1 11 Z" fill="white" stroke="#334155" stroke-width="1"/></marker>
+  <marker id="dep" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#64748B" stroke-width="1.3"/></marker>
+  <marker id="diamond" viewBox="0 0 14 10" refX="1" refY="5" markerWidth="12" markerHeight="9" orient="auto"><path d="M1 5 L7 1 L13 5 L7 9 Z" fill="#334155"/></marker>
+</defs>
+
+<rect x="0" y="0" width="1520" height="2188" fill="#FCFCFB"/>
+<text x="760" y="24" text-anchor="middle" font-size="15" font-weight="700" fill="#1a1a18">Unified Rewards Platform — Detailed Class Diagram (Domain Model + CQRS Application Layer)</text>
+<text x="760" y="40" text-anchor="middle" font-size="10" fill="#5F5E5A">7 modules · inheritance &amp; composition · MediatR CQRS pipeline · EF Core 8 · integration interfaces</text>
+
+<!-- ============================================================ -->
+<!-- COLUMN 0 : USER MANAGEMENT / CLAIMS &amp; DOCUMENTS / REPORTING -->
+<!-- colX = 20 ; box x = 32 ; box w = 456 -->
+<!-- ============================================================ -->
+
+<!-- ===== CLUSTER: USER MANAGEMENT  (cluster y=58, h=410) ===== -->
+<rect x="20" y="58" width="480" height="410" rx="6" fill="none" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="5 3"/>
+<text x="30" y="74" font-size="10" font-weight="700" fill="#2563EB">USER MANAGEMENT</text>
+
+<!-- UserRole : enum (4 members) body=72 ; y=82 -->
+<rect x="32" y="82" width="456" height="72" rx="3" fill="#FFFFFF" stroke="#2563EB" stroke-width="1"/>
+<rect x="32" y="82" width="456" height="22" rx="3" fill="#DBEAFE" stroke="#2563EB" stroke-width="1"/>
+<text x="260" y="91" text-anchor="middle" font-size="6.5" font-style="italic" fill="#1E3A8A">«enumeration»</text>
+<text x="260" y="100" text-anchor="middle" font-size="8.5" font-weight="700" fill="#1E3A8A">UserRole</text>
+<line x1="32" y1="104" x2="488" y2="104" stroke="#2563EB" stroke-width="0.5"/>
+<text x="38" y="115" font-size="7" fill="#1E3A8A">Employee</text>
+<text x="38" y="126" font-size="7" fill="#1E3A8A">Manager</text>
+<text x="38" y="137" font-size="7" fill="#1E3A8A">HRAdmin</text>
+<text x="38" y="148" font-size="7" fill="#1E3A8A">FinanceUser</text>
+
+<!-- User : abstract (5 members) body=83 ; y=164 -->
+<rect x="32" y="164" width="456" height="83" rx="3" fill="#FFFFFF" stroke="#2563EB" stroke-width="1"/>
+<rect x="32" y="164" width="456" height="22" rx="3" fill="#DBEAFE" stroke="#2563EB" stroke-width="1"/>
+<text x="260" y="173" text-anchor="middle" font-size="6.5" font-style="italic" fill="#1E3A8A">«abstract»</text>
+<text x="260" y="182" text-anchor="middle" font-size="8.5" font-weight="700" fill="#1E3A8A">User</text>
+<line x1="32" y1="186" x2="488" y2="186" stroke="#2563EB" stroke-width="0.5"/>
+<text x="38" y="197" font-size="7" fill="#1E3A8A">+ Id : Guid</text>
+<text x="38" y="208" font-size="7" fill="#1E3A8A">+ Name</text>
+<text x="38" y="219" font-size="7" fill="#1E3A8A">+ Email</text>
+<text x="38" y="230" font-size="7" fill="#1E3A8A">+ Role : UserRole</text>
+<text x="38" y="241" font-size="7" fill="#1E3A8A">+ Login()</text>
+
+<!-- Employee (5 members) body=83 ; y=257 -->
+<rect x="32" y="257" width="456" height="83" rx="3" fill="#FFFFFF" stroke="#2563EB" stroke-width="1"/>
+<rect x="32" y="257" width="456" height="22" rx="3" fill="#DBEAFE" stroke="#2563EB" stroke-width="1"/>
+<text x="260" y="266" text-anchor="middle" font-size="6.5" font-style="italic" fill="#1E3A8A">«extends User»</text>
+<text x="260" y="275" text-anchor="middle" font-size="8.5" font-weight="700" fill="#1E3A8A">Employee</text>
+<line x1="32" y1="279" x2="488" y2="279" stroke="#2563EB" stroke-width="0.5"/>
+<text x="38" y="290" font-size="7" fill="#1E3A8A">+ Grade</text>
+<text x="38" y="301" font-size="7" fill="#1E3A8A">+ DateOfJoining</text>
+<text x="38" y="312" font-size="7" fill="#1E3A8A">+ submitClaim()</text>
+<text x="38" y="323" font-size="7" fill="#1E3A8A">+ enrollBenefit()</text>
+<text x="38" y="334" font-size="7" fill="#1E3A8A">+ viewCTC()</text>
+
+<!-- Manager (2 members) body=50 ; y=350 -->
+<rect x="32" y="350" width="456" height="50" rx="3" fill="#FFFFFF" stroke="#2563EB" stroke-width="1"/>
+<rect x="32" y="350" width="456" height="22" rx="3" fill="#DBEAFE" stroke="#2563EB" stroke-width="1"/>
+<text x="260" y="359" text-anchor="middle" font-size="6.5" font-style="italic" fill="#1E3A8A">«extends Employee»</text>
+<text x="260" y="368" text-anchor="middle" font-size="8.5" font-weight="700" fill="#1E3A8A">Manager</text>
+<line x1="32" y1="372" x2="488" y2="372" stroke="#2563EB" stroke-width="0.5"/>
+<text x="38" y="383" font-size="7" fill="#1E3A8A">+ approveClaim()</text>
+<text x="38" y="394" font-size="7" fill="#1E3A8A">+ nominateForPromotion()</text>
+
+<!-- HRAdmin (3 members) body=61 ; y=410 -->
+<rect x="32" y="410" width="222" height="61" rx="3" fill="#FFFFFF" stroke="#2563EB" stroke-width="1"/>
+<rect x="32" y="410" width="222" height="22" rx="3" fill="#DBEAFE" stroke="#2563EB" stroke-width="1"/>
+<text x="143" y="419" text-anchor="middle" font-size="6.5" font-style="italic" fill="#1E3A8A">«extends User»</text>
+<text x="143" y="428" text-anchor="middle" font-size="8.5" font-weight="700" fill="#1E3A8A">HRAdmin</text>
+<line x1="32" y1="432" x2="254" y2="432" stroke="#2563EB" stroke-width="0.5"/>
+<text x="38" y="443" font-size="7" fill="#1E3A8A">+ configureBenefitPlan()</text>
+<text x="38" y="454" font-size="7" fill="#1E3A8A">+ configureCompensationRule()</text>
+<text x="38" y="465" font-size="7" fill="#1E3A8A">+ managePromotionCycle()</text>
+
+<!-- FinanceUser (2 members) body=50 ; y=410 ; x=266 w=222 -->
+<rect x="266" y="410" width="222" height="50" rx="3" fill="#FFFFFF" stroke="#2563EB" stroke-width="1"/>
+<rect x="266" y="410" width="222" height="22" rx="3" fill="#DBEAFE" stroke="#2563EB" stroke-width="1"/>
+<text x="377" y="419" text-anchor="middle" font-size="6.5" font-style="italic" fill="#1E3A8A">«extends User»</text>
+<text x="377" y="428" text-anchor="middle" font-size="8.5" font-weight="700" fill="#1E3A8A">FinanceUser</text>
+<line x1="266" y1="432" x2="488" y2="432" stroke="#2563EB" stroke-width="0.5"/>
+<text x="272" y="443" font-size="7" fill="#1E3A8A">+ generateReport()</text>
+<text x="272" y="454" font-size="7" fill="#1E3A8A">+ viewAuditTrail()</text>
+
+<!-- USER inheritance connectors -->
+<!-- Employee -> User -->
+<line x1="200" y1="257" x2="200" y2="247" stroke="#334155" stroke-width="1" marker-end="url(#tri)"/>
+<!-- Manager -> Employee -->
+<line x1="200" y1="350" x2="200" y2="340" stroke="#334155" stroke-width="1" marker-end="url(#tri)"/>
+<!-- HRAdmin -> User -->
+<line x1="120" y1="410" x2="150" y2="247" stroke="#334155" stroke-width="1" marker-end="url(#tri)"/>
+<!-- FinanceUser -> User -->
+<line x1="380" y1="410" x2="300" y2="247" stroke="#334155" stroke-width="1" marker-end="url(#tri)"/>
+
+<!-- ===== CLUSTER: CLAIMS &amp; DOCUMENTS (cluster y=478) ===== -->
+<!-- boxes: ClaimStatus(6)=98 Claim(8)=126 ClaimLineItem(2)=50 ClaimWorkflow(2)=50 ClaimStatusHistory(4)=72 Document(3)=61 Receipt(2)=50 OCRResult(3)=61
+     stacked gap10 startY=478+24=502
+     heights: 98,126,50,50,72,61,50,61 ; gaps 7*10=70 ; sum boxes=568 ; +70 = 638 ; cluster h = 24+638+8=670 -->
+<rect x="20" y="478" width="480" height="670" rx="6" fill="none" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="5 3"/>
+<text x="30" y="494" font-size="10" font-weight="700" fill="#DC2626">CLAIMS &amp; DOCUMENTS</text>
+
+<!-- ClaimStatus enum (6) body=98 y=502 -->
+<rect x="32" y="502" width="456" height="98" rx="3" fill="#FFFFFF" stroke="#DC2626" stroke-width="1"/>
+<rect x="32" y="502" width="456" height="22" rx="3" fill="#FEE2E2" stroke="#DC2626" stroke-width="1"/>
+<text x="260" y="511" text-anchor="middle" font-size="6.5" font-style="italic" fill="#7F1D1D">«enumeration»</text>
+<text x="260" y="520" text-anchor="middle" font-size="8.5" font-weight="700" fill="#7F1D1D">ClaimStatus</text>
+<line x1="32" y1="524" x2="488" y2="524" stroke="#DC2626" stroke-width="0.5"/>
+<text x="38" y="535" font-size="7" fill="#7F1D1D">DRAFT</text>
+<text x="38" y="546" font-size="7" fill="#7F1D1D">SUBMITTED</text>
+<text x="38" y="557" font-size="7" fill="#7F1D1D">UNDER_REVIEW</text>
+<text x="38" y="568" font-size="7" fill="#7F1D1D">APPROVED</text>
+<text x="38" y="579" font-size="7" fill="#7F1D1D">REJECTED</text>
+<text x="38" y="590" font-size="7" fill="#7F1D1D">SETTLED</text>
+
+<!-- Claim (8) body=126 y=610 -->
+<rect x="32" y="610" width="456" height="126" rx="3" fill="#FFFFFF" stroke="#DC2626" stroke-width="1"/>
+<rect x="32" y="610" width="456" height="22" rx="3" fill="#FEE2E2" stroke="#DC2626" stroke-width="1"/>
+<text x="260" y="624" text-anchor="middle" font-size="8.5" font-weight="700" fill="#7F1D1D">Claim</text>
+<line x1="32" y1="632" x2="488" y2="632" stroke="#DC2626" stroke-width="0.5"/>
+<text x="38" y="643" font-size="7" fill="#7F1D1D">+ Id</text>
+<text x="38" y="654" font-size="7" fill="#7F1D1D">+ EmployeeId</text>
+<text x="38" y="665" font-size="7" fill="#7F1D1D">+ Amount</text>
+<text x="38" y="676" font-size="7" fill="#7F1D1D">+ Status : ClaimStatus</text>
+<text x="38" y="687" font-size="7" fill="#7F1D1D">+ Submit()</text>
+<text x="38" y="698" font-size="7" fill="#7F1D1D">+ Approve()</text>
+<text x="38" y="709" font-size="7" fill="#7F1D1D">+ Reject()</text>
+<text x="38" y="720" font-size="7" fill="#7F1D1D">+ Settle()</text>
+
+<!-- ClaimLineItem (2) body=50 y=746 -->
+<rect x="32" y="746" width="222" height="50" rx="3" fill="#FFFFFF" stroke="#DC2626" stroke-width="1"/>
+<rect x="32" y="746" width="222" height="22" rx="3" fill="#FEE2E2" stroke="#DC2626" stroke-width="1"/>
+<text x="143" y="760" text-anchor="middle" font-size="8.5" font-weight="700" fill="#7F1D1D">ClaimLineItem</text>
+<line x1="32" y1="768" x2="254" y2="768" stroke="#DC2626" stroke-width="0.5"/>
+<text x="38" y="779" font-size="7" fill="#7F1D1D">+ Description</text>
+<text x="38" y="790" font-size="7" fill="#7F1D1D">+ Amount</text>
+
+<!-- ClaimWorkflow (2) body=50 y=746 x=266 -->
+<rect x="266" y="746" width="222" height="50" rx="3" fill="#FFFFFF" stroke="#DC2626" stroke-width="1"/>
+<rect x="266" y="746" width="222" height="22" rx="3" fill="#FEE2E2" stroke="#DC2626" stroke-width="1"/>
+<text x="377" y="760" text-anchor="middle" font-size="8.5" font-weight="700" fill="#7F1D1D">ClaimWorkflow</text>
+<line x1="266" y1="768" x2="488" y2="768" stroke="#DC2626" stroke-width="0.5"/>
+<text x="272" y="779" font-size="7" fill="#7F1D1D">+ SLA</text>
+<text x="272" y="790" font-size="7" fill="#7F1D1D">+ advance(); + escalate()</text>
+
+<!-- ClaimStatusHistory (4) body=72 y=806 -->
+<rect x="32" y="806" width="456" height="72" rx="3" fill="#FFFFFF" stroke="#DC2626" stroke-width="1"/>
+<rect x="32" y="806" width="456" height="22" rx="3" fill="#FEE2E2" stroke="#DC2626" stroke-width="1"/>
+<text x="260" y="820" text-anchor="middle" font-size="8.5" font-weight="700" fill="#7F1D1D">ClaimStatusHistory</text>
+<line x1="32" y1="828" x2="488" y2="828" stroke="#DC2626" stroke-width="0.5"/>
+<text x="38" y="839" font-size="7" fill="#7F1D1D">+ From</text>
+<text x="38" y="850" font-size="7" fill="#7F1D1D">+ To</text>
+<text x="38" y="861" font-size="7" fill="#7F1D1D">+ ChangedBy</text>
+<text x="38" y="872" font-size="7" fill="#7F1D1D">+ At</text>
+
+<!-- Document (3) body=61 y=888 -->
+<rect x="32" y="888" width="456" height="61" rx="3" fill="#FFFFFF" stroke="#DC2626" stroke-width="1"/>
+<rect x="32" y="888" width="456" height="22" rx="3" fill="#FEE2E2" stroke="#DC2626" stroke-width="1"/>
+<text x="260" y="902" text-anchor="middle" font-size="8.5" font-weight="700" fill="#7F1D1D">Document</text>
+<line x1="32" y1="910" x2="488" y2="910" stroke="#DC2626" stroke-width="0.5"/>
+<text x="38" y="921" font-size="7" fill="#7F1D1D">+ Id</text>
+<text x="38" y="932" font-size="7" fill="#7F1D1D">+ BlobUrl</text>
+<text x="38" y="943" font-size="7" fill="#7F1D1D">+ Type</text>
+
+<!-- Receipt (2) body=50 y=959 -->
+<rect x="32" y="959" width="222" height="50" rx="3" fill="#FFFFFF" stroke="#DC2626" stroke-width="1"/>
+<rect x="32" y="959" width="222" height="22" rx="3" fill="#FEE2E2" stroke="#DC2626" stroke-width="1"/>
+<text x="143" y="968" text-anchor="middle" font-size="6.5" font-style="italic" fill="#7F1D1D">«extends Document»</text>
+<text x="143" y="977" text-anchor="middle" font-size="8.5" font-weight="700" fill="#7F1D1D">Receipt</text>
+<line x1="32" y1="981" x2="254" y2="981" stroke="#DC2626" stroke-width="0.5"/>
+<text x="38" y="992" font-size="7" fill="#7F1D1D">+ Amount</text>
+<text x="38" y="1003" font-size="7" fill="#7F1D1D">+ Vendor</text>
+
+<!-- OCRResult (3) body=61 y=959 x=266 -->
+<rect x="266" y="959" width="222" height="61" rx="3" fill="#FFFFFF" stroke="#DC2626" stroke-width="1"/>
+<rect x="266" y="959" width="222" height="22" rx="3" fill="#FEE2E2" stroke="#DC2626" stroke-width="1"/>
+<text x="377" y="973" text-anchor="middle" font-size="8.5" font-weight="700" fill="#7F1D1D">OCRResult</text>
+<line x1="266" y1="981" x2="488" y2="981" stroke="#DC2626" stroke-width="0.5"/>
+<text x="272" y="992" font-size="7" fill="#7F1D1D">+ ExtractedText</text>
+<text x="272" y="1003" font-size="7" fill="#7F1D1D">+ Confidence</text>
+<text x="272" y="1014" font-size="7" fill="#7F1D1D">+ Fields</text>
+
+<!-- CLAIMS connectors -->
+<!-- Receipt -> Document (tri) -->
+<line x1="143" y1="959" x2="180" y2="949" stroke="#334155" stroke-width="1" marker-end="url(#tri)"/>
+<!-- Claim composition ClaimLineItem (diamond at Claim/whole) -->
+<line x1="143" y1="746" x2="143" y2="736" stroke="#334155" stroke-width="1" marker-start="url(#diamond)"/>
+<!-- Claim composition ClaimWorkflow -->
+<line x1="377" y1="746" x2="320" y2="736" stroke="#334155" stroke-width="1" marker-start="url(#diamond)"/>
+<!-- Receipt ..> OCRResult (dependency) -->
+<line x1="254" y1="984" x2="266" y2="984" stroke="#64748B" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#dep)"/>
+<text x="200" y="1018" font-size="7" font-style="italic" fill="#64748B">OCR via Tesseract</text>
+
+<!-- ===== CLUSTER: REPORTING &amp; AUDIT (cluster y=1158) ===== -->
+<!-- boxes: Report(2)=50 ClaimSummaryReport(0)=28 AuditReport(0)=28 CompensationReport(0)=28 AuditEntry(5)=83
+     startY=1158+24=1182 ; gap10
+     Report y=1182 h50 ; next 1242 -> place 3 report subclasses in a row (w~148 each) h28 ; AuditEntry full y=1280 h83
+     cluster h = 24 + (50 + 10 + 28 + 10 + 83) + 8 = 213 -->
+<rect x="20" y="1158" width="480" height="213" rx="6" fill="none" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="5 3"/>
+<text x="30" y="1174" font-size="10" font-weight="700" fill="#0C4A6E">REPORTING &amp; AUDIT</text>
+
+<!-- Report abstract (2) body=50 y=1182 -->
+<rect x="32" y="1182" width="456" height="50" rx="3" fill="#FFFFFF" stroke="#0C4A6E" stroke-width="1"/>
+<rect x="32" y="1182" width="456" height="22" rx="3" fill="#E0F2FE" stroke="#0C4A6E" stroke-width="1"/>
+<text x="260" y="1191" text-anchor="middle" font-size="6.5" font-style="italic" fill="#0C4A6E">«abstract»</text>
+<text x="260" y="1200" text-anchor="middle" font-size="8.5" font-weight="700" fill="#0C4A6E">Report</text>
+<line x1="32" y1="1204" x2="488" y2="1204" stroke="#0C4A6E" stroke-width="0.5"/>
+<text x="38" y="1215" font-size="7" fill="#0C4A6E">+ Id; + GeneratedBy : FinanceUser</text>
+<text x="38" y="1226" font-size="7" fill="#0C4A6E">+ generate(); + export() : File  · ClosedXML</text>
+
+<!-- 3 report subclasses row y=1242 h28 ; widths 148 at x=32,186,340 -->
+<rect x="32" y="1242" width="148" height="28" rx="3" fill="#FFFFFF" stroke="#0C4A6E" stroke-width="1"/>
+<rect x="32" y="1242" width="148" height="22" rx="3" fill="#E0F2FE" stroke="#0C4A6E" stroke-width="1"/>
+<text x="106" y="1257" text-anchor="middle" font-size="8" font-weight="700" fill="#0C4A6E">ClaimSummaryReport</text>
+
+<rect x="186" y="1242" width="148" height="28" rx="3" fill="#FFFFFF" stroke="#0C4A6E" stroke-width="1"/>
+<rect x="186" y="1242" width="148" height="22" rx="3" fill="#E0F2FE" stroke="#0C4A6E" stroke-width="1"/>
+<text x="260" y="1257" text-anchor="middle" font-size="8" font-weight="700" fill="#0C4A6E">AuditReport</text>
+
+<rect x="340" y="1242" width="148" height="28" rx="3" fill="#FFFFFF" stroke="#0C4A6E" stroke-width="1"/>
+<rect x="340" y="1242" width="148" height="22" rx="3" fill="#E0F2FE" stroke="#0C4A6E" stroke-width="1"/>
+<text x="414" y="1257" text-anchor="middle" font-size="8" font-weight="700" fill="#0C4A6E">CompensationReport</text>
+
+<!-- AuditEntry (5) body=83 y=1280 -->
+<rect x="32" y="1280" width="456" height="83" rx="3" fill="#FFFFFF" stroke="#0C4A6E" stroke-width="1"/>
+<rect x="32" y="1280" width="456" height="22" rx="3" fill="#E0F2FE" stroke="#0C4A6E" stroke-width="1"/>
+<text x="260" y="1289" text-anchor="middle" font-size="6.5" font-style="italic" fill="#0C4A6E">«append-only»</text>
+<text x="260" y="1298" text-anchor="middle" font-size="8.5" font-weight="700" fill="#0C4A6E">AuditEntry</text>
+<line x1="32" y1="1302" x2="488" y2="1302" stroke="#0C4A6E" stroke-width="0.5"/>
+<text x="38" y="1313" font-size="7" fill="#0C4A6E">+ EntityType</text>
+<text x="38" y="1324" font-size="7" fill="#0C4A6E">+ Action</text>
+<text x="38" y="1335" font-size="7" fill="#0C4A6E">+ PerformedBy</text>
+<text x="38" y="1346" font-size="7" fill="#0C4A6E">+ Timestamp</text>
+<text x="38" y="1357" font-size="7" fill="#0C4A6E">+ IP</text>
+
+<!-- REPORTING connectors: 3 subclasses -> Report -->
+<line x1="106" y1="1242" x2="200" y2="1232" stroke="#334155" stroke-width="1" marker-end="url(#tri)"/>
+<line x1="260" y1="1242" x2="260" y2="1232" stroke="#334155" stroke-width="1" marker-end="url(#tri)"/>
+<line x1="414" y1="1242" x2="320" y2="1232" stroke="#334155" stroke-width="1" marker-end="url(#tri)"/>
+
+<!-- ============================================================ -->
+<!-- COLUMN 1 : BENEFITS / PAYROLL / PROMOTIONS  (colX=520) -->
+<!-- box x = 532 ; box w = 456 -->
+<!-- ============================================================ -->
+
+<!-- ===== CLUSTER: BENEFITS (cluster y=58) ===== -->
+<!-- boxes: BenefitType(4)=72 BenefitPlan(4)=72 + 4 plan subclasses(0)=28 each (2 rows of 2) + EligibilityCriteria(3)=61 + BenefitEnrollment(5)=83
+     startY=82
+     BenefitType y=82 h72 ; BenefitPlan y=164 h72 ; plans row1 y=246 h28 (2 boxes) ; plans row2 y=284 h28 ; EligibilityCriteria y=322 h61 ; BenefitEnrollment y=393 h83
+     end = 393+83=476 ; cluster h = 476-58+8=426 -->
+<rect x="520" y="58" width="480" height="426" rx="6" fill="none" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="5 3"/>
+<text x="530" y="74" font-size="10" font-weight="700" fill="#CA8A04">BENEFITS</text>
+
+<!-- BenefitType enum (4) body=72 y=82 -->
+<rect x="532" y="82" width="456" height="72" rx="3" fill="#FFFFFF" stroke="#CA8A04" stroke-width="1"/>
+<rect x="532" y="82" width="456" height="22" rx="3" fill="#FEF9C3" stroke="#CA8A04" stroke-width="1"/>
+<text x="760" y="91" text-anchor="middle" font-size="6.5" font-style="italic" fill="#713F12">«enumeration»</text>
+<text x="760" y="100" text-anchor="middle" font-size="8.5" font-weight="700" fill="#713F12">BenefitType</text>
+<line x1="532" y1="104" x2="988" y2="104" stroke="#CA8A04" stroke-width="0.5"/>
+<text x="538" y="115" font-size="7" fill="#713F12">HealthInsurance</text>
+<text x="538" y="126" font-size="7" fill="#713F12">LTA</text>
+<text x="538" y="137" font-size="7" fill="#713F12">MealCard</text>
+<text x="538" y="148" font-size="7" fill="#713F12">FlexiBenefit</text>
+
+<!-- BenefitPlan abstract (3) body=61 y=164 -->
+<rect x="532" y="164" width="456" height="61" rx="3" fill="#FFFFFF" stroke="#CA8A04" stroke-width="1"/>
+<rect x="532" y="164" width="456" height="22" rx="3" fill="#FEF9C3" stroke="#CA8A04" stroke-width="1"/>
+<text x="760" y="173" text-anchor="middle" font-size="6.5" font-style="italic" fill="#713F12">«abstract»</text>
+<text x="760" y="182" text-anchor="middle" font-size="8.5" font-weight="700" fill="#713F12">BenefitPlan</text>
+<line x1="532" y1="186" x2="988" y2="186" stroke="#CA8A04" stroke-width="0.5"/>
+<text x="538" y="197" font-size="7" fill="#713F12">+ Id; + Name; + Type : BenefitType</text>
+<text x="538" y="208" font-size="7" fill="#713F12">+ isEligible(emp) : bool</text>
+
+<!-- 4 plan subclasses : 2x2 grid w=222 ; row1 y=246, row2 y=284 ; h28 -->
+<rect x="532" y="246" width="222" height="28" rx="3" fill="#FFFFFF" stroke="#CA8A04" stroke-width="1"/>
+<rect x="532" y="246" width="222" height="22" rx="3" fill="#FEF9C3" stroke="#CA8A04" stroke-width="1"/>
+<text x="643" y="261" text-anchor="middle" font-size="8" font-weight="700" fill="#713F12">HealthInsurancePlan</text>
+
+<rect x="766" y="246" width="222" height="28" rx="3" fill="#FFFFFF" stroke="#CA8A04" stroke-width="1"/>
+<rect x="766" y="246" width="222" height="22" rx="3" fill="#FEF9C3" stroke="#CA8A04" stroke-width="1"/>
+<text x="877" y="261" text-anchor="middle" font-size="8" font-weight="700" fill="#713F12">LTAPlan</text>
+
+<rect x="532" y="284" width="222" height="28" rx="3" fill="#FFFFFF" stroke="#CA8A04" stroke-width="1"/>
+<rect x="532" y="284" width="222" height="22" rx="3" fill="#FEF9C3" stroke="#CA8A04" stroke-width="1"/>
+<text x="643" y="299" text-anchor="middle" font-size="8" font-weight="700" fill="#713F12">MealCardPlan</text>
+
+<rect x="766" y="284" width="222" height="28" rx="3" fill="#FFFFFF" stroke="#CA8A04" stroke-width="1"/>
+<rect x="766" y="284" width="222" height="22" rx="3" fill="#FEF9C3" stroke="#CA8A04" stroke-width="1"/>
+<text x="877" y="299" text-anchor="middle" font-size="8" font-weight="700" fill="#713F12">FlexiBenefitPlan</text>
+
+<!-- EligibilityCriteria (3) body=61 y=322 -->
+<rect x="532" y="322" width="456" height="61" rx="3" fill="#FFFFFF" stroke="#CA8A04" stroke-width="1"/>
+<rect x="532" y="322" width="456" height="22" rx="3" fill="#FEF9C3" stroke="#CA8A04" stroke-width="1"/>
+<text x="760" y="336" text-anchor="middle" font-size="8.5" font-weight="700" fill="#713F12">EligibilityCriteria</text>
+<line x1="532" y1="344" x2="988" y2="344" stroke="#CA8A04" stroke-width="0.5"/>
+<text x="538" y="355" font-size="7" fill="#713F12">+ MinGrade</text>
+<text x="538" y="366" font-size="7" fill="#713F12">+ MinTenure</text>
+<text x="538" y="377" font-size="7" fill="#713F12">+ evaluate(emp)</text>
+
+<!-- BenefitEnrollment (5) body=83 y=393 -->
+<rect x="532" y="393" width="456" height="83" rx="3" fill="#FFFFFF" stroke="#CA8A04" stroke-width="1"/>
+<rect x="532" y="393" width="456" height="22" rx="3" fill="#FEF9C3" stroke="#CA8A04" stroke-width="1"/>
+<text x="760" y="407" text-anchor="middle" font-size="8.5" font-weight="700" fill="#713F12">BenefitEnrollment</text>
+<line x1="532" y1="415" x2="988" y2="415" stroke="#CA8A04" stroke-width="0.5"/>
+<text x="538" y="426" font-size="7" fill="#713F12">+ Id</text>
+<text x="538" y="437" font-size="7" fill="#713F12">+ EmployeeId</text>
+<text x="538" y="448" font-size="7" fill="#713F12">+ PlanId</text>
+<text x="538" y="459" font-size="7" fill="#713F12">+ EnrolledOn</text>
+<text x="538" y="470" font-size="7" fill="#713F12">+ Status</text>
+
+<!-- BENEFITS connectors: 4 plans -> BenefitPlan -->
+<line x1="643" y1="246" x2="700" y2="225" stroke="#334155" stroke-width="1" marker-end="url(#tri)"/>
+<line x1="877" y1="246" x2="820" y2="225" stroke="#334155" stroke-width="1" marker-end="url(#tri)"/>
+<line x1="643" y1="284" x2="700" y2="225" stroke="#334155" stroke-width="1" marker-end="url(#tri)"/>
+<line x1="877" y1="284" x2="820" y2="225" stroke="#334155" stroke-width="1" marker-end="url(#tri)"/>
+<!-- BenefitPlan composition EligibilityCriteria -->
+<line x1="760" y1="322" x2="760" y2="312" stroke="#334155" stroke-width="1" marker-start="url(#diamond)"/>
+
+<!-- ===== CLUSTER: PAYROLL (cluster y=494) ===== -->
+<!-- boxes: PayrollRecord(2)=50 Settlement(2)=50 PaySlip(2)=50 ; startY=518 gap10
+     PayrollRecord y=518 h50 ; Settlement y=578 h50 ; PaySlip y=638 h50 ; end=688 ; cluster h=688-494+8=202 -->
+<rect x="520" y="494" width="480" height="202" rx="6" fill="none" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="5 3"/>
+<text x="530" y="510" font-size="10" font-weight="700" fill="#1D4ED8">PAYROLL</text>
+
+<!-- PayrollRecord (2) body=50 y=518 -->
+<rect x="532" y="518" width="456" height="50" rx="3" fill="#FFFFFF" stroke="#1D4ED8" stroke-width="1"/>
+<rect x="532" y="518" width="456" height="22" rx="3" fill="#DBEAFE" stroke="#1D4ED8" stroke-width="1"/>
+<text x="760" y="532" text-anchor="middle" font-size="8.5" font-weight="700" fill="#1E3A8A">PayrollRecord</text>
+<line x1="532" y1="540" x2="988" y2="540" stroke="#1D4ED8" stroke-width="0.5"/>
+<text x="538" y="551" font-size="7" fill="#1E3A8A">+ Id; + EmployeeId; + Period</text>
+<text x="538" y="562" font-size="7" fill="#1E3A8A">+ process(); + finalize()</text>
+
+<!-- Settlement (2) body=50 y=578 -->
+<rect x="532" y="578" width="456" height="50" rx="3" fill="#FFFFFF" stroke="#1D4ED8" stroke-width="1"/>
+<rect x="532" y="578" width="456" height="22" rx="3" fill="#DBEAFE" stroke="#1D4ED8" stroke-width="1"/>
+<text x="760" y="592" text-anchor="middle" font-size="8.5" font-weight="700" fill="#1E3A8A">Settlement</text>
+<line x1="532" y1="600" x2="988" y2="600" stroke="#1D4ED8" stroke-width="0.5"/>
+<text x="538" y="611" font-size="7" fill="#1E3A8A">+ ClaimId; + Amount</text>
+<text x="538" y="622" font-size="7" fill="#1E3A8A">+ settle()</text>
+
+<!-- PaySlip (2) body=50 y=638 -->
+<rect x="532" y="638" width="456" height="50" rx="3" fill="#FFFFFF" stroke="#1D4ED8" stroke-width="1"/>
+<rect x="532" y="638" width="456" height="22" rx="3" fill="#DBEAFE" stroke="#1D4ED8" stroke-width="1"/>
+<text x="760" y="652" text-anchor="middle" font-size="8.5" font-weight="700" fill="#1E3A8A">PaySlip</text>
+<line x1="532" y1="660" x2="988" y2="660" stroke="#1D4ED8" stroke-width="0.5"/>
+<text x="538" y="671" font-size="7" fill="#1E3A8A">+ Id; + PdfBlobUrl  · ClosedXML PDF</text>
+<text x="538" y="682" font-size="7" fill="#1E3A8A">+ generate(); + download()</text>
+
+<!-- PAYROLL connector: Settlement ..> Claim (dependency across columns) -->
+<line x1="532" y1="600" x2="488" y2="660" stroke="#64748B" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#dep)"/>
+<text x="430" y="640" font-size="7" font-style="italic" fill="#64748B">settles approved claim</text>
+
+<!-- ===== CLUSTER: PROMOTIONS (cluster y=706) ===== -->
+<!-- boxes: Promotion(2)=50 PromotionNomination(4)=72 PromotionEligibility(4)=72 ; startY=730 gap10
+     Promotion y=730 h50 ; PromotionNomination y=790 h72 ; PromotionEligibility y=872 h72 ; end=944 ; cluster h=944-706+8=246 -->
+<rect x="520" y="706" width="480" height="246" rx="6" fill="none" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="5 3"/>
+<text x="530" y="722" font-size="10" font-weight="700" fill="#D97706">PROMOTIONS</text>
+
+<!-- Promotion (2) body=50 y=730 -->
+<rect x="532" y="730" width="456" height="50" rx="3" fill="#FFFFFF" stroke="#D97706" stroke-width="1"/>
+<rect x="532" y="730" width="456" height="22" rx="3" fill="#FEF3C7" stroke="#D97706" stroke-width="1"/>
+<text x="760" y="744" text-anchor="middle" font-size="8.5" font-weight="700" fill="#78350F">Promotion</text>
+<line x1="532" y1="752" x2="988" y2="752" stroke="#D97706" stroke-width="0.5"/>
+<text x="538" y="763" font-size="7" fill="#78350F">+ Id; + Cycle</text>
+<text x="538" y="774" font-size="7" fill="#78350F">+ open(); + close()</text>
+
+<!-- PromotionNomination (4) body=72 y=790 -->
+<rect x="532" y="790" width="456" height="72" rx="3" fill="#FFFFFF" stroke="#D97706" stroke-width="1"/>
+<rect x="532" y="790" width="456" height="22" rx="3" fill="#FEF3C7" stroke="#D97706" stroke-width="1"/>
+<text x="760" y="804" text-anchor="middle" font-size="8.5" font-weight="700" fill="#78350F">PromotionNomination</text>
+<line x1="532" y1="812" x2="988" y2="812" stroke="#D97706" stroke-width="0.5"/>
+<text x="538" y="823" font-size="7" fill="#78350F">+ EmployeeId</text>
+<text x="538" y="834" font-size="7" fill="#78350F">+ NominatedBy</text>
+<text x="538" y="845" font-size="7" fill="#78350F">+ Outcome</text>
+<text x="538" y="856" font-size="7" fill="#78350F">+ Remarks</text>
+
+<!-- PromotionEligibility (4) body=72 y=872 -->
+<rect x="532" y="872" width="456" height="72" rx="3" fill="#FFFFFF" stroke="#D97706" stroke-width="1"/>
+<rect x="532" y="872" width="456" height="22" rx="3" fill="#FEF3C7" stroke="#D97706" stroke-width="1"/>
+<text x="760" y="886" text-anchor="middle" font-size="8.5" font-weight="700" fill="#78350F">PromotionEligibility</text>
+<line x1="532" y1="894" x2="988" y2="894" stroke="#D97706" stroke-width="0.5"/>
+<text x="538" y="905" font-size="7" fill="#78350F">+ FromGrade</text>
+<text x="538" y="916" font-size="7" fill="#78350F">+ ToGrade</text>
+<text x="538" y="927" font-size="7" fill="#78350F">+ MinTenure</text>
+<text x="538" y="938" font-size="7" fill="#78350F">+ evaluate()</text>
+
+<!-- PROMOTIONS connectors: Promotion composition Nomination and Eligibility -->
+<line x1="640" y1="790" x2="640" y2="780" stroke="#334155" stroke-width="1" marker-start="url(#diamond)"/>
+<line x1="640" y1="872" x2="640" y2="780" stroke="#334155" stroke-width="1" marker-start="url(#diamond)"/>
+<!-- Promotion ..> CompensationRule (dependency to col 2) -->
+<line x1="988" y1="745" x2="1020" y2="100" stroke="#64748B" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#dep)"/>
+<text x="900" y="600" font-size="7" font-style="italic" fill="#64748B" transform="rotate(-78 900 600)">triggers CTC update</text>
+
+<!-- ============================================================ -->
+<!-- COLUMN 2 : COMPENSATION / INTEGRATION INTERFACES (colX=1020) -->
+<!-- box x = 1032 ; box w = 456 -->
+<!-- ============================================================ -->
+
+<!-- ===== CLUSTER: COMPENSATION (cluster y=58) ===== -->
+<!-- boxes: CompensationRule(2)=50 CTCBreakdown(2)=50 CompensationComponent(2)=50 + 4 components(0)=28 (2x2)
+     startY=82
+     CompensationRule y=82 h50 ; CTCBreakdown y=142 h50 ; CompensationComponent y=202 h50 ; comps row1 y=262 h28 ; comps row2 y=300 h28
+     end=328 ; cluster h=328-58+8=278 -->
+<rect x="1020" y="58" width="480" height="278" rx="6" fill="none" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="5 3"/>
+<text x="1030" y="74" font-size="10" font-weight="700" fill="#7C3AED">COMPENSATION</text>
+
+<!-- CompensationRule (2) body=50 y=82 -->
+<rect x="1032" y="82" width="456" height="50" rx="3" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1"/>
+<rect x="1032" y="82" width="456" height="22" rx="3" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1"/>
+<text x="1260" y="96" text-anchor="middle" font-size="8.5" font-weight="700" fill="#4C1D95">CompensationRule</text>
+<line x1="1032" y1="104" x2="1488" y2="104" stroke="#7C3AED" stroke-width="0.5"/>
+<text x="1038" y="115" font-size="7" fill="#4C1D95">+ Id; + Formula  · NRules engine</text>
+<text x="1038" y="126" font-size="7" fill="#4C1D95">+ apply(ctc : CTCBreakdown)</text>
+
+<!-- CTCBreakdown (2) body=50 y=142 -->
+<rect x="1032" y="142" width="456" height="50" rx="3" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1"/>
+<rect x="1032" y="142" width="456" height="22" rx="3" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1"/>
+<text x="1260" y="156" text-anchor="middle" font-size="8.5" font-weight="700" fill="#4C1D95">CTCBreakdown</text>
+<line x1="1032" y1="164" x2="1488" y2="164" stroke="#7C3AED" stroke-width="0.5"/>
+<text x="1038" y="175" font-size="7" fill="#4C1D95">+ EmployeeId</text>
+<text x="1038" y="186" font-size="7" fill="#4C1D95">+ computeGross(); + computeNet()</text>
+
+<!-- CompensationComponent abstract (2) body=50 y=202 -->
+<rect x="1032" y="202" width="456" height="50" rx="3" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1"/>
+<rect x="1032" y="202" width="456" height="22" rx="3" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1"/>
+<text x="1260" y="211" text-anchor="middle" font-size="6.5" font-style="italic" fill="#4C1D95">«abstract»</text>
+<text x="1260" y="220" text-anchor="middle" font-size="8.5" font-weight="700" fill="#4C1D95">CompensationComponent</text>
+<line x1="1032" y1="224" x2="1488" y2="224" stroke="#7C3AED" stroke-width="0.5"/>
+<text x="1038" y="235" font-size="7" fill="#4C1D95">+ Name; + Amount</text>
+<text x="1038" y="246" font-size="7" fill="#4C1D95">+ calculate()</text>
+
+<!-- 4 components 2x2 grid w=222 ; row1 y=262, row2 y=300 ; h28 -->
+<rect x="1032" y="262" width="222" height="28" rx="3" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1"/>
+<rect x="1032" y="262" width="222" height="22" rx="3" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1"/>
+<text x="1143" y="277" text-anchor="middle" font-size="8" font-weight="700" fill="#4C1D95">BasicPay</text>
+
+<rect x="1266" y="262" width="222" height="28" rx="3" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1"/>
+<rect x="1266" y="262" width="222" height="22" rx="3" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1"/>
+<text x="1377" y="277" text-anchor="middle" font-size="8" font-weight="700" fill="#4C1D95">HouseRentAllowance</text>
+
+<rect x="1032" y="300" width="222" height="28" rx="3" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1"/>
+<rect x="1032" y="300" width="222" height="22" rx="3" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1"/>
+<text x="1143" y="315" text-anchor="middle" font-size="8" font-weight="700" fill="#4C1D95">Bonus</text>
+
+<rect x="1266" y="300" width="222" height="28" rx="3" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1"/>
+<rect x="1266" y="300" width="222" height="22" rx="3" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1"/>
+<text x="1377" y="315" text-anchor="middle" font-size="8" font-weight="700" fill="#4C1D95">ProvidentFund</text>
+
+<!-- COMPENSATION connectors: 4 components -> CompensationComponent -->
+<line x1="1143" y1="262" x2="1200" y2="252" stroke="#334155" stroke-width="1" marker-end="url(#tri)"/>
+<line x1="1377" y1="262" x2="1320" y2="252" stroke="#334155" stroke-width="1" marker-end="url(#tri)"/>
+<line x1="1143" y1="300" x2="1200" y2="252" stroke="#334155" stroke-width="1" marker-end="url(#tri)"/>
+<line x1="1377" y1="300" x2="1320" y2="252" stroke="#334155" stroke-width="1" marker-end="url(#tri)"/>
+<!-- CTCBreakdown composition CompensationComponent -->
+<line x1="1260" y1="202" x2="1260" y2="192" stroke="#334155" stroke-width="1" marker-start="url(#diamond)"/>
+
+<!-- ===== CLUSTER: INTEGRATION INTERFACES (cluster y=346) ===== -->
+<!-- boxes: 4 interfaces each (1)=39 ; startY=370 gap10
+     IPayrollService y=370 h39 ; IEmailService y=419 h39 ; IStorageService y=468 h39 ; IOcrService y=517 h39
+     end=556 ; cluster h=556-346+8=218 -->
+<rect x="1020" y="346" width="480" height="218" rx="6" fill="none" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="5 3"/>
+<text x="1030" y="362" font-size="10" font-weight="700" fill="#993C1D">INTEGRATION INTERFACES</text>
+
+<!-- IPayrollService (1) body=39 y=370 -->
+<rect x="1032" y="370" width="456" height="39" rx="3" fill="#FFFFFF" stroke="#993C1D" stroke-width="1"/>
+<rect x="1032" y="370" width="456" height="22" rx="3" fill="#F5C4B3" stroke="#993C1D" stroke-width="1"/>
+<text x="1260" y="379" text-anchor="middle" font-size="6.5" font-style="italic" fill="#4A1B0C">«interface»</text>
+<text x="1260" y="388" text-anchor="middle" font-size="8.5" font-weight="700" fill="#4A1B0C">IPayrollService</text>
+<line x1="1032" y1="392" x2="1488" y2="392" stroke="#993C1D" stroke-width="0.5"/>
+<text x="1038" y="403" font-size="7" fill="#4A1B0C">+ PushSettlementAsync()  · Polly retry</text>
+
+<!-- IEmailService (1) body=39 y=419 -->
+<rect x="1032" y="419" width="456" height="39" rx="3" fill="#FFFFFF" stroke="#993C1D" stroke-width="1"/>
+<rect x="1032" y="419" width="456" height="22" rx="3" fill="#F5C4B3" stroke="#993C1D" stroke-width="1"/>
+<text x="1260" y="428" text-anchor="middle" font-size="6.5" font-style="italic" fill="#4A1B0C">«interface»</text>
+<text x="1260" y="437" text-anchor="middle" font-size="8.5" font-weight="700" fill="#4A1B0C">IEmailService</text>
+<line x1="1032" y1="441" x2="1488" y2="441" stroke="#993C1D" stroke-width="0.5"/>
+<text x="1038" y="452" font-size="7" fill="#4A1B0C">+ SendAsync()  · smtp4dev / ACS</text>
+
+<!-- IStorageService (1) body=39 y=468 -->
+<rect x="1032" y="468" width="456" height="39" rx="3" fill="#FFFFFF" stroke="#993C1D" stroke-width="1"/>
+<rect x="1032" y="468" width="456" height="22" rx="3" fill="#F5C4B3" stroke="#993C1D" stroke-width="1"/>
+<text x="1260" y="477" text-anchor="middle" font-size="6.5" font-style="italic" fill="#4A1B0C">«interface»</text>
+<text x="1260" y="486" text-anchor="middle" font-size="8.5" font-weight="700" fill="#4A1B0C">IStorageService</text>
+<line x1="1032" y1="490" x2="1488" y2="490" stroke="#993C1D" stroke-width="0.5"/>
+<text x="1038" y="501" font-size="7" fill="#4A1B0C">+ UploadAsync()  · Blob / FS</text>
+
+<!-- IOcrService (1) body=39 y=517 -->
+<rect x="1032" y="517" width="456" height="39" rx="3" fill="#FFFFFF" stroke="#993C1D" stroke-width="1"/>
+<rect x="1032" y="517" width="456" height="22" rx="3" fill="#F5C4B3" stroke="#993C1D" stroke-width="1"/>
+<text x="1260" y="526" text-anchor="middle" font-size="6.5" font-style="italic" fill="#4A1B0C">«interface»</text>
+<text x="1260" y="535" text-anchor="middle" font-size="8.5" font-weight="700" fill="#4A1B0C">IOcrService</text>
+<line x1="1032" y1="539" x2="1488" y2="539" stroke="#993C1D" stroke-width="0.5"/>
+<text x="1038" y="550" font-size="7" fill="#4A1B0C">+ ExtractAsync()  · Tesseract</text>
+
+<!-- ============================================================ -->
+<!-- APPLICATION LAYER (CQRS) full-width band -->
+<!-- tallest column = col0 ends at 1371 ; band starts y=1391 -->
+<!-- band container height ~ 660 (reproduced layout) -->
+<!-- ============================================================ -->
+<rect x="20" y="1391" width="1480" height="740" rx="8" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+<text x="36" y="1413" font-size="12" font-weight="700" fill="#1a1a18">APPLICATION LAYER — MediatR CQRS pipeline (generic; repeats for every module)</text>
+<text x="36" y="1429" font-size="9" fill="#5F5E5A">Claims &amp; Documents example · Commands/Queries · Handlers · FluentValidation · Serilog · EF Core 8 · Integration adapters</text>
+
+<!-- inner origin offset : original svg coords shifted by (+10 x, +1378 y). Original col x: 30/350/720 ; here 40/360/730. Original y 62 -> 1440 -->
+
+<!-- ===== LEFT COLUMN : MediatR core + Controller ===== -->
+<!-- ClaimsController -->
+<rect x="40" y="1440" width="250" height="92" rx="3" fill="#FFFFFF" stroke="#185FA5" stroke-width="1"/>
+<rect x="40" y="1440" width="250" height="30" rx="3" fill="#B5D4F4" stroke="#185FA5" stroke-width="1"/>
+<text x="165" y="1452" text-anchor="middle" font-size="7" font-style="italic" fill="#0C447C">«RestController» [Authorize(Roles)]</text>
+<text x="165" y="1465" text-anchor="middle" font-size="9" font-weight="700" fill="#042C53">ClaimsController</text>
+<line x1="40" y1="1470" x2="290" y2="1470" stroke="#185FA5" stroke-width="0.5"/>
+<text x="46" y="1482" font-size="7.5" fill="#0C447C">- _sender : ISender</text>
+<line x1="40" y1="1488" x2="290" y2="1488" stroke="#185FA5" stroke-width="0.5"/>
+<text x="46" y="1500" font-size="7.5" fill="#0C447C">+ Submit(SubmitClaimCommand) : 202 Accepted</text>
+<text x="46" y="1512" font-size="7.5" fill="#0C447C">+ Get(Guid id) : ClaimDto</text>
+<text x="46" y="1526" font-size="7" font-style="italic" fill="#185FA5">route: /api/v1/claims  ·  no business logic</text>
+
+<!-- ISender -->
+<rect x="40" y="1574" width="250" height="56" rx="3" fill="#FFFFFF" stroke="#534AB7" stroke-width="1"/>
+<rect x="40" y="1574" width="250" height="30" rx="3" fill="#DEDCFB" stroke="#534AB7" stroke-width="1"/>
+<text x="165" y="1586" text-anchor="middle" font-size="7" font-style="italic" fill="#3C3489">«interface» MediatR</text>
+<text x="165" y="1599" text-anchor="middle" font-size="9" font-weight="700" fill="#3C3489">ISender</text>
+<text x="46" y="1622" font-size="7.5" fill="#3C3489">+ Send&lt;T&gt;(IRequest&lt;T&gt;) : Task&lt;T&gt;</text>
+
+<!-- IRequest -->
+<rect x="40" y="1666" width="250" height="48" rx="3" fill="#FFFFFF" stroke="#534AB7" stroke-width="1"/>
+<rect x="40" y="1666" width="250" height="30" rx="3" fill="#DEDCFB" stroke="#534AB7" stroke-width="1"/>
+<text x="165" y="1678" text-anchor="middle" font-size="7" font-style="italic" fill="#3C3489">«interface» MediatR · marker</text>
+<text x="165" y="1691" text-anchor="middle" font-size="9" font-weight="700" fill="#3C3489">IRequest&lt;TResponse&gt;</text>
+<text x="46" y="1708" font-size="7" font-style="italic" fill="#534AB7">Commands &amp; Queries implement this</text>
+
+<!-- IRequestHandler -->
+<rect x="40" y="1750" width="250" height="58" rx="3" fill="#FFFFFF" stroke="#534AB7" stroke-width="1"/>
+<rect x="40" y="1750" width="250" height="30" rx="3" fill="#DEDCFB" stroke="#534AB7" stroke-width="1"/>
+<text x="165" y="1762" text-anchor="middle" font-size="7" font-style="italic" fill="#3C3489">«interface» MediatR</text>
+<text x="165" y="1775" text-anchor="middle" font-size="8.5" font-weight="700" fill="#3C3489">IRequestHandler&lt;TReq,TRes&gt;</text>
+<text x="46" y="1799" font-size="7.5" fill="#3C3489">+ Handle(TReq, CancellationToken) : Task&lt;TRes&gt;</text>
+
+<!-- IPipelineBehavior -->
+<rect x="40" y="1844" width="250" height="58" rx="3" fill="#FFFFFF" stroke="#534AB7" stroke-width="1"/>
+<rect x="40" y="1844" width="250" height="30" rx="3" fill="#DEDCFB" stroke="#534AB7" stroke-width="1"/>
+<text x="165" y="1856" text-anchor="middle" font-size="7" font-style="italic" fill="#3C3489">«interface» MediatR</text>
+<text x="165" y="1869" text-anchor="middle" font-size="8.5" font-weight="700" fill="#3C3489">IPipelineBehavior&lt;TReq,TRes&gt;</text>
+<text x="46" y="1893" font-size="7.5" fill="#3C3489">+ Handle(req, next, ct) : Task&lt;TRes&gt;</text>
+
+<!-- ===== MIDDLE COLUMN : Commands/Queries + Validators + Behaviors ===== -->
+<!-- SubmitClaimCommand -->
+<rect x="360" y="1440" width="280" height="96" rx="3" fill="#FFFFFF" stroke="#0F6E56" stroke-width="1"/>
+<rect x="360" y="1440" width="280" height="30" rx="3" fill="#C9EEE1" stroke="#0F6E56" stroke-width="1"/>
+<text x="500" y="1452" text-anchor="middle" font-size="7" font-style="italic" fill="#085041">«record» : IRequest&lt;ClaimDto&gt;</text>
+<text x="500" y="1465" text-anchor="middle" font-size="9" font-weight="700" fill="#085041">SubmitClaimCommand</text>
+<line x1="360" y1="1470" x2="640" y2="1470" stroke="#0F6E56" stroke-width="0.5"/>
+<text x="366" y="1482" font-size="7.5" fill="#085041">+ EmployeeId : Guid</text>
+<text x="366" y="1494" font-size="7.5" fill="#085041">+ Amount : decimal</text>
+<text x="366" y="1506" font-size="7.5" fill="#085041">+ LineItems : IReadOnlyList&lt;LineItemDto&gt;</text>
+<text x="366" y="1518" font-size="7.5" fill="#085041">+ Receipt : IFormFile</text>
+<text x="366" y="1531" font-size="7" font-style="italic" fill="#1D9E75">immutable command (write side)</text>
+
+<!-- GetClaimByIdQuery -->
+<rect x="360" y="1568" width="280" height="64" rx="3" fill="#FFFFFF" stroke="#0F6E56" stroke-width="1"/>
+<rect x="360" y="1568" width="280" height="30" rx="3" fill="#C9EEE1" stroke="#0F6E56" stroke-width="1"/>
+<text x="500" y="1580" text-anchor="middle" font-size="7" font-style="italic" fill="#085041">«record» : IRequest&lt;ClaimDto&gt;</text>
+<text x="500" y="1593" text-anchor="middle" font-size="9" font-weight="700" fill="#085041">GetClaimByIdQuery</text>
+<text x="366" y="1612" font-size="7.5" fill="#085041">+ ClaimId : Guid</text>
+<text x="366" y="1625" font-size="7" font-style="italic" fill="#1D9E75">read side (query)</text>
+
+<!-- SubmitClaimCommandValidator -->
+<rect x="360" y="1666" width="280" height="86" rx="3" fill="#FFFFFF" stroke="#D85A30" stroke-width="1"/>
+<rect x="360" y="1666" width="280" height="30" rx="3" fill="#F5C4B3" stroke="#D85A30" stroke-width="1"/>
+<text x="500" y="1678" text-anchor="middle" font-size="7" font-style="italic" fill="#4A1B0C">: AbstractValidator&lt;SubmitClaimCommand&gt;</text>
+<text x="500" y="1691" text-anchor="middle" font-size="8.5" font-weight="700" fill="#4A1B0C">SubmitClaimCommandValidator</text>
+<line x1="360" y1="1696" x2="640" y2="1696" stroke="#D85A30" stroke-width="0.5"/>
+<text x="366" y="1710" font-size="7.5" fill="#71270F">+ RuleFor(x =&gt; x.Amount).GreaterThan(0)</text>
+<text x="366" y="1722" font-size="7.5" fill="#71270F">+ RuleFor(x =&gt; x.LineItems).NotEmpty()</text>
+<text x="366" y="1734" font-size="7.5" fill="#71270F">+ RuleFor(x =&gt; x.Receipt).NotNull()</text>
+<text x="366" y="1747" font-size="7" font-style="italic" fill="#D85A30">FluentValidation</text>
+
+<!-- ValidationBehavior -->
+<rect x="360" y="1782" width="280" height="84" rx="3" fill="#FFFFFF" stroke="#D85A30" stroke-width="1"/>
+<rect x="360" y="1782" width="280" height="30" rx="3" fill="#F5C4B3" stroke="#D85A30" stroke-width="1"/>
+<text x="500" y="1794" text-anchor="middle" font-size="7" font-style="italic" fill="#4A1B0C">: IPipelineBehavior&lt;TReq,TRes&gt;</text>
+<text x="500" y="1807" text-anchor="middle" font-size="8.5" font-weight="700" fill="#4A1B0C">ValidationBehavior&lt;TReq,TRes&gt;</text>
+<line x1="360" y1="1812" x2="640" y2="1812" stroke="#D85A30" stroke-width="0.5"/>
+<text x="366" y="1826" font-size="7.5" fill="#71270F">- _validators : IEnumerable&lt;IValidator&lt;TReq&gt;&gt;</text>
+<line x1="360" y1="1832" x2="640" y2="1832" stroke="#D85A30" stroke-width="0.5"/>
+<text x="366" y="1844" font-size="7.5" fill="#71270F">+ Handle(req, next, ct) : Task&lt;TRes&gt;</text>
+<text x="366" y="1857" font-size="7" font-style="italic" fill="#D85A30">runs validators before the handler; throws on failure</text>
+
+<!-- LoggingBehavior -->
+<rect x="360" y="1896" width="280" height="66" rx="3" fill="#FFFFFF" stroke="#D85A30" stroke-width="1"/>
+<rect x="360" y="1896" width="280" height="30" rx="3" fill="#F5C4B3" stroke="#D85A30" stroke-width="1"/>
+<text x="500" y="1908" text-anchor="middle" font-size="7" font-style="italic" fill="#4A1B0C">: IPipelineBehavior&lt;TReq,TRes&gt;</text>
+<text x="500" y="1921" text-anchor="middle" font-size="8.5" font-weight="700" fill="#4A1B0C">LoggingBehavior&lt;TReq,TRes&gt;</text>
+<line x1="360" y1="1926" x2="640" y2="1926" stroke="#D85A30" stroke-width="0.5"/>
+<text x="366" y="1940" font-size="7.5" fill="#71270F">- _logger : ILogger  (Serilog)</text>
+<text x="366" y="1954" font-size="7" font-style="italic" fill="#D85A30">structured request / response / timing logs</text>
+
+<!-- ===== RIGHT COLUMN : Handler + DbContext + Integration + Domain ===== -->
+<!-- SubmitClaimCommandHandler -->
+<rect x="730" y="1440" width="330" height="126" rx="3" fill="#FFFFFF" stroke="#185FA5" stroke-width="1"/>
+<rect x="730" y="1440" width="330" height="30" rx="3" fill="#B5D4F4" stroke="#185FA5" stroke-width="1"/>
+<text x="895" y="1452" text-anchor="middle" font-size="7" font-style="italic" fill="#0C447C">: IRequestHandler&lt;SubmitClaimCommand, ClaimDto&gt;</text>
+<text x="895" y="1465" text-anchor="middle" font-size="9" font-weight="700" fill="#042C53">SubmitClaimCommandHandler</text>
+<line x1="730" y1="1470" x2="1060" y2="1470" stroke="#185FA5" stroke-width="0.5"/>
+<text x="736" y="1482" font-size="7.5" fill="#0C447C">- _db : AppDbContext</text>
+<text x="736" y="1494" font-size="7.5" fill="#0C447C">- _storage : IStorageService</text>
+<text x="736" y="1506" font-size="7.5" fill="#0C447C">- _ocr : IOcrService    - _publisher : IPublisher</text>
+<line x1="730" y1="1512" x2="1060" y2="1512" stroke="#185FA5" stroke-width="0.5"/>
+<text x="736" y="1524" font-size="7.5" fill="#0C447C">+ Handle(SubmitClaimCommand, ct) : Task&lt;ClaimDto&gt;</text>
+<text x="736" y="1538" font-size="7" font-style="italic" fill="#185FA5">advances ClaimWorkflow state machine,</text>
+<text x="736" y="1549" font-size="7" font-style="italic" fill="#185FA5">stores receipt, runs OCR, persists, publishes event</text>
+<text x="736" y="1561" font-size="7" font-style="italic" fill="#185FA5">one handler class per Command / Query (all modules)</text>
+
+<!-- AppDbContext -->
+<rect x="730" y="1592" width="330" height="92" rx="3" fill="#FFFFFF" stroke="#854F0B" stroke-width="1"/>
+<rect x="730" y="1592" width="330" height="30" rx="3" fill="#FAC775" stroke="#854F0B" stroke-width="1"/>
+<text x="895" y="1604" text-anchor="middle" font-size="7" font-style="italic" fill="#412402">: DbContext (EF Core 8)</text>
+<text x="895" y="1617" text-anchor="middle" font-size="9" font-weight="700" fill="#412402">AppDbContext</text>
+<line x1="730" y1="1622" x2="1060" y2="1622" stroke="#854F0B" stroke-width="0.5"/>
+<text x="736" y="1634" font-size="7.5" fill="#633806">+ Claims · Documents · Employees ... : DbSet&lt;T&gt;</text>
+<line x1="730" y1="1640" x2="1060" y2="1640" stroke="#854F0B" stroke-width="0.5"/>
+<text x="736" y="1652" font-size="7.5" fill="#633806">+ SaveChangesAsync(ct) : Task&lt;int&gt;</text>
+<text x="736" y="1666" font-size="7" font-style="italic" fill="#854F0B">provider model — SQLite [local] / Azure SQL · Cosmos [cloud]</text>
+<text x="736" y="1678" font-size="7" font-style="italic" fill="#854F0B">same DbContext · same LINQ · same migrations</text>
+
+<!-- Integration interfaces -->
+<rect x="730" y="1702" width="330" height="30" rx="3" fill="#FFFFFF" stroke="#993C1D" stroke-width="1"/>
+<rect x="730" y="1702" width="150" height="30" rx="3" fill="#F5C4B3" stroke="#993C1D" stroke-width="1"/>
+<text x="805" y="1721" text-anchor="middle" font-size="8" font-weight="700" fill="#4A1B0C">«interface» IPayrollService</text>
+<text x="888" y="1721" font-size="7" fill="#71270F">+ PushSettlementAsync()  · Polly</text>
+<rect x="730" y="1736" width="330" height="30" rx="3" fill="#FFFFFF" stroke="#993C1D" stroke-width="1"/>
+<rect x="730" y="1736" width="150" height="30" rx="3" fill="#F5C4B3" stroke="#993C1D" stroke-width="1"/>
+<text x="805" y="1755" text-anchor="middle" font-size="8" font-weight="700" fill="#4A1B0C">«interface» IEmailService</text>
+<text x="888" y="1755" font-size="7" fill="#71270F">+ SendAsync()  · smtp4dev/ACS</text>
+<rect x="730" y="1770" width="330" height="30" rx="3" fill="#FFFFFF" stroke="#993C1D" stroke-width="1"/>
+<rect x="730" y="1770" width="150" height="30" rx="3" fill="#F5C4B3" stroke="#993C1D" stroke-width="1"/>
+<text x="805" y="1789" text-anchor="middle" font-size="8" font-weight="700" fill="#4A1B0C">«interface» IStorageService</text>
+<text x="888" y="1789" font-size="7" fill="#71270F">+ UploadAsync()  · Blob / FS</text>
+<rect x="730" y="1804" width="330" height="30" rx="3" fill="#FFFFFF" stroke="#993C1D" stroke-width="1"/>
+<rect x="730" y="1804" width="150" height="30" rx="3" fill="#F5C4B3" stroke="#993C1D" stroke-width="1"/>
+<text x="805" y="1823" text-anchor="middle" font-size="8" font-weight="700" fill="#4A1B0C">«interface» IOcrService</text>
+<text x="888" y="1823" font-size="7" fill="#71270F">+ ExtractAsync()  · Tesseract</text>
+
+<!-- Claim domain entity -->
+<rect x="730" y="1868" width="330" height="76" rx="3" fill="#FFFFFF" stroke="#6B4FA8" stroke-width="1"/>
+<rect x="730" y="1868" width="330" height="30" rx="3" fill="#DED2F0" stroke="#6B4FA8" stroke-width="1"/>
+<text x="895" y="1880" text-anchor="middle" font-size="7" font-style="italic" fill="#4A2E7A">«domain entity» — see Claims cluster above</text>
+<text x="895" y="1893" text-anchor="middle" font-size="9" font-weight="700" fill="#3A2461">Claim</text>
+<text x="736" y="1912" font-size="7.5" fill="#4A2E7A">+ Id · Status : ClaimStatus · LineItems · Documents</text>
+<text x="736" y="1924" font-size="7.5" fill="#4A2E7A">+ Submit() · Approve() · Reject() · Settle()</text>
+<text x="736" y="1937" font-size="7" font-style="italic" fill="#6B4FA8">state machine: DRAFT → SUBMITTED → UNDER_REVIEW → APPROVED → SETTLED</text>
+
+<!-- ===== CQRS CONNECTORS ===== -->
+<!-- Controller to ISender (sends) -->
+<line x1="165" y1="1532" x2="165" y2="1574" stroke="#64748B" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#dep)"/>
+<text x="170" y="1556" font-size="7" font-style="italic" fill="#64748B">«sends»</text>
+
+<!-- SubmitClaimCommand ..|> IRequest -->
+<line x1="360" y1="1498" x2="290" y2="1690" stroke="#334155" stroke-width="1" stroke-dasharray="5 3" marker-end="url(#tri)"/>
+<!-- GetClaimByIdQuery ..|> IRequest -->
+<line x1="360" y1="1600" x2="292" y2="1684" stroke="#334155" stroke-width="1" stroke-dasharray="5 3" marker-end="url(#tri)"/>
+<text x="310" y="1654" font-size="7" font-style="italic" fill="#534AB7">«realize»</text>
+
+<!-- Handler ..|> IRequestHandler -->
+<line x1="730" y1="1498" x2="290" y2="1774" stroke="#334155" stroke-width="1" stroke-dasharray="5 3" marker-end="url(#tri)"/>
+<text x="480" y="1628" font-size="7" font-style="italic" fill="#534AB7">«realize» IRequestHandler</text>
+
+<!-- ValidationBehavior ..|> IPipelineBehavior -->
+<line x1="360" y1="1824" x2="290" y2="1870" stroke="#334155" stroke-width="1" stroke-dasharray="5 3" marker-end="url(#tri)"/>
+<!-- LoggingBehavior ..|> IPipelineBehavior -->
+<line x1="360" y1="1926" x2="292" y2="1878" stroke="#334155" stroke-width="1" stroke-dasharray="5 3" marker-end="url(#tri)"/>
+<text x="306" y="1918" font-size="7" font-style="italic" fill="#534AB7">«realize»</text>
+
+<!-- ISender ..> Handler («dispatches») -->
+<line x1="290" y1="1602" x2="730" y2="1498" stroke="#64748B" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#dep)"/>
+<text x="480" y="1538" font-size="7" font-style="italic" fill="#64748B">«dispatches via pipeline»</text>
+
+<!-- ValidationBehavior ..> Validator («invokes») -->
+<line x1="500" y1="1782" x2="500" y2="1752" stroke="#64748B" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#dep)"/>
+<text x="506" y="1770" font-size="7" font-style="italic" fill="#64748B">«invokes»</text>
+
+<!-- Handler ..> AppDbContext / integration / Claim («uses») -->
+<line x1="895" y1="1566" x2="895" y2="1592" stroke="#64748B" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#dep)"/>
+<text x="900" y="1583" font-size="7" font-style="italic" fill="#64748B">«uses»</text>
+<line x1="1020" y1="1566" x2="1040" y2="1702" stroke="#64748B" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#dep)"/>
+<text x="1024" y="1628" font-size="7" font-style="italic" fill="#64748B">«uses» adapters</text>
+<line x1="910" y1="1566" x2="910" y2="1868" stroke="#64748B" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#dep)"/>
+<text x="915" y="1848" font-size="7" font-style="italic" fill="#64748B">«creates / updates»</text>
+
+<!-- band footnote -->
+<text x="40" y="1988" font-size="7.5" fill="#5F5E5A">The same Command → Validator → Behaviors → Handler → EF Core / adapter structure repeats for every module (Benefits, Compensation, Payroll,</text>
+<text x="40" y="2000" font-size="7.5" fill="#5F5E5A">Promotions, User Management, Reporting &amp; Audit). Domain entities are detailed in the per-module clusters above.</text>
+
+<!-- ============================================================ -->
+<!-- BOTTOM FOOTNOTE -->
+<!-- ============================================================ -->
+<text x="20" y="2160" font-size="9" font-style="italic" fill="#5F5E5A">Supersedes Detailed_Class_Diagram_p1.png — full domain model folded in.</text>
+
+</svg>

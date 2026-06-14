@@ -1,0 +1,164 @@
+Unified Rewards Platform — cleanup archive manifest
+Generated: 2026-06-10T21:37:06
+All moves are reversible; restore by moving the file back to its original path.
+
+- docs/Requirement_Document.docx
+    -> docs/Requirement_Document.doc
+    reason: Renamed: file is a legacy Word .doc (OLE2), not a .docx
+
+- docs\HLD_doc\Cognizant-UnifiedRewardsPlatform-HLD_new.docx
+    -> docs\_archive\docs\Cognizant-UnifiedRewardsPlatform-HLD_new.docx
+    reason: Duplicate of 'HLD v1.0.docx' (near-identical content)
+
+- docs\LLD_doc\Cognizant-UnifiedRewardsPlatform-LLD v1.0_bkp.docx
+    -> docs\_archive\docs\Cognizant-UnifiedRewardsPlatform-LLD v1.0_bkp.docx
+    reason: Backup copy of 'LLD v1.0.docx'
+
+- docs\HLD_doc\extracted_images\image6.png
+    -> docs\_archive\images\image6.png
+    reason: Exact duplicate of kept file 'docs\Diagrams\Component_Diagrams\comp_01_Frontend.png'
+
+- docs\HLD_doc\extracted_images\image12.png
+    -> docs\_archive\images\image12.png
+    reason: Exact duplicate of kept file 'docs\Diagrams\Component_Diagrams\comp_05_SecurityIdentity.png'
+
+- docs\HLD_doc\extracted_images\dep_image14.png
+    -> docs\_archive\images\dep_image14.png
+    reason: Exact duplicate of kept file 'docs\Diagrams\Component_Diagrams\comp_05_SecurityIdentity.png'
+
+- docs\HLD_doc\extracted_images\image7.png
+    -> docs\_archive\images\image7.png
+    reason: Exact duplicate of kept file 'docs\Diagrams\ER_Diagrams\er_00_master.png'
+
+- docs\LLD_doc\extracted_images\image6.png
+    -> docs\_archive\images\image6__1.png
+    reason: Exact duplicate of kept file 'docs\Diagrams\Use_Case_Diagrams\uc_01_user_management.png'
+
+- docs\LLD_doc\extracted_images\image7.png
+    -> docs\_archive\images\image7__1.png
+    reason: Exact duplicate of kept file 'docs\Diagrams\Use_Case_Diagrams\uc_02_benefits.png'
+
+- docs\LLD_doc\extracted_images\image8.png
+    -> docs\_archive\images\image8.png
+    reason: Exact duplicate of kept file 'docs\Diagrams\Use_Case_Diagrams\uc_03_compensation.png'
+
+- docs\LLD_doc\extracted_images\image9.png
+    -> docs\_archive\images\image9.png
+    reason: Exact duplicate of kept file 'docs\Diagrams\Use_Case_Diagrams\uc_04_claims_documents.png'
+
+- docs\LLD_doc\extracted_images\image10.png
+    -> docs\_archive\images\image10.png
+    reason: Exact duplicate of kept file 'docs\Diagrams\Use_Case_Diagrams\uc_05_payroll.png'
+
+- docs\LLD_doc\extracted_images\image11.png
+    -> docs\_archive\images\image11.png
+    reason: Exact duplicate of kept file 'docs\Diagrams\Use_Case_Diagrams\uc_06_promotions.png'
+
+- docs\LLD_doc\extracted_images\image12.png
+    -> docs\_archive\images\image12__1.png
+    reason: Exact duplicate of kept file 'docs\Diagrams\Use_Case_Diagrams\uc_07_reporting_audit.png'
+
+- docs\HLD_doc\extracted_images\verify_imagee.png
+    -> docs\_archive\images\verify_imagee.png
+    reason: Exact duplicate of kept file 'docs\HLD_doc\level1_functional_modules.png'
+
+- docs\HLD_doc\extracted_images\final_image2.png
+    -> docs\_archive\images\final_image2.png
+    reason: Exact duplicate of kept file 'docs\HLD_doc\level2_submodule_breakdown.png'
+
+- docs\HLD_doc\extracted_images\verify_image2.png
+    -> docs\_archive\images\verify_image2.png
+    reason: Exact duplicate of kept file 'docs\HLD_doc\level2_submodule_breakdown.png'
+
+- docs\LLD_doc\extracted_images\image3.png
+    -> docs\_archive\images\image3.png
+    reason: Exact duplicate of kept file 'docs\HLD_doc\extracted_images\image9.png'
+
+- docs\HLD_doc\extracted_images\dep_image11.png
+    -> docs\_archive\images\dep_image11.png
+    reason: Exact duplicate of kept file 'docs\HLD_doc\extracted_images\image9.png'
+
+- docs\HLD_doc\extracted_images\dep_image12.png
+    -> docs\_archive\images\dep_image12.png
+    reason: Exact duplicate of kept file 'docs\HLD_doc\extracted_images\image10.png'
+
+- docs\HLD_doc\extracted_images\image11.png
+    -> docs\_archive\images\image11__1.png
+    reason: Exact duplicate of kept file 'docs\LLD_doc\extracted_images\image4.png'
+
+- docs\HLD_doc\extracted_images\dep_image13.png
+    -> docs\_archive\images\dep_image13.png
+    reason: Exact duplicate of kept file 'docs\LLD_doc\extracted_images\image4.png'
+
+- docs\HLD_doc\extracted_images\final_image1.png
+    -> docs\_archive\images\final_image1.png
+    reason: Exact duplicate of kept file 'docs\HLD_doc\extracted_images\image1.png'
+
+- docs\HLD_doc\extracted_images\verify_image1.png
+    -> docs\_archive\images\verify_image1.png
+    reason: Exact duplicate of kept file 'docs\HLD_doc\extracted_images\image1.png'
+
+- docs\HLD_doc\extracted_images\image1_updated.png
+    -> docs\_archive\images\image1_updated.png
+    reason: Exact duplicate of kept file 'docs\HLD_doc\extracted_images\image1.png'
+
+- docs\HLD_doc\extracted_images\final_imagee.png
+    -> docs\_archive\images\final_imagee.png
+    reason: Exact duplicate of kept file 'docs\HLD_doc\extracted_images\imagee.png'
+
+- docs\HLD_doc\template_images\tpl_10_1209x364.png
+    -> docs\_archive\images\tpl_10_1209x364.png
+    reason: Exact duplicate of kept file 'docs\HLD_doc\extracted_images\image13.png'
+
+- docs\HLD_doc\template_images\converted\image14.png
+    -> docs\_archive\images\image14.png
+    reason: Exact duplicate of kept file 'docs\HLD_doc\extracted_images\image13.png'
+
+- docs\LLD_doc\extracted_images\image2.png
+    -> docs\_archive\images\image2.png
+    reason: Exact duplicate of kept file 'docs\HLD_doc\extracted_images\image3.png'
+
+- docs\LLD_doc\extracted_images\image1.png
+    -> docs\_archive\images\image1.png
+    reason: Exact duplicate of kept file 'docs\HLD_doc\extracted_images\image4.png'
+
+- docs\HLD_doc\template_images\converted\image1.png
+    -> docs\_archive\images\image1__1.png
+    reason: Exact duplicate of kept file 'docs\HLD_doc\template_images\tpl_00_438x455.png'
+
+- docs\HLD_doc\template_images\converted\image2.png
+    -> docs\_archive\images\image2__1.png
+    reason: Exact duplicate of kept file 'docs\HLD_doc\template_images\tpl_01_770x683.png'
+
+- docs\HLD_doc\template_images\converted\image3.png
+    -> docs\_archive\images\image3__1.png
+    reason: Exact duplicate of kept file 'docs\HLD_doc\template_images\tpl_02_505x246.png'
+
+- docs\HLD_doc\template_images\converted\image4.png
+    -> docs\_archive\images\image4.png
+    reason: Exact duplicate of kept file 'docs\HLD_doc\template_images\tpl_03_563x422.png'
+
+- docs\HLD_doc\template_images\converted\image5.png
+    -> docs\_archive\images\image5.png
+    reason: Exact duplicate of kept file 'docs\HLD_doc\template_images\tpl_04_857x500.png'
+
+- docs\HLD_doc\template_images\converted\image7.png
+    -> docs\_archive\images\image7__2.png
+    reason: Exact duplicate of kept file 'docs\HLD_doc\template_images\tpl_05_595x331.png'
+
+- docs\HLD_doc\template_images\converted\image8.png
+    -> docs\_archive\images\image8__1.png
+    reason: Exact duplicate of kept file 'docs\HLD_doc\template_images\tpl_06_584x459.png'
+
+- docs\HLD_doc\template_images\converted\image9.png
+    -> docs\_archive\images\image9__1.png
+    reason: Exact duplicate of kept file 'docs\HLD_doc\template_images\tpl_07_702x466.png'
+
+- docs\HLD_doc\template_images\converted\image10.png
+    -> docs\_archive\images\image10__1.png
+    reason: Exact duplicate of kept file 'docs\HLD_doc\template_images\tpl_08_784x497.png'
+
+- docs\HLD_doc\template_images\converted\image11.png
+    -> docs\_archive\images\image11__2.png
+    reason: Exact duplicate of kept file 'docs\HLD_doc\template_images\tpl_09_783x489.png'
+

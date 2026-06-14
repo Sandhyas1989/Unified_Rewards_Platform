@@ -1,0 +1,167 @@
+<svg width="1020" height="800" viewBox="0 0 1020 800" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#888780" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="510" y="24" text-anchor="middle" font-size="15" font-weight="700" fill="#2C2C2A">Unified Rewards Platform — Functional Architecture View</text>
+  <text x="510" y="40" text-anchor="middle" font-size="10" fill="#5F5E5A">Azure Environment Zones &#183; Protocol &amp; Port &#183; Network Segregation &#183; HTTPS :443 throughout</text>
+
+  <!-- ============ LEFT COLUMN ZONES ============ -->
+
+  <!-- 1) PUBLIC INTERNET -->
+  <rect x="20" y="56" width="690" height="70" rx="8" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+  <text x="32" y="72" font-size="9" font-weight="700" fill="#2C2C2A">PUBLIC INTERNET</text>
+  <!-- 4 equal tiles: inner 32..700 = 668 wide; gap 8; tile = (668-24)/4 = 161 -->
+  <rect x="32" y="80" width="161" height="36" rx="5" fill="#FBFAF6" stroke="#888780" stroke-width="1"/>
+  <text x="112.5" y="102" text-anchor="middle" font-size="8" fill="#2C2C2A">Employee Browser</text>
+  <rect x="201" y="80" width="161" height="36" rx="5" fill="#FBFAF6" stroke="#888780" stroke-width="1"/>
+  <text x="281.5" y="102" text-anchor="middle" font-size="8" fill="#2C2C2A">Manager Browser</text>
+  <rect x="370" y="80" width="161" height="36" rx="5" fill="#FBFAF6" stroke="#888780" stroke-width="1"/>
+  <text x="450.5" y="102" text-anchor="middle" font-size="8" fill="#2C2C2A">HR Admin Browser</text>
+  <rect x="539" y="80" width="161" height="36" rx="5" fill="#FBFAF6" stroke="#888780" stroke-width="1"/>
+  <text x="619.5" y="102" text-anchor="middle" font-size="8" fill="#2C2C2A">Finance / Audit Browser</text>
+
+  <!-- arrow 1 -->
+  <line x1="365" y1="126" x2="365" y2="142" stroke="#888780" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="375" y="138" font-size="7.5" fill="#5F5E5A">HTTPS :443  &#183;  Auth: None  &#183;  Public</text>
+
+  <!-- 2) AZURE EDGE LAYER -->
+  <rect x="20" y="146" width="690" height="62" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="1"/>
+  <text x="32" y="162" font-size="9" font-weight="700" fill="#085041">AZURE EDGE LAYER</text>
+  <rect x="32" y="170" width="668" height="30" rx="5" fill="#C9EEE1" stroke="#0F6E56" stroke-width="1"/>
+  <text x="366" y="189" text-anchor="middle" font-size="8" fill="#085041">Azure Front Door — WAF &#183; CDN &#183; SSL/TLS &#183; Global routing</text>
+
+  <!-- arrow 2 -->
+  <line x1="365" y1="208" x2="365" y2="224" stroke="#888780" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="375" y="220" font-size="7.5" fill="#5F5E5A">HTTPS :443  &#183;  Auth: Route to App</text>
+
+  <!-- 3) FRONTEND TIER -->
+  <rect x="20" y="228" width="690" height="84" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="1"/>
+  <text x="32" y="244" font-size="9" font-weight="700" fill="#085041">FRONTEND TIER</text>
+  <text x="130" y="244" font-size="7" fill="#085041">Azure Static Web Apps &#183; 5 independently deployed apps</text>
+  <!-- 5 equal tiles: inner 668 wide; 4 gaps of 8 = 32; tile = (668-32)/5 = 127.2 -->
+  <rect x="32" y="256" width="127.2" height="46" rx="5" fill="#C9EEE1" stroke="#0F6E56" stroke-width="1"/>
+  <text x="95.6" y="282" text-anchor="middle" font-size="8" fill="#085041">Shell Host</text>
+  <rect x="167.2" y="256" width="127.2" height="46" rx="5" fill="#C9EEE1" stroke="#0F6E56" stroke-width="1"/>
+  <text x="230.8" y="282" text-anchor="middle" font-size="8" fill="#085041">Employee Remote</text>
+  <rect x="302.4" y="256" width="127.2" height="46" rx="5" fill="#C9EEE1" stroke="#0F6E56" stroke-width="1"/>
+  <text x="366" y="282" text-anchor="middle" font-size="8" fill="#085041">Manager Remote</text>
+  <rect x="437.6" y="256" width="127.2" height="46" rx="5" fill="#C9EEE1" stroke="#0F6E56" stroke-width="1"/>
+  <text x="501.2" y="282" text-anchor="middle" font-size="8" fill="#085041">HR Admin Remote</text>
+  <rect x="572.8" y="256" width="127.2" height="46" rx="5" fill="#C9EEE1" stroke="#0F6E56" stroke-width="1"/>
+  <text x="636.4" y="282" text-anchor="middle" font-size="8" fill="#085041">Finance Remote</text>
+
+  <!-- arrow 3 -->
+  <line x1="365" y1="312" x2="365" y2="328" stroke="#888780" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="375" y="324" font-size="7.5" fill="#5F5E5A">HTTPS :443  &#183;  Auth: Bearer JWT</text>
+
+  <!-- 4) API GATEWAY -->
+  <rect x="20" y="332" width="690" height="62" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="1"/>
+  <text x="32" y="348" font-size="9" font-weight="700" fill="#3C3489">API GATEWAY</text>
+  <rect x="32" y="356" width="668" height="30" rx="5" fill="#DEDCFB" stroke="#534AB7" stroke-width="1"/>
+  <text x="366" y="375" text-anchor="middle" font-size="8" fill="#3C3489">Azure API Management (APIM) — JWT signature validation &#183; Rate limiting &#183; API versioning &#183; CORS</text>
+
+  <!-- arrow 4 -->
+  <line x1="365" y1="394" x2="365" y2="410" stroke="#888780" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="375" y="406" font-size="7.5" fill="#5F5E5A">HTTPS :443  &#183;  Auth: JWT forwarded  &#183;  Private Link</text>
+
+  <!-- 5) APPLICATION SUBNET -->
+  <rect x="20" y="414" width="690" height="138" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+  <text x="32" y="430" font-size="9" font-weight="700" fill="#0C447C">APPLICATION SUBNET &#183; Private</text>
+  <text x="215" y="430" font-size="7" fill="#0C447C">Azure Kubernetes Service (AKS) &#183; 7 microservices &#183; [Authorize(Roles)]</text>
+
+  <!-- Group: Core HR Services -->
+  <text x="32" y="448" font-size="7.5" font-weight="700" fill="#0C447C">Core HR Services</text>
+  <!-- 3 tiles: inner 668; 2 gaps 8 = 16; tile = (668-16)/3 = 217.33 -->
+  <rect x="32" y="454" width="217.33" height="36" rx="5" fill="#B5D4F4" stroke="#185FA5" stroke-width="1"/>
+  <text x="140.67" y="476" text-anchor="middle" font-size="8" fill="#0C447C">User Management</text>
+  <rect x="257.33" y="454" width="217.33" height="36" rx="5" fill="#B5D4F4" stroke="#185FA5" stroke-width="1"/>
+  <text x="366" y="476" text-anchor="middle" font-size="8" fill="#0C447C">Benefits</text>
+  <rect x="482.67" y="454" width="217.33" height="36" rx="5" fill="#B5D4F4" stroke="#185FA5" stroke-width="1"/>
+  <text x="591.33" y="476" text-anchor="middle" font-size="8" fill="#0C447C">Compensation</text>
+
+  <!-- Group: Transactional Services -->
+  <text x="32" y="504" font-size="7.5" font-weight="700" fill="#0C447C">Transactional Services</text>
+  <!-- 4 tiles: inner 668; 3 gaps 8 = 24; tile = (668-24)/4 = 161 -->
+  <rect x="32" y="510" width="161" height="36" rx="5" fill="#B5D4F4" stroke="#185FA5" stroke-width="1"/>
+  <text x="112.5" y="532" text-anchor="middle" font-size="8" fill="#0C447C">Claims &amp; Documents</text>
+  <rect x="201" y="510" width="161" height="36" rx="5" fill="#B5D4F4" stroke="#185FA5" stroke-width="1"/>
+  <text x="281.5" y="532" text-anchor="middle" font-size="8" fill="#0C447C">Payroll</text>
+  <rect x="370" y="510" width="161" height="36" rx="5" fill="#B5D4F4" stroke="#185FA5" stroke-width="1"/>
+  <text x="450.5" y="532" text-anchor="middle" font-size="8" fill="#0C447C">Promotions</text>
+  <rect x="539" y="510" width="161" height="36" rx="5" fill="#B5D4F4" stroke="#185FA5" stroke-width="1"/>
+  <text x="619.5" y="532" text-anchor="middle" font-size="8" fill="#0C447C">Reporting &amp; Audit</text>
+
+  <!-- arrow 5 -->
+  <line x1="365" y1="552" x2="365" y2="568" stroke="#888780" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="375" y="564" font-size="7.5" fill="#5F5E5A">Private Endpoint  &#183;  No public internet</text>
+
+  <!-- 6) DATA SUBNET -->
+  <rect x="20" y="572" width="690" height="80" rx="8" fill="#FAEEDA" stroke="#854F0B" stroke-width="1"/>
+  <text x="32" y="588" font-size="9" font-weight="700" fill="#412402">DATA SUBNET &#183; Private</text>
+  <!-- 4 tiles: inner 668; 3 gaps 8 = 24; tile = 161 -->
+  <rect x="32" y="596" width="161" height="46" rx="5" fill="#FAC775" stroke="#BA7517" stroke-width="1"/>
+  <text x="112.5" y="616" text-anchor="middle" font-size="8" fill="#412402">Relational DB</text>
+  <text x="112.5" y="627" text-anchor="middle" font-size="7" fill="#412402">Azure SQL</text>
+  <rect x="201" y="596" width="161" height="46" rx="5" fill="#FAC775" stroke="#BA7517" stroke-width="1"/>
+  <text x="281.5" y="616" text-anchor="middle" font-size="8" fill="#412402">Document Store + Cache</text>
+  <text x="281.5" y="627" text-anchor="middle" font-size="7" fill="#412402">Cosmos DB &#183; Redis</text>
+  <rect x="370" y="596" width="161" height="46" rx="5" fill="#FAC775" stroke="#BA7517" stroke-width="1"/>
+  <text x="450.5" y="616" text-anchor="middle" font-size="8" fill="#412402">Object Storage + Secrets</text>
+  <text x="450.5" y="627" text-anchor="middle" font-size="7" fill="#412402">Blob &#183; Key Vault</text>
+  <rect x="539" y="596" width="161" height="46" rx="5" fill="#FAC775" stroke="#BA7517" stroke-width="1"/>
+  <text x="619.5" y="616" text-anchor="middle" font-size="8" fill="#412402">Messaging + Audit</text>
+  <text x="619.5" y="627" text-anchor="middle" font-size="7" fill="#412402">Service Bus &#183; Event Hub</text>
+
+  <!-- ============ RIGHT COLUMN: managed/external services ============ -->
+
+  <!-- Payroll System -> Application Subnet -->
+  <rect x="726" y="414" width="274" height="48" rx="8" fill="#FEF6F2" stroke="#D85A30" stroke-width="1.2" stroke-dasharray="5 3"/>
+  <text x="863" y="434" text-anchor="middle" font-size="8" font-weight="700" fill="#993C1D">Payroll System — SAP / ADP / Workday</text>
+  <text x="863" y="448" text-anchor="middle" font-size="7" fill="#993C1D">HTTPS :443  &#183;  External</text>
+  <line x1="726" y1="438" x2="700" y2="470" stroke="#888780" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+
+  <!-- Azure AD / Entra ID -> API Gateway -->
+  <rect x="726" y="332" width="274" height="48" rx="8" fill="#FEF6F2" stroke="#D85A30" stroke-width="1.2" stroke-dasharray="5 3"/>
+  <text x="863" y="352" text-anchor="middle" font-size="8" font-weight="700" fill="#993C1D">Azure AD / Entra ID — Identity Provider</text>
+  <text x="863" y="366" text-anchor="middle" font-size="7" fill="#993C1D">SSO &#183; MFA &#183; JWT issuer</text>
+  <line x1="726" y1="363" x2="700" y2="363" stroke="#888780" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+
+  <!-- Azure Communication Services -> Application Subnet -->
+  <rect x="726" y="476" width="274" height="44" rx="8" fill="#FEF6F2" stroke="#D85A30" stroke-width="1.2" stroke-dasharray="5 3"/>
+  <text x="863" y="494" text-anchor="middle" font-size="8" font-weight="700" fill="#993C1D">Azure Communication Services</text>
+  <text x="863" y="508" text-anchor="middle" font-size="7" fill="#993C1D">Email Notifications</text>
+  <line x1="726" y1="498" x2="700" y2="498" stroke="#888780" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+
+  <!-- Azure Functions -> Application Subnet -->
+  <rect x="726" y="534" width="274" height="44" rx="8" fill="#FEF6F2" stroke="#D85A30" stroke-width="1.2" stroke-dasharray="5 3"/>
+  <text x="863" y="552" text-anchor="middle" font-size="8" font-weight="700" fill="#993C1D">Azure Functions</text>
+  <text x="863" y="566" text-anchor="middle" font-size="7" fill="#993C1D">OCR &#183; Reports &#183; Payroll Batch</text>
+  <line x1="726" y1="540" x2="700" y2="525" stroke="#888780" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+
+  <!-- ============ LEGEND ============ -->
+  <rect x="20" y="676" width="980" height="78" rx="8" fill="#FFFFFF" stroke="#888780" stroke-width="1"/>
+  <text x="32" y="694" font-size="9" font-weight="700" fill="#2C2C2A">LEGEND — Environment Zones</text>
+
+  <!-- row 1 -->
+  <rect x="32" y="704" width="16" height="12" rx="2" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+  <text x="54" y="714" font-size="8" fill="#2C2C2A">Public</text>
+  <rect x="180" y="704" width="16" height="12" rx="2" fill="#E1F5EE" stroke="#0F6E56" stroke-width="1"/>
+  <text x="202" y="714" font-size="8" fill="#2C2C2A">Azure Edge / CDN</text>
+  <rect x="360" y="704" width="16" height="12" rx="2" fill="#C9EEE1" stroke="#0F6E56" stroke-width="1"/>
+  <text x="382" y="714" font-size="8" fill="#2C2C2A">Static Web Apps</text>
+  <rect x="540" y="704" width="16" height="12" rx="2" fill="#EEEDFE" stroke="#534AB7" stroke-width="1"/>
+  <text x="562" y="714" font-size="8" fill="#2C2C2A">API Gateway / APIM</text>
+
+  <!-- row 2 -->
+  <rect x="32" y="728" width="16" height="12" rx="2" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+  <text x="54" y="738" font-size="8" fill="#2C2C2A">AKS Application Subnet</text>
+  <rect x="180" y="728" width="16" height="12" rx="2" fill="#FAEEDA" stroke="#854F0B" stroke-width="1"/>
+  <text x="202" y="738" font-size="8" fill="#2C2C2A">Data Subnet / Private</text>
+  <rect x="360" y="728" width="16" height="12" rx="2" fill="#FEF6F2" stroke="#D85A30" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="382" y="738" font-size="8" fill="#2C2C2A">External Systems</text>
+
+  <!-- Footnote -->
+  <text x="510" y="772" text-anchor="middle" font-size="7.5" fill="#5F5E5A">Aligned to the canonical 7-module taxonomy: User Management &#183; Benefits &#183; Compensation &#183; Claims &amp; Documents &#183; Payroll &#183; Promotions &#183; Reporting &amp; Audit.</text>
+</svg>

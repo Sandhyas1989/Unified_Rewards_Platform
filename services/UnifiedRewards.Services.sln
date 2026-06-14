@@ -1,0 +1,90 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "gateway", "gateway", "{2AF63CD3-630F-4926-8ACA-A1998B65E240}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnifiedRewards.Gateway", "gateway\UnifiedRewards.Gateway\UnifiedRewards.Gateway.csproj", "{577E713D-6AE5-4988-9777-00A2201DC45A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "employee-profile", "employee-profile", "{2FC0FA89-9278-4204-A2E4-2B47FEC1C38A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnifiedRewards.EmployeeProfile", "employee-profile\UnifiedRewards.EmployeeProfile\UnifiedRewards.EmployeeProfile.csproj", "{4D9A87FF-B862-416F-98A0-7D1CD7F4A12C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "benefits-catalogue", "benefits-catalogue", "{A454023C-B944-454A-9E4F-1DFD134D8A73}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnifiedRewards.BenefitsCatalogue", "benefits-catalogue\UnifiedRewards.BenefitsCatalogue\UnifiedRewards.BenefitsCatalogue.csproj", "{5448269A-778F-4442-BBA6-5A4019696161}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "compensation-rules", "compensation-rules", "{0C562DFB-4A2B-4959-AC4C-D62AA6521611}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnifiedRewards.CompensationRules", "compensation-rules\UnifiedRewards.CompensationRules\UnifiedRewards.CompensationRules.csproj", "{1827F45D-32A3-4330-8C24-D09B7A2FB416}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "reimbursement-workflow", "reimbursement-workflow", "{7698FFCB-BD87-43E5-89EA-CC951C89AC1B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnifiedRewards.ReimbursementWorkflow", "reimbursement-workflow\UnifiedRewards.ReimbursementWorkflow\UnifiedRewards.ReimbursementWorkflow.csproj", "{6B1C5CE6-B345-4A02-9223-D807C0CC05FC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "document-processing", "document-processing", "{166E6DA3-CCE7-46B0-9192-77BEA44B3C4F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnifiedRewards.DocumentProcessing", "document-processing\UnifiedRewards.DocumentProcessing\UnifiedRewards.DocumentProcessing.csproj", "{104CDD3E-509F-4AB6-8C84-D3BCA7524127}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "payroll-integration", "payroll-integration", "{97A02029-F499-48B3-8494-43B285323217}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnifiedRewards.PayrollIntegration", "payroll-integration\UnifiedRewards.PayrollIntegration\UnifiedRewards.PayrollIntegration.csproj", "{727BFB01-7539-4A59-A6B0-3A876CF2FCE9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "reporting-compliance", "reporting-compliance", "{35FD43F0-08DB-4E59-B8C5-9E1EACD0C73A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnifiedRewards.ReportingCompliance", "reporting-compliance\UnifiedRewards.ReportingCompliance\UnifiedRewards.ReportingCompliance.csproj", "{90AAE1BF-9E69-4AEA-835A-882FE741D295}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{577E713D-6AE5-4988-9777-00A2201DC45A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{577E713D-6AE5-4988-9777-00A2201DC45A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{577E713D-6AE5-4988-9777-00A2201DC45A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{577E713D-6AE5-4988-9777-00A2201DC45A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D9A87FF-B862-416F-98A0-7D1CD7F4A12C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D9A87FF-B862-416F-98A0-7D1CD7F4A12C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D9A87FF-B862-416F-98A0-7D1CD7F4A12C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D9A87FF-B862-416F-98A0-7D1CD7F4A12C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5448269A-778F-4442-BBA6-5A4019696161}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5448269A-778F-4442-BBA6-5A4019696161}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5448269A-778F-4442-BBA6-5A4019696161}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5448269A-778F-4442-BBA6-5A4019696161}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1827F45D-32A3-4330-8C24-D09B7A2FB416}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1827F45D-32A3-4330-8C24-D09B7A2FB416}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1827F45D-32A3-4330-8C24-D09B7A2FB416}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1827F45D-32A3-4330-8C24-D09B7A2FB416}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B1C5CE6-B345-4A02-9223-D807C0CC05FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B1C5CE6-B345-4A02-9223-D807C0CC05FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B1C5CE6-B345-4A02-9223-D807C0CC05FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B1C5CE6-B345-4A02-9223-D807C0CC05FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{104CDD3E-509F-4AB6-8C84-D3BCA7524127}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{104CDD3E-509F-4AB6-8C84-D3BCA7524127}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{104CDD3E-509F-4AB6-8C84-D3BCA7524127}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{104CDD3E-509F-4AB6-8C84-D3BCA7524127}.Release|Any CPU.Build.0 = Release|Any CPU
+		{727BFB01-7539-4A59-A6B0-3A876CF2FCE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{727BFB01-7539-4A59-A6B0-3A876CF2FCE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{727BFB01-7539-4A59-A6B0-3A876CF2FCE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{727BFB01-7539-4A59-A6B0-3A876CF2FCE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90AAE1BF-9E69-4AEA-835A-882FE741D295}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90AAE1BF-9E69-4AEA-835A-882FE741D295}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90AAE1BF-9E69-4AEA-835A-882FE741D295}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90AAE1BF-9E69-4AEA-835A-882FE741D295}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{577E713D-6AE5-4988-9777-00A2201DC45A} = {2AF63CD3-630F-4926-8ACA-A1998B65E240}
+		{4D9A87FF-B862-416F-98A0-7D1CD7F4A12C} = {2FC0FA89-9278-4204-A2E4-2B47FEC1C38A}
+		{5448269A-778F-4442-BBA6-5A4019696161} = {A454023C-B944-454A-9E4F-1DFD134D8A73}
+		{1827F45D-32A3-4330-8C24-D09B7A2FB416} = {0C562DFB-4A2B-4959-AC4C-D62AA6521611}
+		{6B1C5CE6-B345-4A02-9223-D807C0CC05FC} = {7698FFCB-BD87-43E5-89EA-CC951C89AC1B}
+		{104CDD3E-509F-4AB6-8C84-D3BCA7524127} = {166E6DA3-CCE7-46B0-9192-77BEA44B3C4F}
+		{727BFB01-7539-4A59-A6B0-3A876CF2FCE9} = {97A02029-F499-48B3-8494-43B285323217}
+		{90AAE1BF-9E69-4AEA-835A-882FE741D295} = {35FD43F0-08DB-4E59-B8C5-9E1EACD0C73A}
+	EndGlobalSection
+EndGlobal

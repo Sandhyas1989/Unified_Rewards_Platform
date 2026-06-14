@@ -1,0 +1,110 @@
+<svg width="1200" height="600" viewBox="0 0 1200 600" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+<defs>
+  <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="#888780" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+</defs>
+
+<text x="600" y="24" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1a18">Component 04 — Messaging &amp; Integration · Event-Driven Architecture · Azure Service Bus + Event Hub</text>
+<text x="600" y="40" text-anchor="middle" font-size="10" fill="#5F5E5A">Topic-based Pub/Sub · Append-only audit stream · Serverless triggers · External payroll via Polly · Email via Azure Communication Services</text>
+
+<!-- EVENT PUBLISHERS -->
+<rect x="20" y="50" width="1160" height="66" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<text x="32" y="65" font-size="9" font-weight="700" fill="#0C447C">EVENT PUBLISHERS — AKS Microservices (IPublisher)</text>
+<rect x="32"  y="72" width="282" height="38" rx="4" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
+<text x="173" y="88" text-anchor="middle" font-size="8" font-weight="600" fill="#042C53">Claims &amp; Documents Service</text>
+<text x="173" y="101" text-anchor="middle" font-size="7" fill="#0C447C">Blob upload trigger · claim lifecycle events</text>
+<rect x="324" y="72" width="282" height="38" rx="4" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
+<text x="465" y="88" text-anchor="middle" font-size="8" font-weight="600" fill="#042C53">Payroll Service</text>
+<text x="465" y="101" text-anchor="middle" font-size="7" fill="#0C447C">payroll processed / payslip ready</text>
+<rect x="616" y="72" width="282" height="38" rx="4" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
+<text x="757" y="88" text-anchor="middle" font-size="8" font-weight="600" fill="#042C53">Benefits Service</text>
+<text x="757" y="101" text-anchor="middle" font-size="7" fill="#0C447C">enrollment events</text>
+<rect x="908" y="72" width="272" height="38" rx="4" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
+<text x="1044" y="88" text-anchor="middle" font-size="8" font-weight="600" fill="#042C53">Compensation Service</text>
+<text x="1044" y="101" text-anchor="middle" font-size="7" fill="#0C447C">CTC revision events</text>
+<line x1="300" y1="116" x2="300" y2="134" stroke="#888780" stroke-width="1" marker-end="url(#arr)"/>
+<text x="308" y="129" font-size="6.5" fill="#888780">claim topics</text>
+<line x1="980" y1="116" x2="980" y2="134" stroke="#888780" stroke-width="1" marker-end="url(#arr)"/>
+<text x="988" y="129" font-size="6.5" fill="#888780">emit AuditEvent</text>
+
+<!-- AZURE SERVICE BUS -->
+<rect x="20" y="134" width="900" height="78" rx="8" fill="#FAECE7" stroke="#993C1D" stroke-width="1"/>
+<text x="32" y="149" font-size="9" font-weight="700" fill="#4A1B0C">AZURE SERVICE BUS — Topic-based Pub/Sub · Message TTL 7 days</text>
+<rect x="32"  y="156" width="170" height="32" rx="4" fill="#F5C4B3" stroke="#D85A30" stroke-width="0.5"/>
+<text x="117" y="169" text-anchor="middle" font-size="7.5" font-weight="600" fill="#4A1B0C">claims/submitted</text>
+<text x="117" y="181" text-anchor="middle" font-size="6.5" fill="#71270F">{claimId | employeeId | amount}</text>
+<rect x="208" y="156" width="170" height="32" rx="4" fill="#F5C4B3" stroke="#D85A30" stroke-width="0.5"/>
+<text x="293" y="169" text-anchor="middle" font-size="7.5" font-weight="600" fill="#4A1B0C">claims/approved</text>
+<text x="293" y="181" text-anchor="middle" font-size="6.5" fill="#71270F">{claimId | settledAmount}</text>
+<rect x="384" y="156" width="170" height="32" rx="4" fill="#F5C4B3" stroke="#D85A30" stroke-width="0.5"/>
+<text x="469" y="169" text-anchor="middle" font-size="7.5" font-weight="600" fill="#4A1B0C">claims/rejected</text>
+<text x="469" y="181" text-anchor="middle" font-size="6.5" fill="#71270F">{claimId | reason}</text>
+<rect x="560" y="156" width="170" height="32" rx="4" fill="#F5C4B3" stroke="#D85A30" stroke-width="0.5"/>
+<text x="645" y="169" text-anchor="middle" font-size="7.5" font-weight="600" fill="#4A1B0C">claims/settled</text>
+<text x="645" y="181" text-anchor="middle" font-size="6.5" fill="#71270F">{employeeId | payrollId | netPay}</text>
+<rect x="736" y="156" width="172" height="32" rx="4" fill="#F6A98E" stroke="#D85A30" stroke-width="0.5"/>
+<text x="822" y="169" text-anchor="middle" font-size="7.5" font-weight="600" fill="#4A1B0C">Dead Letter Queue</text>
+<text x="822" y="181" text-anchor="middle" font-size="6.5" fill="#71270F">max 3 failed attempts</text>
+<text x="32" y="203" font-size="7" fill="#71270F">Subscribers receive events by topic subscription; failed deliveries route to the DLQ after 3 attempts.</text>
+
+<!-- AZURE EVENT HUB -->
+<rect x="932" y="134" width="248" height="78" rx="8" fill="#FAEEDA" stroke="#854F0B" stroke-width="1"/>
+<text x="944" y="149" font-size="9" font-weight="700" fill="#412402">AZURE EVENT HUB</text>
+<text x="944" y="161" font-size="7.5" fill="#633806">Append-only Audit Stream · 30-day retention</text>
+<rect x="944" y="166" width="224" height="38" rx="4" fill="#FAC775" stroke="#BA7517" stroke-width="0.5"/>
+<text x="1056" y="180" text-anchor="middle" font-size="7.5" font-weight="600" fill="#412402">AuditEvents partition</text>
+<text x="1056" y="192" text-anchor="middle" font-size="6.5" fill="#633806">{entityType | entityRef | action |</text>
+<text x="1056" y="201" text-anchor="middle" font-size="6.5" fill="#633806">performedBy | timestamp | IP}</text>
+
+<line x1="300" y1="212" x2="300" y2="240" stroke="#888780" stroke-width="1" marker-end="url(#arr)"/>
+<text x="308" y="229" font-size="6.5" fill="#888780">trigger settlement / notify</text>
+
+<!-- EVENT SUBSCRIBERS -->
+<rect x="20" y="240" width="900" height="70" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<text x="32" y="255" font-size="9" font-weight="700" fill="#0C447C">EVENT SUBSCRIBERS</text>
+<rect x="32"  y="262" width="285" height="40" rx="4" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
+<text x="174" y="278" text-anchor="middle" font-size="8" font-weight="600" fill="#042C53">Payroll Service</text>
+<text x="174" y="291" text-anchor="middle" font-size="7" fill="#0C447C">Creates Settlement record on ClaimApprovedEvent</text>
+<rect x="323" y="262" width="285" height="40" rx="4" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
+<text x="465" y="278" text-anchor="middle" font-size="8" font-weight="600" fill="#042C53">Email Service</text>
+<text x="465" y="291" text-anchor="middle" font-size="7" fill="#0C447C">Azure Communication Services · sends notifications</text>
+<rect x="614" y="262" width="294" height="40" rx="4" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
+<text x="761" y="278" text-anchor="middle" font-size="8" font-weight="600" fill="#042C53">Reporting &amp; Audit Service</text>
+<text x="761" y="291" text-anchor="middle" font-size="7" fill="#0C447C">Persists AuditEntry from all events (Event Hub)</text>
+
+<!-- AZURE FUNCTIONS -->
+<rect x="20" y="330" width="900" height="78" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="1"/>
+<text x="32" y="345" font-size="9" font-weight="700" fill="#085041">AZURE FUNCTIONS — Serverless Triggers</text>
+<rect x="32"  y="352" width="285" height="46" rx="4" fill="#C9EEE1" stroke="#0F6E56" stroke-width="0.6"/>
+<text x="174" y="370" text-anchor="middle" font-size="8" font-weight="600" fill="#085041">Blob Trigger</text>
+<text x="174" y="384" text-anchor="middle" font-size="7" fill="#0F6E56">Document upload -&gt; OCR function</text>
+<rect x="323" y="352" width="285" height="46" rx="4" fill="#C9EEE1" stroke="#0F6E56" stroke-width="0.6"/>
+<text x="465" y="370" text-anchor="middle" font-size="8" font-weight="600" fill="#085041">Queue Trigger</text>
+<text x="465" y="384" text-anchor="middle" font-size="7" fill="#0F6E56">Payroll batch processing (monthly run)</text>
+<rect x="614" y="352" width="294" height="46" rx="4" fill="#C9EEE1" stroke="#0F6E56" stroke-width="0.6"/>
+<text x="761" y="370" text-anchor="middle" font-size="8" font-weight="600" fill="#085041">Timer Trigger</text>
+<text x="761" y="384" text-anchor="middle" font-size="7" fill="#0F6E56">Scheduled reports (CRON)</text>
+<line x1="465" y1="408" x2="465" y2="426" stroke="#888780" stroke-width="1" marker-end="url(#arr)"/>
+<text x="473" y="421" font-size="6.5" fill="#888780">push payroll data · send email</text>
+
+<!-- EXTERNAL SYSTEMS -->
+<rect x="20" y="426" width="1160" height="80" rx="8" fill="#FEF6F2" stroke="#D85A30" stroke-width="1" stroke-dasharray="5 2"/>
+<text x="32" y="441" font-size="9" font-weight="700" fill="#993C1D">EXTERNAL SYSTEMS &amp; DELIVERY</text>
+<rect x="32"  y="448" width="372" height="48" rx="4" fill="#FEEDE5" stroke="#D85A30" stroke-width="0.6" stroke-dasharray="4 2"/>
+<text x="218" y="466" text-anchor="middle" font-size="8" font-weight="600" fill="#993C1D">External Payroll System</text>
+<text x="218" y="480" text-anchor="middle" font-size="7" fill="#71270F">SAP / ADP / Workday · REST API · employee feed</text>
+<text x="218" y="490" text-anchor="middle" font-size="6.5" fill="#71270F">push payroll data</text>
+<rect x="414" y="448" width="372" height="48" rx="4" fill="#FEEDE5" stroke="#D85A30" stroke-width="0.6"/>
+<text x="600" y="466" text-anchor="middle" font-size="8" font-weight="600" fill="#993C1D">Polly Retry Policy</text>
+<text x="600" y="480" text-anchor="middle" font-size="7" fill="#71270F">3x exponential back-off (1s -&gt; 2s -&gt; 4s)</text>
+<text x="600" y="490" text-anchor="middle" font-size="6.5" fill="#71270F">exceed retries -&gt; Dead Letter Queue</text>
+<rect x="796" y="448" width="384" height="48" rx="4" fill="#FEEDE5" stroke="#D85A30" stroke-width="0.6"/>
+<text x="988" y="466" text-anchor="middle" font-size="8" font-weight="600" fill="#993C1D">Azure Communication Services</text>
+<text x="988" y="480" text-anchor="middle" font-size="7" fill="#71270F">Email delivery · [smtp4dev local dev stub]</text>
+<text x="988" y="490" text-anchor="middle" font-size="6.5" fill="#71270F">claim &amp; payslip notifications</text>
+
+<!-- FOOTNOTE -->
+<text x="20" y="524" font-size="7.5" fill="#5F5E5A">Change vs. previous version: local email stub corrected from "Mailtrap" to "smtp4dev" (matching Architecture / Logical SVGs); publisher renamed to canonical "Claims &amp; Documents Service".</text>
+
+</svg>

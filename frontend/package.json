@@ -1,0 +1,23 @@
+{
+  "name": "unified-rewards-frontend",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Unified Rewards Platform — React 18 + Webpack 5 Module Federation frontend (Shell host + portal remotes).",
+  "workspaces": [
+    "shared",
+    "shell",
+    "portals/*"
+  ],
+  "scripts": {
+    "start": "concurrently -n shell,employee,manager,hr,finance -c cyan,green,yellow,magenta,blue \"npm:start:*\"",
+    "start:shell": "npm --workspace shell run start",
+    "start:employee": "npm --workspace @urp/portal-employee run start",
+    "start:manager": "npm --workspace @urp/portal-manager run start",
+    "start:hr": "npm --workspace @urp/portal-hr run start",
+    "start:finance": "npm --workspace @urp/portal-finance run start",
+    "build": "npm run build --workspaces --if-present"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}
