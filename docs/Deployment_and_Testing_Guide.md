@@ -610,6 +610,12 @@ Confirm you're in the project root — this should list `infra`, `services`, `fr
 ls
 ```
 
+The below command worked  in cloud shell
+cd ~
+git clone https://github.com/Sandhyas1989/Unified_Rewards_Platform.git
+cd Unified_Rewards_Platform
+ls infra services/gateway/Dockerfile docker-compose.yml
+
 ---
 
 ### Step 6 — Build the 8 app images (no Docker needed)
@@ -779,15 +785,15 @@ The files to publish end up in **`frontend/shell/dist`**.
 
 #### 9d — Upload the built site from Cloud Shell
 ```bash
-# Install the deploy tool (first time only)
-npm install -g @azure/static-web-apps-cli
-
 # Fetch the upload token automatically
 SWA_TOKEN=$(az staticwebapp secrets list --name urp-frontend \
   --resource-group "$RG" --query "properties.apiKey" -o tsv)
 
-# Upload the built files
-swa deploy frontend/shell/dist --deployment-token "$SWA_TOKEN" --env production
+# Upload the built files. Use `npx` (NOT `npm install -g`) — Cloud Shell blocks
+# global installs with an EACCES error because you're not root. `npx` runs the
+# tool from your home cache instead.
+npx -y @azure/static-web-apps-cli deploy frontend/shell/dist \
+  --deployment-token "$SWA_TOKEN" --env production
 ```
 Then get your website address:
 ```bash
