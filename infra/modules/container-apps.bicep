@@ -310,8 +310,8 @@ resource reportingCompliance 'Microsoft.App/containerApps@2023-05-01' = {
           { name: 'DB_DIR',                              value: '/app/data' }
           { name: 'ASPNETCORE_ENVIRONMENT', value: 'Azure' }
           { name: 'Messaging__ServiceBus__Subscription', value: 'reporting-compliance' }
-          { name: 'Services__Reimbursement',             value: 'http://${reimbursementWorkflow.properties.configuration.ingress.fqdn}' }
-          { name: 'Services__Payroll',                   value: 'http://${payrollIntegration.properties.configuration.ingress.fqdn}' }
+          { name: 'Services__Reimbursement',             value: 'https://${reimbursementWorkflow.properties.configuration.ingress.fqdn}' }
+          { name: 'Services__Payroll',                   value: 'https://${payrollIntegration.properties.configuration.ingress.fqdn}' }
         ])
         resources: { cpu: json('0.25'), memory: '0.5Gi' }
         probes: healthProbes
@@ -340,13 +340,13 @@ resource gateway 'Microsoft.App/containerApps@2023-05-01' = {
         image: '${acrLoginServer}/gateway:${imageTag}'
         env: [
           { name: 'ASPNETCORE_URLS', value: 'http://+:80' }
-          { name: 'ReverseProxy__Clusters__employee-profile__Destinations__primary__Address',       value: 'http://${employeeProfile.properties.configuration.ingress.fqdn}' }
-          { name: 'ReverseProxy__Clusters__benefits-catalogue__Destinations__primary__Address',     value: 'http://${benefitsCatalogue.properties.configuration.ingress.fqdn}' }
-          { name: 'ReverseProxy__Clusters__compensation-rules__Destinations__primary__Address',     value: 'http://${compensationRules.properties.configuration.ingress.fqdn}' }
-          { name: 'ReverseProxy__Clusters__reimbursement-workflow__Destinations__primary__Address', value: 'http://${reimbursementWorkflow.properties.configuration.ingress.fqdn}' }
-          { name: 'ReverseProxy__Clusters__document-processing__Destinations__primary__Address',    value: 'http://${documentProcessing.properties.configuration.ingress.fqdn}' }
-          { name: 'ReverseProxy__Clusters__payroll-integration__Destinations__primary__Address',    value: 'http://${payrollIntegration.properties.configuration.ingress.fqdn}' }
-          { name: 'ReverseProxy__Clusters__reporting-compliance__Destinations__primary__Address',   value: 'http://${reportingCompliance.properties.configuration.ingress.fqdn}' }
+          { name: 'ReverseProxy__Clusters__employee-profile__Destinations__primary__Address',       value: 'https://${employeeProfile.properties.configuration.ingress.fqdn}' }
+          { name: 'ReverseProxy__Clusters__benefits-catalogue__Destinations__primary__Address',     value: 'https://${benefitsCatalogue.properties.configuration.ingress.fqdn}' }
+          { name: 'ReverseProxy__Clusters__compensation-rules__Destinations__primary__Address',     value: 'https://${compensationRules.properties.configuration.ingress.fqdn}' }
+          { name: 'ReverseProxy__Clusters__reimbursement-workflow__Destinations__primary__Address', value: 'https://${reimbursementWorkflow.properties.configuration.ingress.fqdn}' }
+          { name: 'ReverseProxy__Clusters__document-processing__Destinations__primary__Address',    value: 'https://${documentProcessing.properties.configuration.ingress.fqdn}' }
+          { name: 'ReverseProxy__Clusters__payroll-integration__Destinations__primary__Address',    value: 'https://${payrollIntegration.properties.configuration.ingress.fqdn}' }
+          { name: 'ReverseProxy__Clusters__reporting-compliance__Destinations__primary__Address',   value: 'https://${reportingCompliance.properties.configuration.ingress.fqdn}' }
           // After deploying the frontend (Static Web App), update CORS by running:
           // az containerapp update -n ${namePrefix}-gateway -g ${namePrefix}-rg \
           //   --set-env-vars "Cors__AllowedOrigins__0=https://<your-swa-url>"
