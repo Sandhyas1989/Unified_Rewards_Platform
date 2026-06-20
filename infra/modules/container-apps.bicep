@@ -117,12 +117,13 @@ resource employeeProfile 'Microsoft.App/containerApps@2023-05-01' = {
         env: concat(messagingEnv, [
           { name: 'ASPNETCORE_URLS', value: 'http://+:80' }
           { name: 'DB_DIR',          value: '/app/data' }
+          { name: 'ASPNETCORE_ENVIRONMENT', value: 'Azure' }
         ])
         resources: { cpu: json('0.25'), memory: '0.5Gi' }
         probes: healthProbes
         volumeMounts: [{ volumeName: 'data', mountPath: '/app/data' }]
       }]
-      volumes: [{ name: 'data', storageType: 'AzureFile', storageName: 'employee-profile-data' }]
+      volumes: [{ name: 'data', storageType: 'EmptyDir' }]
       scale: { minReplicas: 1, maxReplicas: 5 }
     }
   }
@@ -147,12 +148,13 @@ resource benefitsCatalogue 'Microsoft.App/containerApps@2023-05-01' = {
         env: [
           { name: 'ASPNETCORE_URLS', value: 'http://+:80' }
           { name: 'DB_DIR',          value: '/app/data' }
+          { name: 'ASPNETCORE_ENVIRONMENT', value: 'Azure' }
         ]
         resources: { cpu: json('0.25'), memory: '0.5Gi' }
         probes: healthProbes
         volumeMounts: [{ volumeName: 'data', mountPath: '/app/data' }]
       }]
-      volumes: [{ name: 'data', storageType: 'AzureFile', storageName: 'benefits-catalogue-data' }]
+      volumes: [{ name: 'data', storageType: 'EmptyDir' }]
       scale: { minReplicas: 1, maxReplicas: 5 }
     }
   }
@@ -177,12 +179,13 @@ resource compensationRules 'Microsoft.App/containerApps@2023-05-01' = {
         env: [
           { name: 'ASPNETCORE_URLS', value: 'http://+:80' }
           { name: 'DB_DIR',          value: '/app/data' }
+          { name: 'ASPNETCORE_ENVIRONMENT', value: 'Azure' }
         ]
         resources: { cpu: json('0.25'), memory: '0.5Gi' }
         probes: healthProbes
         volumeMounts: [{ volumeName: 'data', mountPath: '/app/data' }]
       }]
-      volumes: [{ name: 'data', storageType: 'AzureFile', storageName: 'compensation-rules-data' }]
+      volumes: [{ name: 'data', storageType: 'EmptyDir' }]
       scale: { minReplicas: 1, maxReplicas: 5 }
     }
   }
@@ -207,13 +210,14 @@ resource reimbursementWorkflow 'Microsoft.App/containerApps@2023-05-01' = {
         env: concat(messagingEnv, [
           { name: 'ASPNETCORE_URLS',                        value: 'http://+:80' }
           { name: 'DB_DIR',                                 value: '/app/data' }
+          { name: 'ASPNETCORE_ENVIRONMENT', value: 'Azure' }
           { name: 'Messaging__ServiceBus__Subscription',    value: 'reimbursement-workflow' }
         ])
         resources: { cpu: json('0.25'), memory: '0.5Gi' }
         probes: healthProbes
         volumeMounts: [{ volumeName: 'data', mountPath: '/app/data' }]
       }]
-      volumes: [{ name: 'data', storageType: 'AzureFile', storageName: 'reimbursement-workflow-data' }]
+      volumes: [{ name: 'data', storageType: 'EmptyDir' }]
       scale: { minReplicas: 2, maxReplicas: 10 }
     }
   }
@@ -238,6 +242,7 @@ resource documentProcessing 'Microsoft.App/containerApps@2023-05-01' = {
         env: concat(messagingEnv, [
           { name: 'ASPNETCORE_URLS',                     value: 'http://+:80' }
           { name: 'DB_DIR',                              value: '/app/data' }
+          { name: 'ASPNETCORE_ENVIRONMENT', value: 'Azure' }
           { name: 'Storage__Provider',                   value: 'AzureBlob' }
           { name: 'Storage__AzureBlob__ConnectionString', value: blobConnectionString }
           { name: 'Storage__AzureBlob__Container',       value: 'receipts' }
@@ -246,7 +251,7 @@ resource documentProcessing 'Microsoft.App/containerApps@2023-05-01' = {
         probes: healthProbes
         volumeMounts: [{ volumeName: 'data', mountPath: '/app/data' }]
       }]
-      volumes: [{ name: 'data', storageType: 'AzureFile', storageName: 'document-processing-data' }]
+      volumes: [{ name: 'data', storageType: 'EmptyDir' }]
       scale: { minReplicas: 1, maxReplicas: 5 }
     }
   }
@@ -271,13 +276,14 @@ resource payrollIntegration 'Microsoft.App/containerApps@2023-05-01' = {
         env: concat(messagingEnv, [
           { name: 'ASPNETCORE_URLS',                     value: 'http://+:80' }
           { name: 'DB_DIR',                              value: '/app/data' }
+          { name: 'ASPNETCORE_ENVIRONMENT', value: 'Azure' }
           { name: 'Messaging__ServiceBus__Subscription', value: 'payroll-integration' }
         ])
         resources: { cpu: json('0.25'), memory: '0.5Gi' }
         probes: healthProbes
         volumeMounts: [{ volumeName: 'data', mountPath: '/app/data' }]
       }]
-      volumes: [{ name: 'data', storageType: 'AzureFile', storageName: 'payroll-integration-data' }]
+      volumes: [{ name: 'data', storageType: 'EmptyDir' }]
       scale: { minReplicas: 1, maxReplicas: 5 }
     }
   }
@@ -302,6 +308,7 @@ resource reportingCompliance 'Microsoft.App/containerApps@2023-05-01' = {
         env: concat(messagingEnv, [
           { name: 'ASPNETCORE_URLS',                     value: 'http://+:80' }
           { name: 'DB_DIR',                              value: '/app/data' }
+          { name: 'ASPNETCORE_ENVIRONMENT', value: 'Azure' }
           { name: 'Messaging__ServiceBus__Subscription', value: 'reporting-compliance' }
           { name: 'Services__Reimbursement',             value: 'http://${reimbursementWorkflow.properties.configuration.ingress.fqdn}' }
           { name: 'Services__Payroll',                   value: 'http://${payrollIntegration.properties.configuration.ingress.fqdn}' }
@@ -310,7 +317,7 @@ resource reportingCompliance 'Microsoft.App/containerApps@2023-05-01' = {
         probes: healthProbes
         volumeMounts: [{ volumeName: 'data', mountPath: '/app/data' }]
       }]
-      volumes: [{ name: 'data', storageType: 'AzureFile', storageName: 'reporting-compliance-data' }]
+      volumes: [{ name: 'data', storageType: 'EmptyDir' }]
       scale: { minReplicas: 1, maxReplicas: 5 }
     }
   }
