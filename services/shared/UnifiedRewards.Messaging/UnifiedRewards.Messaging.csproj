@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Outbox lives in each service's own DbContext (db-per-service preserved). -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
+    <!-- Relational APIs (ToTable) for the outbox table mapping. -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.8" />
+    <!-- Local "message-log" bus: a shared SQLite file standing in for a Service Bus topic. -->
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.8" />
+    <!-- Hosted dispatcher/subscriber + DI/config/logging abstractions. -->
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+    <!-- Deploy-time transport (unused unless Messaging:Provider=ServiceBus). -->
+    <PackageReference Include="Azure.Messaging.ServiceBus" Version="7.18.1" />
+  </ItemGroup>
+
+</Project>

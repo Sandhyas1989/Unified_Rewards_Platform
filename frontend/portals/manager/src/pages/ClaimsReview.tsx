@@ -52,7 +52,7 @@ export function ClaimsReview() {
           columns={[
             { header: 'Employee', render: (c) => byId(c.employeeId)?.fullName ?? c.employeeId.slice(0, 8) },
             { header: 'Type', render: (c) => ClaimTypeLabels[c.type] },
-            { header: 'Amount', render: (c) => money(c.amount) },
+            { header: 'Amount', render: (c) => money(c.amount, c.currencyCode) },
             { header: 'Status', render: (c) => <Badge tone={TONE[c.status]}>{ClaimStatusLabels[c.status]}</Badge> },
             {
               header: 'Actions',

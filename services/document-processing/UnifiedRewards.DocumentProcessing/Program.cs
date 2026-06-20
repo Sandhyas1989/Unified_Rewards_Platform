@@ -1,39 +1,80 @@
-using System.Text;
+using System.Security.Cryptography;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using UnifiedRewards.DocumentProcessing;
 using UnifiedRewards.DocumentProcessing.Ocr;
 using UnifiedRewards.DocumentProcessing.Persistence;
 using UnifiedRewards.DocumentProcessing.Storage;
+using UnifiedRewards.Messaging;
 
 // Document & Receipt Processing Service — real logic ported from the monolith's Claims & Documents
 // (file storage + OCR). Owns its own SQLite database (database-per-service). Zero-install: dotnet run.
 var builder = WebApplication.CreateBuilder(args);
 
-var dbPath = Path.Combine(AppContext.BaseDirectory, "document-processing.db");
+var dbDir  = Environment.GetEnvironmentVariable("DB_DIR") ?? AppContext.BaseDirectory;
+var dbPath = Path.Combine(dbDir, "document-processing.db");
 builder.Services.AddDbContext<DocumentDbContext>(o => o.UseSqlite($"Data Source={dbPath}"));
-builder.Services.AddSingleton<IFileStorage, LocalFileStorage>();   // Azure Blob is the prod swap
+// Switch to Azure Blob Storage when Storage:Provider = AzureBlob (set via env var in Azure deployment).
+if (string.Equals(builder.Configuration["Storage:Provider"], "AzureBlob", StringComparison.OrdinalIgnoreCase))
+{
+    var connStr = builder.Configuration["Storage:AzureBlob:ConnectionString"]
+        ?? throw new InvalidOperationException("Storage:AzureBlob:ConnectionString required when Storage:Provider=AzureBlob.");
+    var container = builder.Configuration["Storage:AzureBlob:Container"] ?? "receipts";
+    builder.Services.AddSingleton<IFileStorage>(new AzureBlobFileStorage(connStr, container));
+}
+else
+{
+    builder.Services.AddSingleton<IFileStorage, LocalFileStorage>();
+}
 builder.Services.AddScoped<IOcrEngine, StubOcrEngine>();           // Tesseract/Doc Intelligence in prod
 builder.Services.AddControllers();
+builder.Services.Configure<HostOptions>(o => o.ShutdownTimeout = TimeSpan.FromSeconds(30));
+builder.Services.AddHttpContextAccessor();
+
+// Publishes DocumentProcessed after a receipt is stored + OCR'd (transactional outbox → bus).
+builder.Services.AddEventPublishing<DocumentDbContext>(builder.Configuration);
+builder.Services.AddHostedService<DataRetentionService>();
 
 // Validates the JWT issued by the Employee Profile service (Entra ID in production). Same key/issuer.
 var jwt = builder.Configuration.GetSection("Jwt");
-builder.Services
-    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    var authority = jwt["Authority"];
+    if (!string.IsNullOrEmpty(authority))
     {
+        options.Authority = authority;
+        options.Audience = jwt["Audience"];
+    }
+    else
+    {
+        using var rsa = RSA.Create();
+        rsa.FromXmlString(jwt["RsaPublicKey"]!);
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = jwt["Issuer"],
-            ValidAudience = jwt["Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt["SigningKey"]!)),
+            ValidateIssuer = true, ValidateAudience = true, ValidateLifetime = true, ValidateIssuerSigningKey = true,
+            ValidIssuer = jwt["Issuer"], ValidAudience = jwt["Audience"],
+            IssuerSigningKey = new RsaSecurityKey(rsa.ExportParameters(includePrivateParameters: false)),
         };
-    });
+    }
+});
 builder.Services.AddAuthorization();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Document Processing API", Version = "v1" });
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization", Type = SecuritySchemeType.Http,
+        Scheme = "Bearer", BearerFormat = "JWT", In = ParameterLocation.Header,
+        Description = "JWT from POST /api/auth/login"
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        { new OpenApiSecurityScheme { Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" } }, Array.Empty<string>() }
+    });
+});
 
 if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("ASPNETCORE_URLS")))
 {
@@ -47,6 +88,8 @@ using (var scope = app.Services.CreateScope())
     scope.ServiceProvider.GetRequiredService<DocumentDbContext>().Database.EnsureCreated();
 }
 
+app.UseSwagger();
+app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Document Processing API v1"));
 app.MapGet("/health", () => Results.Ok(new { status = "healthy", service = "document-processing" }));
 
 app.UseAuthentication();

@@ -11,6 +11,7 @@ public class BenefitPlan
     public string Description { get; set; } = string.Empty;
     public BenefitCategory Category { get; set; }
     public decimal MonthlyCost { get; set; }
+    public string CurrencyCode { get; set; } = "INR";
     public bool IsActive { get; set; } = true;
 }
 

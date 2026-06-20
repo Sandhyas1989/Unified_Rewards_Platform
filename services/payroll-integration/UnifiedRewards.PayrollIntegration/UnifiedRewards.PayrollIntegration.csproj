@@ -10,6 +10,13 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.8" />
     <PackageReference Include="Polly" Version="8.6.6" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.8.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\shared\UnifiedRewards.Messaging\UnifiedRewards.Messaging.csproj" />
+    <ProjectReference Include="..\..\shared\UnifiedRewards.Shared\UnifiedRewards.Shared.csproj" />
+    <Using Include="UnifiedRewards.Shared" />
   </ItemGroup>
 
 </Project>

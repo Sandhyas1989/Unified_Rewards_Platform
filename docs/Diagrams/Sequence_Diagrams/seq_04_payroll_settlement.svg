@@ -8,7 +8,7 @@
 
   <!-- Lifeline 0: Service Bus -->
   <rect x="10" y="48" width="140" height="38" rx="6" fill="#FAECE7" stroke="#993C1D"/>
-  <text x="80" y="64" text-anchor="middle" font-size="8" font-weight="600" fill="#4A1B0C">Service Bus</text>
+  <text x="80" y="64" text-anchor="middle" font-size="8" font-weight="600" fill="#4A1B0C">Event Bus</text>
   <text x="80" y="76" text-anchor="middle" font-size="7" fill="#4A1B0C">claim events</text>
   <line x1="80" y1="86" x2="80" y2="572" stroke="#C8C8C8" stroke-width="1" stroke-dasharray="3 3"/>
 
@@ -26,8 +26,8 @@
 
   <!-- Lifeline 3: MediatR / Settlement -->
   <rect x="475" y="48" width="140" height="38" rx="6" fill="#DCE9F8" stroke="#185FA5"/>
-  <text x="545" y="64" text-anchor="middle" font-size="8" font-weight="600" fill="#0C447C">MediatR / Settlement</text>
-  <text x="545" y="76" text-anchor="middle" font-size="7" fill="#0C447C">CQRS handler</text>
+  <text x="545" y="64" text-anchor="middle" font-size="8" font-weight="600" fill="#0C447C">Settlement Handler</text>
+  <text x="545" y="76" text-anchor="middle" font-size="7" fill="#0C447C">EventBus consumer</text>
   <line x1="545" y1="86" x2="545" y2="572" stroke="#C8C8C8" stroke-width="1" stroke-dasharray="3 3"/>
 
   <!-- Lifeline 4: PaySlip Generator -->
@@ -56,8 +56,8 @@
 
   <!-- Lifeline 8: Email / Event Hub -->
   <rect x="1250" y="48" width="140" height="38" rx="6" fill="#FAECE7" stroke="#993C1D"/>
-  <text x="1320" y="64" text-anchor="middle" font-size="8" font-weight="600" fill="#4A1B0C">Email / Event Hub</text>
-  <text x="1320" y="76" text-anchor="middle" font-size="7" fill="#4A1B0C">notify · audit</text>
+  <text x="1320" y="64" text-anchor="middle" font-size="8" font-weight="600" fill="#4A1B0C">Email / Event Bus</text>
+  <text x="1320" y="76" text-anchor="middle" font-size="7" fill="#4A1B0C">notify · publish SettlementCompleted</text>
   <line x1="1320" y1="86" x2="1320" y2="572" stroke="#C8C8C8" stroke-width="1" stroke-dasharray="3 3"/>
 
   <!-- ===== MESSAGES ===== -->
@@ -112,7 +112,7 @@
 
   <!-- CALL MediatR -> Email/Event Hub y=410 -->
   <line x1="545" y1="410" x2="1320" y2="410" stroke="#555" stroke-width="1.1" marker-end="url(#arr)"/>
-  <text x="551" y="406" text-anchor="start" font-size="7.2" fill="#333">emit AuditEntry (Event Hub)</text>
+  <text x="551" y="406" text-anchor="start" font-size="7.2" fill="#333">publish SettlementCompleted (EventBus)</text>
 
   <!-- PHASE y=440 -->
   <rect x="24" y="427" width="1412" height="18" rx="4" fill="#EDEBE4" stroke="#B9B6AC"/>

@@ -8,3 +8,5 @@ public sealed record DashboardDto(
     int TotalClaims,
     int TotalSettlements,
     string Note);
+public sealed record AuditEntryDto(
+    Guid Id, string EventType, Guid ClaimId, Guid? ActorId, decimal? Amount, string? Notes, DateTime OccurredAtUtc);

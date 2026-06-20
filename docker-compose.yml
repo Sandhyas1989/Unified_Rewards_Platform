@@ -1,0 +1,143 @@
+version: "3.9"
+
+# All Dockerfiles are built from the repo root so shared/ projects are in the build context.
+# Run from the repo root: docker compose up --build
+
+services:
+
+  employee-profile:
+    build:
+      context: .
+      dockerfile: services/employee-profile/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:80
+      DB_DIR: /app/data
+    volumes:
+      - employee-profile-data:/app/data
+    expose: ["80"]
+
+  benefits-catalogue:
+    build:
+      context: .
+      dockerfile: services/benefits-catalogue/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:80
+      DB_DIR: /app/data
+    volumes:
+      - benefits-catalogue-data:/app/data
+    expose: ["80"]
+
+  compensation-rules:
+    build:
+      context: .
+      dockerfile: services/compensation-rules/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:80
+      DB_DIR: /app/data
+    volumes:
+      - compensation-rules-data:/app/data
+    expose: ["80"]
+
+  reimbursement-workflow:
+    build:
+      context: .
+      dockerfile: services/reimbursement-workflow/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:80
+      DB_DIR: /app/data
+      Services__Payroll: http://payroll-integration:80
+      Messaging__Provider: Local
+      Messaging__Local__BusPath: /bus/bus.db
+    volumes:
+      - reimbursement-workflow-data:/app/data
+      - bus-data:/bus
+    expose: ["80"]
+    depends_on: [employee-profile]
+
+  document-processing:
+    build:
+      context: .
+      dockerfile: services/document-processing/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:80
+      DB_DIR: /app/data
+      Messaging__Provider: Local
+      Messaging__Local__BusPath: /bus/bus.db
+    volumes:
+      - document-processing-data:/app/data
+      - bus-data:/bus
+    expose: ["80"]
+
+  payroll-integration:
+    build:
+      context: .
+      dockerfile: services/payroll-integration/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:80
+      DB_DIR: /app/data
+      Messaging__Provider: Local
+      Messaging__Local__BusPath: /bus/bus.db
+    volumes:
+      - payroll-integration-data:/app/data
+      - bus-data:/bus
+    expose: ["80"]
+
+  reporting-compliance:
+    build:
+      context: .
+      dockerfile: services/reporting-compliance/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:80
+      DB_DIR: /app/data
+      Services__Reimbursement: http://reimbursement-workflow:80
+      Services__Payroll: http://payroll-integration:80
+      Messaging__Provider: Local
+      Messaging__Local__BusPath: /bus/bus.db
+    volumes:
+      - reporting-compliance-data:/app/data
+      - bus-data:/bus
+    expose: ["80"]
+    depends_on: [reimbursement-workflow, payroll-integration]
+
+  gateway:
+    build:
+      context: .
+      dockerfile: services/gateway/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:80
+      # Override every YARP cluster address to use container names
+      ReverseProxy__Clusters__employee-profile__Destinations__primary__Address: http://employee-profile:80
+      ReverseProxy__Clusters__benefits-catalogue__Destinations__primary__Address: http://benefits-catalogue:80
+      ReverseProxy__Clusters__compensation-rules__Destinations__primary__Address: http://compensation-rules:80
+      ReverseProxy__Clusters__reimbursement-workflow__Destinations__primary__Address: http://reimbursement-workflow:80
+      ReverseProxy__Clusters__document-processing__Destinations__primary__Address: http://document-processing:80
+      ReverseProxy__Clusters__payroll-integration__Destinations__primary__Address: http://payroll-integration:80
+      ReverseProxy__Clusters__reporting-compliance__Destinations__primary__Address: http://reporting-compliance:80
+    ports:
+      - "5080:80"
+    depends_on:
+      - employee-profile
+      - benefits-catalogue
+      - compensation-rules
+      - reimbursement-workflow
+      - document-processing
+      - payroll-integration
+      - reporting-compliance
+
+volumes:
+  employee-profile-data:
+  benefits-catalogue-data:
+  compensation-rules-data:
+  reimbursement-workflow-data:
+  document-processing-data:
+  payroll-integration-data:
+  reporting-compliance-data:
+  bus-data:         # shared SQLite message bus; replace with Azure Service Bus in production

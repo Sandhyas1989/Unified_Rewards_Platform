@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace UnifiedRewards.ReimbursementWorkflow.Domain;
 
 public enum ClaimType { Travel = 0, Medical = 1, Food = 2, Internet = 3, Training = 4, Other = 5 }
@@ -17,6 +19,7 @@ public class Claim
     public Guid EmployeeId { get; set; }
     public ClaimType Type { get; set; }
     public decimal Amount { get; set; }
+    public string CurrencyCode { get; set; } = "INR";
     public string Description { get; set; } = string.Empty;
     public ClaimStatus Status { get; private set; } = ClaimStatus.Submitted;
     public Guid? ReviewerId { get; private set; }
@@ -26,6 +29,9 @@ public class Claim
     public DateTime? DecisionAtUtc { get; private set; }
     public DateTime? SettledAtUtc { get; private set; }
     public ICollection<ClaimTransition> History { get; set; } = new List<ClaimTransition>();
+
+    [Timestamp]
+    public byte[] RowVersion { get; set; } = Array.Empty<byte>();
 
     private static readonly IReadOnlyDictionary<ClaimStatus, ClaimStatus[]> Allowed =
         new Dictionary<ClaimStatus, ClaimStatus[]>
@@ -37,9 +43,9 @@ public class Claim
             [ClaimStatus.Settled] = Array.Empty<ClaimStatus>(),
         };
 
-    public static Claim Submit(Guid tenantId, Guid employeeId, ClaimType type, decimal amount, string description)
+    public static Claim Submit(Guid tenantId, Guid employeeId, ClaimType type, decimal amount, string description, string currencyCode = "INR")
     {
-        var c = new Claim { TenantId = tenantId, EmployeeId = employeeId, Type = type, Amount = amount, Description = description.Trim() };
+        var c = new Claim { TenantId = tenantId, EmployeeId = employeeId, Type = type, Amount = amount, CurrencyCode = currencyCode, Description = description.Trim() };
         c.History.Add(new ClaimTransition { FromStatus = null, ToStatus = ClaimStatus.Submitted, ActorId = employeeId });
         return c;
     }

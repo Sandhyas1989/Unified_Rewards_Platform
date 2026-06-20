@@ -1,0 +1,111 @@
+name: CD — Deploy to Azure
+
+on:
+  workflow_run:
+    workflows: [CI]
+    branches: [main]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      imageTag:
+        description: "Docker image tag to deploy (default: git SHA)"
+        required: false
+
+# Required repository secrets:
+#   AZURE_CLIENT_ID       — service principal app ID (OIDC federated)
+#   AZURE_TENANT_ID       — Azure tenant ID
+#   AZURE_SUBSCRIPTION_ID — target subscription ID
+#   ACR_LOGIN_SERVER      — e.g. urpacr.azurecr.io
+#
+# These are populated by Bicep outputs after the first manual bootstrap run:
+#   az deployment sub create -l eastus -f infra/main.bicep -p infra/parameters/prod.json
+
+jobs:
+  deploy:
+    name: Build, Push & Deploy
+    runs-on: ubuntu-latest
+    # Only deploy when CI succeeds (not on failure, not on workflow_dispatch skip).
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+
+    permissions:
+      id-token: write   # OIDC token for az login
+      contents: read
+
+    env:
+      IMAGE_TAG: ${{ github.event.inputs.imageTag || github.sha }}
+      ACR: ${{ secrets.ACR_LOGIN_SERVER }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # ── Azure login (OIDC — no long-lived secret) ─────────────────────────
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      # ── Login to ACR ──────────────────────────────────────────────────────
+      - name: ACR login
+        run: az acr login --name ${{ env.ACR }}
+
+      # ── Build & push all service images ───────────────────────────────────
+      - name: Build & push employee-profile
+        run: |
+          docker build -f services/employee-profile/Dockerfile -t $ACR/employee-profile:$IMAGE_TAG .
+          docker push $ACR/employee-profile:$IMAGE_TAG
+
+      - name: Build & push benefits-catalogue
+        run: |
+          docker build -f services/benefits-catalogue/Dockerfile -t $ACR/benefits-catalogue:$IMAGE_TAG .
+          docker push $ACR/benefits-catalogue:$IMAGE_TAG
+
+      - name: Build & push compensation-rules
+        run: |
+          docker build -f services/compensation-rules/Dockerfile -t $ACR/compensation-rules:$IMAGE_TAG .
+          docker push $ACR/compensation-rules:$IMAGE_TAG
+
+      - name: Build & push reimbursement-workflow
+        run: |
+          docker build -f services/reimbursement-workflow/Dockerfile -t $ACR/reimbursement-workflow:$IMAGE_TAG .
+          docker push $ACR/reimbursement-workflow:$IMAGE_TAG
+
+      - name: Build & push document-processing
+        run: |
+          docker build -f services/document-processing/Dockerfile -t $ACR/document-processing:$IMAGE_TAG .
+          docker push $ACR/document-processing:$IMAGE_TAG
+
+      - name: Build & push payroll-integration
+        run: |
+          docker build -f services/payroll-integration/Dockerfile -t $ACR/payroll-integration:$IMAGE_TAG .
+          docker push $ACR/payroll-integration:$IMAGE_TAG
+
+      - name: Build & push reporting-compliance
+        run: |
+          docker build -f services/reporting-compliance/Dockerfile -t $ACR/reporting-compliance:$IMAGE_TAG .
+          docker push $ACR/reporting-compliance:$IMAGE_TAG
+
+      - name: Build & push gateway
+        run: |
+          docker build -f services/gateway/Dockerfile -t $ACR/gateway:$IMAGE_TAG .
+          docker push $ACR/gateway:$IMAGE_TAG
+
+      # ── Deploy Bicep (idempotent — safe to re-run) ────────────────────────
+      - name: Deploy infrastructure & container apps
+        run: |
+          az deployment sub create \
+            --location eastus \
+            --template-file infra/main.bicep \
+            --parameters infra/parameters/prod.json \
+            --parameters imageTag=${{ env.IMAGE_TAG }} \
+            --name urp-deploy-${{ env.IMAGE_TAG }}
+
+      # ── Print gateway URL ──────────────────────────────────────────────────
+      - name: Show gateway URL
+        run: |
+          URL=$(az deployment sub show \
+            --name urp-deploy-${{ env.IMAGE_TAG }} \
+            --query "properties.outputs.gatewayUrl.value" -o tsv)
+          echo "Gateway: $URL"
+          echo "GATEWAY_URL=$URL" >> $GITHUB_STEP_SUMMARY

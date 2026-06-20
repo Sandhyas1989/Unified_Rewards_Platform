@@ -4,7 +4,7 @@ import { Promotions } from './pages/Promotions';
 
 const TABS = [
   { key: 'claims', label: 'Claims Review', render: () => <ClaimsReview /> },
-  { key: 'promotions', label: 'Promotion Nominations', render: () => <Promotions /> },
+  { key: 'promotions', label: 'Bonus Campaigns', render: () => <Promotions /> },
 ];
 
 export default function ManagerApp() {

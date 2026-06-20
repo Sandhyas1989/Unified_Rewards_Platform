@@ -4,7 +4,7 @@
   </defs>
 
   <text x="730" y="22" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1a18">Sequence 01 — Claim Submission &amp; Approval Workflow</text>
-  <text x="730" y="38" text-anchor="middle" font-size="10" fill="#5F5E5A">ASP.NET Core 8 · MediatR CQRS · Claims &amp; Documents module · State Machine + OCR (Tesseract) · EF Core 8</text>
+  <text x="730" y="38" text-anchor="middle" font-size="10" fill="#5F5E5A">ASP.NET Core 8 · Reimbursement Workflow &amp; Document Processing services · Claims state machine · OCR stub (Tesseract in prod) · EF Core 8 · SQLite</text>
 
   <!-- Header boxes -->
   <!-- 0 Employee actor xc=80 -->
@@ -25,7 +25,7 @@
   <!-- 3 API Gateway gateway xc=545 -->
   <rect x="475" y="48" width="140" height="38" rx="6" fill="#EEEDFE" stroke="#534AB7"/>
   <text x="545" y="64" text-anchor="middle" font-size="8" font-weight="600" fill="#3C3489">API Gateway</text>
-  <text x="545" y="76" text-anchor="middle" font-size="7" fill="#3C3489">Azure APIM</text>
+  <text x="545" y="76" text-anchor="middle" font-size="7" fill="#3C3489">YARP Gateway</text>
 
   <!-- 4 Claims Controller controller xc=700 -->
   <rect x="630" y="48" width="140" height="38" rx="6" fill="#E6F1FB" stroke="#185FA5"/>
@@ -34,8 +34,8 @@
 
   <!-- 5 MediatR Handler handler xc=855 -->
   <rect x="785" y="48" width="140" height="38" rx="6" fill="#DCE9F8" stroke="#185FA5"/>
-  <text x="855" y="64" text-anchor="middle" font-size="8" font-weight="600" fill="#0C447C">MediatR Handler</text>
-  <text x="855" y="76" text-anchor="middle" font-size="7" fill="#0C447C">CQRS</text>
+  <text x="855" y="64" text-anchor="middle" font-size="8" font-weight="600" fill="#0C447C">Service Handler</text>
+  <text x="855" y="76" text-anchor="middle" font-size="7" fill="#0C447C">controller</text>
 
   <!-- 6 ClaimWorkflow + OCR domain xc=1010 -->
   <rect x="940" y="48" width="140" height="38" rx="6" fill="#ECE3F6" stroke="#6B4FA8"/>
@@ -45,7 +45,7 @@
   <!-- 7 EF Core 8 data xc=1165 -->
   <rect x="1095" y="48" width="140" height="38" rx="6" fill="#FAEEDA" stroke="#854F0B"/>
   <text x="1165" y="64" text-anchor="middle" font-size="8" font-weight="600" fill="#412402">EF Core 8</text>
-  <text x="1165" y="76" text-anchor="middle" font-size="7" fill="#412402">Azure SQL / Blob</text>
+  <text x="1165" y="76" text-anchor="middle" font-size="7" fill="#412402">SQLite · local file store</text>
 
   <!-- 8 Service Bus / Email platform xc=1320 -->
   <rect x="1250" y="48" width="140" height="38" rx="6" fill="#FAECE7" stroke="#993C1D"/>

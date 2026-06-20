@@ -90,7 +90,7 @@ export function Payroll() {
           empty="No settlements requested this session."
           columns={[
             { header: 'Reference', render: (s) => s.reference },
-            { header: 'Amount', render: (s) => money(s.amount) },
+            { header: 'Amount', render: (s) => money(s.amount, s.currencyCode) },
             { header: 'Status', render: (s) => <Badge tone={TONE[s.status]}>{SettlementStatusLabels[s.status]}</Badge> },
             { header: 'Confirmation', render: (s) => s.payrollConfirmation ?? (s.status < 2 ? '…' : '—') },
           ]}

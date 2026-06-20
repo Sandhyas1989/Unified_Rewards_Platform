@@ -21,7 +21,7 @@ export function Settlements() {
     setErr(''); setMsg('');
     try {
       await api.post(`/claims/${id}/settle`);
-      setMsg('Claim settled and pushed to payroll.');
+      setMsg('Settlement in progress — payroll will confirm shortly.');
       load();
     } catch (e: any) { setErr(e.message); }
   };
@@ -37,7 +37,7 @@ export function Settlements() {
           columns={[
             { header: 'Employee', render: (c) => byId(c.employeeId)?.fullName ?? c.employeeId.slice(0, 8) },
             { header: 'Type', render: (c) => ClaimTypeLabels[c.type] },
-            { header: 'Amount', render: (c) => money(c.amount) },
+            { header: 'Amount', render: (c) => money(c.amount, c.currencyCode) },
             { header: '', render: (c) => <Button variant="primary" onClick={() => settle(c.id)}>Settle</Button> },
           ]}
         />

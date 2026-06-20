@@ -61,17 +61,18 @@
 <text x="308" y="229" font-size="6.5" fill="#888780">trigger settlement / notify</text>
 
 <!-- EVENT SUBSCRIBERS -->
-<rect x="20" y="240" width="900" height="70" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<rect x="20" y="240" width="900" height="84" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
 <text x="32" y="255" font-size="9" font-weight="700" fill="#0C447C">EVENT SUBSCRIBERS</text>
-<rect x="32"  y="262" width="285" height="40" rx="4" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
+<rect x="32"  y="262" width="285" height="54" rx="4" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
 <text x="174" y="278" text-anchor="middle" font-size="8" font-weight="600" fill="#042C53">Payroll Service</text>
-<text x="174" y="291" text-anchor="middle" font-size="7" fill="#0C447C">Creates Settlement record on ClaimApprovedEvent</text>
+<text x="174" y="291" text-anchor="middle" font-size="7" fill="#0C447C">SettlementRequested → Settlement record</text>
+<text x="174" y="304" text-anchor="middle" font-size="7" fill="#0C447C">BonusAwarded → Bonus payout Settlement</text>
 <rect x="323" y="262" width="285" height="40" rx="4" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
 <text x="465" y="278" text-anchor="middle" font-size="8" font-weight="600" fill="#042C53">Email Service</text>
 <text x="465" y="291" text-anchor="middle" font-size="7" fill="#0C447C">Azure Communication Services · sends notifications</text>
 <rect x="614" y="262" width="294" height="40" rx="4" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
 <text x="761" y="278" text-anchor="middle" font-size="8" font-weight="600" fill="#042C53">Reporting &amp; Audit Service</text>
-<text x="761" y="291" text-anchor="middle" font-size="7" fill="#0C447C">Persists AuditEntry from all events (Event Hub)</text>
+<text x="761" y="291" text-anchor="middle" font-size="7" fill="#0C447C">Persists AuditEntry: claim lifecycle + BonusAwarded</text>
 
 <!-- AZURE FUNCTIONS -->
 <rect x="20" y="330" width="900" height="78" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="1"/>
@@ -105,6 +106,6 @@
 <text x="988" y="490" text-anchor="middle" font-size="6.5" fill="#71270F">claim &amp; payslip notifications</text>
 
 <!-- FOOTNOTE -->
-<text x="20" y="524" font-size="7.5" fill="#5F5E5A">Change vs. previous version: local email stub corrected from "Mailtrap" to "smtp4dev" (matching Architecture / Logical SVGs); publisher renamed to canonical "Claims &amp; Documents Service".</text>
+<text x="20" y="524" font-size="7.5" fill="#5F5E5A">Change vs. previous version: local email stub corrected from "Mailtrap" to "smtp4dev"; publisher renamed to "Claims &amp; Documents Service"; Payroll subscriber updated — SettlementRequested replaces ClaimApprovedEvent; BonusAwarded (published by EmployeeProfile on nomination approval) added — Payroll creates Bonus Settlement, Audit persists AuditEntry.</text>
 
 </svg>

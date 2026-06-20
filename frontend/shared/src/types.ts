@@ -24,6 +24,7 @@ export interface BenefitPlanDto {
   description: string;
   category: number;
   monthlyCost: number;
+  currencyCode?: string;
   isActive: boolean;
 }
 
@@ -41,6 +42,7 @@ export interface ClaimDto {
   employeeId: string;
   type: number;
   amount: number;
+  currencyCode?: string;
   description: string;
   status: number;
   hasReceipt: boolean;
@@ -49,9 +51,10 @@ export interface ClaimDto {
   ocrExtractedAmount?: number;
   reviewerId?: string;
   decisionNotes?: string;
+  settlementReference?: string;
   submittedAtUtc: string;
+  decisionAtUtc?: string;
   settledAtUtc?: string;
-  payrollReference?: string;
   history: ClaimTransitionDto[];
 }
 
@@ -91,6 +94,7 @@ export interface SettlementRequestDto {
   id: string;
   employeeId: string;
   amount: number;
+  currencyCode?: string;
   reference: string;
   status: number;
   attempts: number;
@@ -100,17 +104,31 @@ export interface SettlementRequestDto {
   completedAtUtc?: string;
 }
 
-export interface PromotionNominationDto {
+export interface PromotionDto {
   id: string;
-  employeeId: string;
-  nominatedById: string;
-  currentGrade: number;
-  proposedGrade: number;
-  justification: string;
+  title: string;
+  cycleYear: number;
+  cycleQuarter: string;
+  fromGrade: string;
+  bonusValue: number;
+  nominationStart: string;
+  nominationEnd: string;
   status: number;
-  effectiveDate?: string;
-  decisionNotes?: string;
-  nominatedAtUtc: string;
+  nominationCount: number;
+  approvedCount: number;
+  createdAtUtc: string;
+}
+
+export interface NominationDto {
+  id: string;
+  promotionId: string;
+  employeeId: string;
+  employeeName?: string;
+  nominatedBy: string;
+  nominatedOn: string;
+  outcome: number;
+  remarks?: string;
+  createdAtUtc: string;
 }
 
 // Enum label maps for display.
@@ -120,5 +138,6 @@ export const BenefitCategoryLabels = ['Health', 'Wellness', 'Insurance', 'Transp
 export const EnrollmentStatusLabels = ['Active', 'Cancelled'];
 export const CompensationStatusLabels = ['Draft', 'Approved'];
 export const GradeBandLabels = ['Junior', 'Mid', 'Senior', 'Lead'];
-export const PromotionStatusLabels = ['Nominated', 'UnderReview', 'Approved', 'Rejected'];
+export const PromotionStatusLabels = ['Draft', 'Open', 'Closed', 'Cancelled'];
+export const NominationOutcomeLabels = ['Pending', 'Awarded', 'Not Awarded', 'Withdrawn'];
 export const SettlementStatusLabels = ['Pending', 'Processing', 'Succeeded', 'Failed'];

@@ -55,7 +55,7 @@ export function Benefits() {
           columns={[
             { header: 'Plan', render: (p) => p.name },
             { header: 'Category', render: (p) => BenefitCategoryLabels[p.category] },
-            { header: 'Monthly', render: (p) => money(p.monthlyCost) },
+            { header: 'Monthly', render: (p) => money(p.monthlyCost, p.currencyCode) },
             { header: '', render: (p) => <Button variant="ghost" onClick={() => enroll(p.id)}>Enroll</Button> },
           ]}
         />

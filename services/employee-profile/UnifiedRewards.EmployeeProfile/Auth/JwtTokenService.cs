@@ -1,13 +1,14 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
+using System.Security.Cryptography;
 using Microsoft.IdentityModel.Tokens;
 using UnifiedRewards.EmployeeProfile.Domain;
 
 namespace UnifiedRewards.EmployeeProfile.Auth;
 
 // Issues JWTs for this service (ported from the monolith's JwtTokenService).
-// In production this responsibility moves to Microsoft Entra ID; kept here for the local demo.
+// Signs with RS256 (asymmetric). Consumer services only need the public key — private key stays here.
+// In production this responsibility moves to Microsoft Entra ID; Jwt:Authority in appsettings.Production.json.
 public sealed class JwtTokenService
 {
     public const string TenantClaim = "tenant_id";
@@ -29,13 +30,15 @@ public sealed class JwtTokenService
             new Claim(TenantClaim, user.TenantId.ToString()),
         };
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt["SigningKey"]!));
+        using var rsa = RSA.Create();
+        rsa.FromXmlString(jwt["RsaPrivateKey"]!);
+        var key = new RsaSecurityKey(rsa.ExportParameters(includePrivateParameters: true));
         var token = new JwtSecurityToken(
             issuer: jwt["Issuer"],
             audience: jwt["Audience"],
             claims: claims,
             expires: expires,
-            signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256));
+            signingCredentials: new SigningCredentials(key, SecurityAlgorithms.RsaSha256));
 
         return (new JwtSecurityTokenHandler().WriteToken(token), expires);
     }

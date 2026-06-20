@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using UnifiedRewards.Messaging;
+using UnifiedRewards.Messaging.Events;
 using UnifiedRewards.ReimbursementWorkflow.Domain;
-using UnifiedRewards.ReimbursementWorkflow.Integration;
 using UnifiedRewards.ReimbursementWorkflow.Persistence;
 
 namespace UnifiedRewards.ReimbursementWorkflow.Controllers;
@@ -16,12 +17,12 @@ public sealed class ClaimsController : ControllerBase
     public const string TenantClaim = "tenant_id";
 
     private readonly ReimbursementDbContext _db;
-    private readonly PayrollClient _payroll;
+    private readonly IEventBus _bus;
 
-    public ClaimsController(ReimbursementDbContext db, PayrollClient payroll)
+    public ClaimsController(ReimbursementDbContext db, IEventBus bus)
     {
         _db = db;
-        _payroll = payroll;
+        _bus = bus;
     }
 
     private Guid TenantId => Guid.TryParse(User.FindFirst(TenantClaim)?.Value, out var t) ? t : Guid.Empty;
@@ -36,7 +37,7 @@ public sealed class ClaimsController : ControllerBase
     }
 
     private static ClaimDto ToDto(Claim c) => new(
-        c.Id, c.EmployeeId, (int)c.Type, c.Amount, c.Description, (int)c.Status, c.ReviewerId, c.DecisionNotes,
+        c.Id, c.EmployeeId, (int)c.Type, c.Amount, c.CurrencyCode, c.Description, (int)c.Status, c.ReviewerId, c.DecisionNotes,
         c.SettlementReference, c.SubmittedAtUtc, c.DecisionAtUtc, c.SettledAtUtc,
         c.History.OrderBy(h => h.OccurredAtUtc).Select(h => new ClaimTransitionDto((int?)h.FromStatus, (int)h.ToStatus, h.ActorId, h.Notes, h.OccurredAtUtc)).ToList());
 
@@ -44,8 +45,10 @@ public sealed class ClaimsController : ControllerBase
     [Authorize(Roles = "Employee,Manager")]
     public async Task<ActionResult<ClaimDto>> Submit(SubmitClaimRequest req, CancellationToken ct)
     {
-        var claim = Claim.Submit(TenantId, CurrentUserId, (ClaimType)req.Type, req.Amount, req.Description);
+        var claim = Claim.Submit(TenantId, CurrentUserId, (ClaimType)req.Type, req.Amount, req.Description, req.CurrencyCode);
         _db.Claims.Add(claim);
+        // Stage the event in the SAME unit of work as the claim (transactional outbox), then commit both.
+        await _bus.PublishAsync(new ClaimSubmitted(claim.Id, claim.EmployeeId, (int)claim.Type, claim.Amount, claim.SubmittedAtUtc), TenantId, ct);
         await _db.SaveChangesAsync(ct);
         return CreatedAtAction(nameof(GetById), new { id = claim.Id }, ToDto(claim));
     }
@@ -53,25 +56,33 @@ public sealed class ClaimsController : ControllerBase
     [HttpPost("{id:guid}/approve")]
     [Authorize(Roles = Reviewers)]
     public Task<ActionResult<ClaimDto>> Approve(Guid id, [FromBody] DecisionRequest? body, CancellationToken ct)
-        => Decide(id, c => c.Approve(CurrentUserId, body?.Notes), ct);
+        => Decide(id, c => c.Approve(CurrentUserId, body?.Notes),
+                  c => new ClaimApproved(c.Id, c.EmployeeId, CurrentUserId, c.Amount, DateTime.UtcNow), ct);
 
     [HttpPost("{id:guid}/reject")]
     [Authorize(Roles = Reviewers)]
     public Task<ActionResult<ClaimDto>> Reject(Guid id, [FromBody] DecisionRequest? body, CancellationToken ct)
-        => Decide(id, c => c.Reject(CurrentUserId, body?.Notes), ct);
+        => Decide(id, c => c.Reject(CurrentUserId, body?.Notes),
+                  c => new ClaimRejected(c.Id, c.EmployeeId, CurrentUserId, body?.Notes, DateTime.UtcNow), ct);
 
-    private async Task<ActionResult<ClaimDto>> Decide(Guid id, Action<Claim> action, CancellationToken ct)
+    private async Task<ActionResult<ClaimDto>> Decide(Guid id, Action<Claim> action, Func<Claim, object> eventFactory, CancellationToken ct)
     {
         var claim = await _db.Claims.Include(c => c.History).FirstOrDefaultAsync(c => c.Id == id && c.TenantId == TenantId, ct);
         if (claim is null) return NotFound();
         try { action(claim); }
         catch (InvalidClaimTransitionException ex) { return Conflict(new { title = ex.Message }); }
-        await _db.SaveChangesAsync(ct);
+        await _bus.PublishAsync(eventFactory(claim), TenantId, ct);   // staged in the same transaction
+        try { await _db.SaveChangesAsync(ct); }
+        catch (DbUpdateConcurrencyException)
+        {
+            return Conflict(new { title = "The claim was modified by another request. Please reload and retry." });
+        }
         return Ok(ToDto(claim));
     }
 
-    /// <summary>Settles an approved claim by ORCHESTRATING the Payroll Integration service
-    /// (request a settlement, wait for it to process, then close the claim). Finance only.</summary>
+    /// <summary>Requests settlement of an approved claim via the event-driven saga: publishes
+    /// SettlementRequested and returns 202. Payroll settles asynchronously and the claim is closed when
+    /// SettlementCompleted arrives (see SettlementCompletedHandler). Finance only.</summary>
     [HttpPost("{id:guid}/settle")]
     [Authorize(Roles = "Finance")]
     public async Task<ActionResult<ClaimDto>> Settle(Guid id, CancellationToken ct)
@@ -80,25 +91,10 @@ public sealed class ClaimsController : ControllerBase
         if (claim is null) return NotFound();
         if (claim.Status != ClaimStatus.Approved) return Conflict(new { title = "Only an approved claim can be settled." });
 
-        var auth = Request.Headers.Authorization.ToString();
-        var settlement = await _payroll.RequestSettlementAsync(claim.EmployeeId, claim.Amount, auth, ct);
-        if (settlement is null) return StatusCode(502, new { title = "Payroll service did not accept the settlement." });
-
-        // Wait for the asynchronous settlement to reach a terminal state (2=Succeeded, 3=Failed).
-        int? status = null;
-        for (var i = 0; i < 15; i++)
-        {
-            status = await _payroll.GetSettlementStatusAsync(settlement.Value.Id, auth, ct);
-            if (status is >= 2) break;
-            await Task.Delay(400, ct);
-        }
-
-        if (status != 2) return StatusCode(502, new { title = $"Settlement did not succeed (status {status}).", settlement.Value.Reference });
-
-        try { claim.Settle(CurrentUserId, settlement.Value.Reference); }
-        catch (InvalidClaimTransitionException ex) { return Conflict(new { title = ex.Message }); }
+        // No more synchronous call + polling — hand off to Payroll over the bus (staged in the outbox).
+        await _bus.PublishAsync(new SettlementRequested(claim.Id, claim.EmployeeId, claim.Amount, DateTime.UtcNow), TenantId, ct);
         await _db.SaveChangesAsync(ct);
-        return Ok(ToDto(claim));
+        return Accepted(ToDto(claim));   // 202: claim stays Approved; becomes Settled via the saga
     }
 
     [HttpGet]

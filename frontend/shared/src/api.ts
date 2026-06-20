@@ -1,8 +1,10 @@
 import { getToken } from './auth';
 
-// The backend API base. (In a real deployment this comes from build-time config.)
-// Points at the microservices API gateway (YARP). Monolith was http://localhost:5287/api/v1.
-export const API_BASE = 'http://localhost:5080/api';
+// Runtime config injected by /config.js (loaded before this bundle in index.html).
+// In Azure: override window.__URP_CONFIG__.apiBase to point at the ACA gateway FQDN.
+// Falls back to the local dev gateway so `dotnet run` + `npm start` still works out of the box.
+declare global { interface Window { __URP_CONFIG__?: { apiBase?: string } } }
+export const API_BASE = window.__URP_CONFIG__?.apiBase ?? 'http://localhost:5080/api';
 
 export class ApiError extends Error {
   constructor(public status: number, message: string) {

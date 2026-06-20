@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Banner, Button, Field, ApiError } from '@urp/shared';
+import { Banner, Button, Field, ApiError, API_BASE } from '@urp/shared';
 import { useAuth } from './AuthContext';
 
 export function Login() {
@@ -16,7 +16,7 @@ export function Login() {
     try {
       await login(email, password);
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : 'Login failed. Is the API running on :5287?');
+      setError(err instanceof ApiError ? err.message : `Login failed. Is the gateway running at ${API_BASE.replace('/api', '')}?`);
     } finally {
       setBusy(false);
     }

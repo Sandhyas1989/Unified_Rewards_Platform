@@ -4,7 +4,7 @@
   </defs>
 
   <text x="730" y="22" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1a18">Sequence 02 — Benefit Plan Configuration &amp; Enrollment</text>
-  <text x="730" y="38" text-anchor="middle" font-size="10" fill="#5F5E5A">ASP.NET Core 8 · MediatR CQRS · Benefits module · Cosmos DB + Redis cache (TTL 30 min) · EF Core 8</text>
+  <text x="730" y="38" text-anchor="middle" font-size="10" fill="#5F5E5A">ASP.NET Core 8 · Benefits Catalogue service · Plans &amp; Enrollments · Eligibility evaluation · EF Core 8 · SQLite</text>
 
   <!-- Header boxes -->
   <rect x="10" y="48" width="140" height="38" rx="6" fill="#F1EFE8" stroke="#888780"/>
@@ -21,22 +21,22 @@
 
   <rect x="475" y="48" width="140" height="38" rx="6" fill="#EEEDFE" stroke="#534AB7"/>
   <text x="545" y="64" text-anchor="middle" font-size="8" font-weight="600" fill="#3C3489">API Gateway</text>
-  <text x="545" y="76" text-anchor="middle" font-size="7" fill="#3C3489">Azure APIM</text>
+  <text x="545" y="76" text-anchor="middle" font-size="7" fill="#3C3489">YARP Gateway</text>
 
   <rect x="630" y="48" width="140" height="38" rx="6" fill="#E6F1FB" stroke="#185FA5"/>
   <text x="700" y="64" text-anchor="middle" font-size="8" font-weight="600" fill="#0C447C">Benefits Controller</text>
   <text x="700" y="76" text-anchor="middle" font-size="7" fill="#0C447C">ASP.NET Core 8</text>
 
   <rect x="785" y="48" width="140" height="38" rx="6" fill="#DCE9F8" stroke="#185FA5"/>
-  <text x="855" y="64" text-anchor="middle" font-size="8" font-weight="600" fill="#0C447C">MediatR Handler</text>
-  <text x="855" y="76" text-anchor="middle" font-size="7" fill="#0C447C">CQRS</text>
+  <text x="855" y="64" text-anchor="middle" font-size="8" font-weight="600" fill="#0C447C">Service Handler</text>
+  <text x="855" y="76" text-anchor="middle" font-size="7" fill="#0C447C">controller</text>
 
   <rect x="940" y="48" width="140" height="38" rx="6" fill="#ECE3F6" stroke="#6B4FA8"/>
   <text x="1010" y="64" text-anchor="middle" font-size="8" font-weight="600" fill="#4A2E7A">Eligibility Evaluator</text>
   <text x="1010" y="76" text-anchor="middle" font-size="7" fill="#4A2E7A">criteria</text>
 
   <rect x="1095" y="48" width="140" height="38" rx="6" fill="#FAEEDA" stroke="#854F0B"/>
-  <text x="1165" y="64" text-anchor="middle" font-size="8" font-weight="600" fill="#412402">EF Core · Cosmos/Redis</text>
+  <text x="1165" y="64" text-anchor="middle" font-size="8" font-weight="600" fill="#412402">EF Core · SQLite</text>
   <text x="1165" y="76" text-anchor="middle" font-size="7" fill="#412402">persistence</text>
 
   <rect x="1250" y="48" width="140" height="38" rx="6" fill="#FAECE7" stroke="#993C1D"/>
@@ -76,7 +76,7 @@
 
   <!-- CALL MediatR Handler->EF Core (y=230) -->
   <line x1="855" y1="230" x2="1165" y2="230" stroke="#555" stroke-width="1.1" marker-end="url(#arr)"/>
-  <text x="861" y="226" text-anchor="start" font-size="7.2" fill="#333">persist BenefitPlan (Cosmos DB)</text>
+  <text x="861" y="226" text-anchor="start" font-size="7.2" fill="#333">persist BenefitPlan (SQLite)</text>
 
   <!-- RETURN Benefits Controller->Benefits Portal (y=254) -->
   <line x1="700" y1="254" x2="390" y2="254" stroke="#555" stroke-width="1.1" stroke-dasharray="4 3" marker-end="url(#arr)"/>
@@ -104,11 +104,11 @@
 
   <!-- CALL MediatR Handler->EF Core (y=410) -->
   <line x1="855" y1="410" x2="1165" y2="410" stroke="#555" stroke-width="1.1" marker-end="url(#arr)"/>
-  <text x="861" y="406" text-anchor="start" font-size="7.2" fill="#333">check Redis cache (TTL 30 min)</text>
+  <text x="861" y="406" text-anchor="start" font-size="7.2" fill="#333">query SQLite (EF Core)</text>
 
   <!-- SELF EF Core (y=434) -->
   <rect x="1173" y="422" width="190" height="18" rx="3" fill="#FFF8E6" stroke="#D9C36B"/>
-  <text x="1179" y="435" font-size="7" fill="#6b5a18">cache MISS -&gt; read Cosmos DB</text>
+  <text x="1179" y="435" font-size="7" fill="#6b5a18">filter eligible plans</text>
 
   <!-- CALL MediatR Handler->Eligibility Evaluator (y=458) -->
   <line x1="855" y1="458" x2="1010" y2="458" stroke="#555" stroke-width="1.1" marker-end="url(#arr)"/>

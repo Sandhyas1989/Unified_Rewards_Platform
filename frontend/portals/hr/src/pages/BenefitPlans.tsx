@@ -56,7 +56,7 @@ export function BenefitPlans() {
           columns={[
             { header: 'Name', render: (p) => p.name },
             { header: 'Category', render: (p) => BenefitCategoryLabels[p.category] },
-            { header: 'Monthly', render: (p) => money(p.monthlyCost) },
+            { header: 'Monthly', render: (p) => money(p.monthlyCost, p.currencyCode) },
             { header: 'Active', render: (p) => <Badge tone={p.isActive ? 'good' : 'neutral'}>{p.isActive ? 'Active' : 'Inactive'}</Badge> },
           ]}
         />

@@ -4,4 +4,3 @@ public sealed record BenefitPlanDto(Guid Id, string Name, string Description, in
 public sealed record CreatePlanRequest(string Name, string Description, int Category, decimal MonthlyCost);
 public sealed record BenefitEnrollmentDto(Guid Id, Guid EmployeeId, Guid BenefitPlanId, string BenefitPlanName, DateOnly CoverageStartDate, int Status);
 public sealed record EnrollRequest(Guid BenefitPlanId, DateOnly CoverageStartDate);
-public sealed record PagedResult<T>(IReadOnlyList<T> Items, int Page, int PageSize, int TotalCount);

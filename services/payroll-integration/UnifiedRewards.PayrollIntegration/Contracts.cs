@@ -13,5 +13,3 @@ public sealed record PayslipDto(Guid Id, Guid EmployeeId, int Year, int Month,
 
 public sealed record GeneratePayslipRequest(Guid EmployeeId, int Year, int Month,
     decimal GrossMonthly, decimal TotalDeductionsMonthly, decimal NetMonthly);
-
-public sealed record PagedResult<T>(IReadOnlyList<T> Items, int Page, int PageSize, int TotalCount);

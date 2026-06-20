@@ -66,6 +66,7 @@ export function Banner({ kind, message }: { kind: 'error' | 'success'; message: 
   return <div className={`urp-banner urp-banner--${kind}`}>{message}</div>;
 }
 
-export function money(n: number): string {
-  return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(n);
+export function money(n: number, currencyCode = 'INR'): string {
+  const locale = currencyCode === 'INR' ? 'en-IN' : 'en-US';
+  return new Intl.NumberFormat(locale, { style: 'currency', currency: currencyCode, maximumFractionDigits: 0 }).format(n);
 }

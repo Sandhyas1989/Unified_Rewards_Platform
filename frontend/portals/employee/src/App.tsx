@@ -3,12 +3,14 @@ import { Benefits } from './pages/Benefits';
 import { Claims } from './pages/Claims';
 import { Payslips } from './pages/Payslips';
 import { Compensation } from './pages/Compensation';
+import { Promotions } from './pages/Promotions';
 
 const TABS = [
   { key: 'benefits', label: 'Benefits', render: () => <Benefits /> },
   { key: 'claims', label: 'Claims', render: () => <Claims /> },
   { key: 'payslips', label: 'Payslips', render: () => <Payslips /> },
   { key: 'compensation', label: 'My Compensation', render: () => <Compensation /> },
+  { key: 'promotions', label: 'Bonus Campaigns', render: () => <Promotions /> },
 ];
 
 export default function EmployeeApp() {

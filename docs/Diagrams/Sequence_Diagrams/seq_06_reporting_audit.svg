@@ -4,7 +4,7 @@
   </defs>
 
   <text x="730" y="22" text-anchor="middle" font-size="14" font-weight="700">Sequence 06 — Reporting &amp; Audit Trail</text>
-  <text x="730" y="38" text-anchor="middle" font-size="10" fill="#5F5E5A">ASP.NET Core 8 · MediatR CQRS · Reporting &amp; Audit module · LINQ aggregation · ClosedXML export · Event Hub audit</text>
+  <text x="730" y="38" text-anchor="middle" font-size="10" fill="#5F5E5A">ASP.NET Core 8 · Reporting &amp; Compliance service · LINQ aggregation · ClosedXML export · EventBus audit trail · SQLite</text>
 
   <!-- Lifelines -->
   <line x1="80" y1="86" x2="80" y2="428" stroke="#C8C8C8" stroke-width="1" stroke-dasharray="3 3"/>
@@ -28,15 +28,15 @@
 
   <rect x="320" y="48" width="140" height="38" rx="6" fill="#EEEDFE" stroke="#534AB7"/>
   <text x="390" y="64" text-anchor="middle" font-size="8" font-weight="600" fill="#3C3489">API Gateway</text>
-  <text x="390" y="76" text-anchor="middle" font-size="7" fill="#3C3489">Azure APIM</text>
+  <text x="390" y="76" text-anchor="middle" font-size="7" fill="#3C3489">YARP Gateway</text>
 
   <rect x="475" y="48" width="140" height="38" rx="6" fill="#E6F1FB" stroke="#185FA5"/>
   <text x="545" y="64" text-anchor="middle" font-size="8" font-weight="600" fill="#0C447C">Reporting Controller</text>
   <text x="545" y="76" text-anchor="middle" font-size="7" fill="#0C447C">ASP.NET Core 8</text>
 
   <rect x="630" y="48" width="140" height="38" rx="6" fill="#DCE9F8" stroke="#185FA5"/>
-  <text x="700" y="64" text-anchor="middle" font-size="8" font-weight="600" fill="#0C447C">MediatR Handler</text>
-  <text x="700" y="76" text-anchor="middle" font-size="7" fill="#0C447C">CQRS</text>
+  <text x="700" y="64" text-anchor="middle" font-size="8" font-weight="600" fill="#0C447C">Service Handler</text>
+  <text x="700" y="76" text-anchor="middle" font-size="7" fill="#0C447C">controller</text>
 
   <rect x="785" y="48" width="140" height="38" rx="6" fill="#ECE3F6" stroke="#6B4FA8"/>
   <text x="855" y="64" text-anchor="middle" font-size="8" font-weight="600" fill="#4A2E7A">Source Services</text>
@@ -47,12 +47,12 @@
   <text x="1010" y="76" text-anchor="middle" font-size="7" fill="#4A2E7A">xlsx / pdf</text>
 
   <rect x="1095" y="48" width="140" height="38" rx="6" fill="#FAEEDA" stroke="#854F0B"/>
-  <text x="1165" y="64" text-anchor="middle" font-size="8" font-weight="600" fill="#412402">EF Core · Azure SQL</text>
+  <text x="1165" y="64" text-anchor="middle" font-size="8" font-weight="600" fill="#412402">EF Core · SQLite</text>
   <text x="1165" y="76" text-anchor="middle" font-size="7" fill="#412402">persistence</text>
 
   <rect x="1250" y="48" width="140" height="38" rx="6" fill="#FAECE7" stroke="#993C1D"/>
-  <text x="1320" y="64" text-anchor="middle" font-size="8" font-weight="600" fill="#4A1B0C">Event Hub</text>
-  <text x="1320" y="76" text-anchor="middle" font-size="7" fill="#4A1B0C">audit stream</text>
+  <text x="1320" y="64" text-anchor="middle" font-size="8" font-weight="600" fill="#4A1B0C">Event Bus</text>
+  <text x="1320" y="76" text-anchor="middle" font-size="7" fill="#4A1B0C">SQLite bus · audit</text>
 
   <!-- Messages -->
   <!-- PHASE: Continuous — Audit Trail Ingestion  (y=104) -->

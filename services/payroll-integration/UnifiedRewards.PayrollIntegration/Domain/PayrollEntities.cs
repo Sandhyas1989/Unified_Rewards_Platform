@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace UnifiedRewards.PayrollIntegration.Domain;
 
 public enum SettlementStatus { Pending = 0, Processing = 1, Succeeded = 2, Failed = 3 }
@@ -7,8 +9,10 @@ public class SettlementRequest
 {
     public Guid Id { get; set; } = Guid.NewGuid();
     public Guid TenantId { get; set; }
+    public Guid ClaimId { get; set; }   // correlation: the reimbursement claim this settlement covers
     public Guid EmployeeId { get; set; }
     public decimal Amount { get; set; }
+    public string CurrencyCode { get; set; } = "INR";
     public string Reference { get; set; } = string.Empty;
     public SettlementStatus Status { get; private set; } = SettlementStatus.Pending;
     public int Attempts { get; private set; }
@@ -16,6 +20,9 @@ public class SettlementRequest
     public string? LastError { get; private set; }
     public DateTime RequestedAtUtc { get; set; } = DateTime.UtcNow;
     public DateTime? CompletedAtUtc { get; private set; }
+
+    [Timestamp]
+    public byte[] RowVersion { get; set; } = Array.Empty<byte>();
 
     public void MarkProcessing() { Status = SettlementStatus.Processing; Attempts++; }
     public void MarkSucceeded(string confirmation) { Status = SettlementStatus.Succeeded; PayrollConfirmation = confirmation; CompletedAtUtc = DateTime.UtcNow; }

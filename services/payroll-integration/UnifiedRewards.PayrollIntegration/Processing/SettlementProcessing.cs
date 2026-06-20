@@ -1,5 +1,7 @@
 using System.Threading.Channels;
 using Microsoft.EntityFrameworkCore;
+using UnifiedRewards.Messaging;
+using UnifiedRewards.Messaging.Events;
 using UnifiedRewards.PayrollIntegration.Domain;
 using UnifiedRewards.PayrollIntegration.Integration;
 using UnifiedRewards.PayrollIntegration.Persistence;
@@ -33,6 +35,7 @@ public sealed class SettlementProcessor
         using var scope = _scopeFactory.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<PayrollDbContext>();
         var gateway = scope.ServiceProvider.GetRequiredService<IPayrollGateway>();
+        var bus = scope.ServiceProvider.GetRequiredService<IEventBus>();
 
         var s = await db.Settlements.FirstOrDefaultAsync(x => x.Id == settlementId, ct);
         if (s is null) { _logger.LogWarning("Settlement {Id} not found.", settlementId); return; }
@@ -46,6 +49,7 @@ public sealed class SettlementProcessor
 
         s.MarkProcessing();
         await db.SaveChangesAsync(ct);
+
         try
         {
             var ok = await gateway.PushSettlementAsync(s.EmployeeId, s.Amount, s.Reference, ct);
@@ -57,6 +61,12 @@ public sealed class SettlementProcessor
             s.MarkFailed(ex.Message);
             _logger.LogError(ex, "Settlement {Ref} failed after resilience.", s.Reference);
         }
+
+        // Stage SettlementCompleted in the same transaction as the final status row — atomic with the DB state change.
+        await bus.PublishAsync(
+            new SettlementCompleted(s.ClaimId, s.Id, s.Status == SettlementStatus.Succeeded,
+                s.PayrollConfirmation ?? string.Empty, s.LastError, DateTime.UtcNow),
+            s.TenantId, ct);
         await db.SaveChangesAsync(ct);
     }
 }
@@ -76,7 +86,14 @@ public sealed class SettlementBackgroundService : BackgroundService
     {
         await foreach (var id in _queue.Reader.ReadAllAsync(stoppingToken))
         {
-            try { await _processor.ProcessAsync(id, stoppingToken); }
+            try
+            {
+                // Use a per-item timeout rather than stoppingToken so a graceful shutdown does not
+                // orphan a settlement mid-payment (claim stuck in Processing with no SettlementCompleted).
+                using var itemCts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
+                await _processor.ProcessAsync(id, itemCts.Token);
+            }
+            catch (OperationCanceledException) { _logger.LogWarning("Settlement {Id} timed out (>30 s); will retry on next start.", id); }
             catch (Exception ex) { _logger.LogError(ex, "Error processing settlement {Id}", id); }
         }
     }

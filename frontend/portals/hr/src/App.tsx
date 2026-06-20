@@ -9,7 +9,7 @@ const TABS = [
   { key: 'users', label: 'Users', render: () => <Users /> },
   { key: 'plans', label: 'Benefit Plans', render: () => <BenefitPlans /> },
   { key: 'comp', label: 'Compensation', render: () => <Compensation /> },
-  { key: 'promotions', label: 'Promotion Committee', render: () => <Promotions /> },
+  { key: 'promotions', label: 'Bonus Campaigns', render: () => <Promotions /> },
   { key: 'audit', label: 'Audit Trail', render: () => <Audit /> },
 ];
 

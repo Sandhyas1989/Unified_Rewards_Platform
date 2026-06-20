@@ -5,6 +5,8 @@ using UnifiedRewards.DocumentProcessing.Domain;
 using UnifiedRewards.DocumentProcessing.Ocr;
 using UnifiedRewards.DocumentProcessing.Persistence;
 using UnifiedRewards.DocumentProcessing.Storage;
+using UnifiedRewards.Messaging;
+using UnifiedRewards.Messaging.Events;
 
 namespace UnifiedRewards.DocumentProcessing.Controllers;
 
@@ -18,12 +20,14 @@ public sealed class DocumentsController : ControllerBase
     private readonly DocumentDbContext _db;
     private readonly IFileStorage _storage;
     private readonly IOcrEngine _ocr;
+    private readonly IEventBus _bus;
 
-    public DocumentsController(DocumentDbContext db, IFileStorage storage, IOcrEngine ocr)
+    public DocumentsController(DocumentDbContext db, IFileStorage storage, IOcrEngine ocr, IEventBus bus)
     {
         _db = db;
         _storage = storage;
         _ocr = ocr;
+        _bus = bus;
     }
 
     private Guid TenantId =>
@@ -62,6 +66,16 @@ public sealed class DocumentsController : ControllerBase
             ExtractedAmount = ocr?.ExtractedAmount,
         };
         _db.Documents.Add(doc);
+
+        // Tell the Reimbursement Workflow that this claim's receipt is processed (drives it to "In Review").
+        // Staged in the same transaction as the document (outbox), then dispatched to the bus.
+        if (doc.ClaimId != Guid.Empty)
+        {
+            await _bus.PublishAsync(
+                new DocumentProcessed(doc.ClaimId, doc.Id, doc.ExtractedAmount, doc.OcrConfidence, DateTime.UtcNow),
+                TenantId, ct);
+        }
+
         await _db.SaveChangesAsync(ct);
         return CreatedAtAction(nameof(GetById), new { id = doc.Id }, ToDto(doc));
     }
