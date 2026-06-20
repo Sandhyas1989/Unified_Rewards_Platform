@@ -4,13 +4,14 @@ import { AuthProvider, useAuth } from './AuthContext';
 import { Login } from './Login';
 import { Layout } from './Layout';
 
-// Each portal is a federated remote, loaded on demand based on the user's role.
+// Each portal is code-split and loaded on demand based on the user's role. The portal
+// sources are bundled directly into the shell (single-origin build for static hosting).
 // Keys are the numeric UserRole values: Employee=0, Manager=1, HrAdmin=2, Finance=3.
 const PORTALS: Record<number, React.LazyExoticComponent<React.ComponentType>> = {
-  0: React.lazy(() => import('employee/App')),
-  1: React.lazy(() => import('manager/App')),
-  2: React.lazy(() => import('hr/App')),
-  3: React.lazy(() => import('finance/App')),
+  0: React.lazy(() => import('../../portals/employee/src/App')),
+  1: React.lazy(() => import('../../portals/manager/src/App')),
+  2: React.lazy(() => import('../../portals/hr/src/App')),
+  3: React.lazy(() => import('../../portals/finance/src/App')),
 };
 
 class RemoteBoundary extends React.Component<{ children: React.ReactNode }, { failed: boolean }> {

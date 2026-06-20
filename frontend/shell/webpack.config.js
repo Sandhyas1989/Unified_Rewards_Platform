@@ -10,7 +10,8 @@ module.exports = (_, argv) => {
     mode: isProd ? 'production' : 'development',
     devtool: isProd ? false : 'eval-source-map',
     output: {
-      publicPath: 'http://localhost:3000/',
+      // Local dev serves from :3000; production is served from the Static Web App root.
+      publicPath: isProd ? '/' : 'http://localhost:3000/',
       clean: true,
     },
     resolve: {
@@ -43,19 +44,8 @@ module.exports = (_, argv) => {
       headers: { 'Access-Control-Allow-Origin': '*' },
     },
     plugins: [
-      new ModuleFederationPlugin({
-        name: 'shell',
-        remotes: {
-          employee: 'employee@http://localhost:3001/remoteEntry.js',
-          manager: 'manager@http://localhost:3002/remoteEntry.js',
-          hr: 'hr@http://localhost:3003/remoteEntry.js',
-          finance: 'finance@http://localhost:3004/remoteEntry.js',
-        },
-        shared: {
-          react: { singleton: true, requiredVersion: deps.react },
-          'react-dom': { singleton: true, requiredVersion: deps['react-dom'] },
-        },
-      }),
+      // Portals are bundled directly into the shell (see src/App.tsx) for a single-origin
+      // static deployment, so no Module Federation / remote dev servers are needed.
       new HtmlWebpackPlugin({ template: './public/index.html' }),
     ],
   };
