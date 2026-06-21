@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.RateLimiting;
 // API Gateway for the Unified Rewards microservices — YARP reverse proxy.
 // Stands in for Azure API Management locally (zero-install: just `dotnet run`).
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddApplicationInsightsTelemetry();
 
 builder.Services.AddReverseProxy()
     .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));

@@ -11,6 +11,7 @@ using UnifiedRewards.Messaging;
 // Employee Profile Service — real logic ported from the monolith's User Management module.
 // Owns its own SQLite database (database-per-service). Runs as a plain process (zero-install).
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddApplicationInsightsTelemetry();
 
 // Deterministic DB location (under the app base dir) so it doesn't depend on the launch working directory.
 var dbDir  = Environment.GetEnvironmentVariable("DB_DIR") ?? AppContext.BaseDirectory;

@@ -17,11 +17,15 @@ public sealed class ClaimEventLogHandler : IIntegrationEventHandler
     private static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web);
     private readonly ReportingDbContext _db;
     private readonly ILogger<ClaimEventLogHandler> _logger;
+    private readonly AuditStreamPublisher _stream;
+    private readonly EmailNotifier _notifier;
 
-    public ClaimEventLogHandler(ReportingDbContext db, ILogger<ClaimEventLogHandler> logger)
+    public ClaimEventLogHandler(ReportingDbContext db, ILogger<ClaimEventLogHandler> logger, AuditStreamPublisher stream, EmailNotifier notifier)
     {
         _db = db;
         _logger = logger;
+        _stream = stream;
+        _notifier = notifier;
     }
 
     public async Task HandleAsync(IntegrationEvent @event, CancellationToken ct)
@@ -43,6 +47,8 @@ public sealed class ClaimEventLogHandler : IIntegrationEventHandler
 
         _db.AuditEntries.Add(entry);
         await _db.SaveChangesAsync(ct);
+        await _stream.PublishAsync(entry, ct);
+        await _notifier.NotifyAsync($"Claim {@event.EventType}", $"Claim {entry.ClaimId} - {@event.EventType} (amount {entry.Amount}, actor {entry.ActorId}).", ct);
         _logger.LogInformation("Audit: {EventType} for claim {ClaimId} (tenant {TenantId}).",
             @event.EventType, entry.ClaimId, @event.TenantId);
     }

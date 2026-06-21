@@ -13,6 +13,7 @@ using UnifiedRewards.PayrollIntegration.Processing;
 // Payroll Integration Service — real logic ported from the monolith's Payroll module:
 // Polly-resilient external push + asynchronous settlement worker. Owns its own SQLite database.
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddApplicationInsightsTelemetry();
 
 var dbDir  = Environment.GetEnvironmentVariable("DB_DIR") ?? AppContext.BaseDirectory;
 var dbPath = Path.Combine(dbDir, "payroll-integration.db");

@@ -12,6 +12,7 @@ using UnifiedRewards.Messaging;
 // Document & Receipt Processing Service — real logic ported from the monolith's Claims & Documents
 // (file storage + OCR). Owns its own SQLite database (database-per-service). Zero-install: dotnet run.
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddApplicationInsightsTelemetry();
 
 var dbDir  = Environment.GetEnvironmentVariable("DB_DIR") ?? AppContext.BaseDirectory;
 var dbPath = Path.Combine(dbDir, "document-processing.db");

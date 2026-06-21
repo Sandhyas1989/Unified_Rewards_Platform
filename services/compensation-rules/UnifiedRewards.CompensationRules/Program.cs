@@ -9,6 +9,7 @@ using UnifiedRewards.CompensationRules.Rules;
 // Compensation Rules Engine Service — ported from the monolith's Compensation module (NRules).
 // Owns its own SQLite database.
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddApplicationInsightsTelemetry();
 
 var dbDir  = Environment.GetEnvironmentVariable("DB_DIR") ?? AppContext.BaseDirectory;
 var dbPath = Path.Combine(dbDir, "compensation-rules.db");

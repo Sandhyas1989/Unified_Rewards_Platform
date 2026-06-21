@@ -8,6 +8,7 @@ using UnifiedRewards.BenefitsCatalogue.Persistence;
 
 // Benefits Catalogue Service — ported from the monolith's Benefits module. Owns its own SQLite DB.
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddApplicationInsightsTelemetry();
 
 var dbDir  = Environment.GetEnvironmentVariable("DB_DIR") ?? AppContext.BaseDirectory;
 var dbPath = Path.Combine(dbDir, "benefits-catalogue.db");

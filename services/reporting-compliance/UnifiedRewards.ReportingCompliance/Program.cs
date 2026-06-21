@@ -10,6 +10,9 @@ using UnifiedRewards.ReportingCompliance.Persistence;
 
 // Reporting & Compliance Service — event-sourced audit store + cross-service reports + Excel export.
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddApplicationInsightsTelemetry();
+builder.Services.AddSingleton<UnifiedRewards.ReportingCompliance.Handlers.AuditStreamPublisher>();
+builder.Services.AddSingleton<UnifiedRewards.ReportingCompliance.Handlers.EmailNotifier>();
 
 // Own audit DB (database-per-service). No outbox needed — this service only consumes, never publishes.
 var dbDir  = Environment.GetEnvironmentVariable("DB_DIR") ?? AppContext.BaseDirectory;

@@ -11,6 +11,7 @@ using UnifiedRewards.ReimbursementWorkflow.Persistence;
 // Reimbursement Workflow Service — ported from the monolith's Claims state machine, PLUS it
 // orchestrates the Payroll Integration service (the reimbursement saga). Owns its own SQLite DB.
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddApplicationInsightsTelemetry();
 
 var dbDir  = Environment.GetEnvironmentVariable("DB_DIR") ?? AppContext.BaseDirectory;
 var dbPath = Path.Combine(dbDir, "reimbursement-workflow.db");
