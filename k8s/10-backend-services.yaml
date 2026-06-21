@@ -1,0 +1,266 @@
+# Backend services (7) for AKS. Images come from your ACR — replace `urpprodacr.azurecr.io`
+# if your registry differs (the pipeline also pins the exact tag with `kubectl set image`).
+#
+# NOTE on replicas: these services use SQLite on an emptyDir (same as the Container Apps demo),
+# so each replica has its OWN database. They run at replicas: 1 until you migrate to Azure SQL
+# (see the code-change checklist). After that, raise replicas / add an HPA (HLD target 2–10).
+# ─────────────────────────────────────────────────────────────────────────────────────────────
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: urp-employee-profile, namespace: urp }
+spec:
+  replicas: 1
+  selector: { matchLabels: { app: urp-employee-profile } }
+  template:
+    metadata: { labels: { app: urp-employee-profile } }
+    spec:
+      containers:
+        - name: app
+          image: urpprodacr.azurecr.io/employee-profile:latest
+          ports: [{ containerPort: 80 }]
+          env:
+            - { name: ASPNETCORE_URLS, value: "http://+:80" }
+            - { name: ASPNETCORE_ENVIRONMENT, value: "Azure" }
+            - { name: DB_DIR, value: "/app/data" }
+            - { name: Messaging__Provider, value: "ServiceBus" }
+            - { name: Messaging__ServiceBus__Topic, value: "urp-events" }
+            - name: Messaging__ServiceBus__ConnectionString
+              valueFrom: { secretKeyRef: { name: urp-secrets, key: ServiceBusConnection } }
+          volumeMounts: [{ name: data, mountPath: /app/data }]
+          readinessProbe: { httpGet: { path: /health, port: 80 }, initialDelaySeconds: 5, periodSeconds: 10 }
+          livenessProbe:  { httpGet: { path: /health, port: 80 }, initialDelaySeconds: 10, periodSeconds: 30 }
+          resources:
+            requests: { cpu: "100m", memory: "256Mi" }
+            limits:   { cpu: "500m", memory: "512Mi" }
+      volumes: [{ name: data, emptyDir: {} }]
+---
+apiVersion: v1
+kind: Service
+metadata: { name: urp-employee-profile, namespace: urp }
+spec:
+  selector: { app: urp-employee-profile }
+  ports: [{ port: 80, targetPort: 80 }]
+# ─────────────────────────────────────────────────────────────────────────────────────────────
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: urp-benefits-catalogue, namespace: urp }
+spec:
+  replicas: 1
+  selector: { matchLabels: { app: urp-benefits-catalogue } }
+  template:
+    metadata: { labels: { app: urp-benefits-catalogue } }
+    spec:
+      containers:
+        - name: app
+          image: urpprodacr.azurecr.io/benefits-catalogue:latest
+          ports: [{ containerPort: 80 }]
+          env:
+            - { name: ASPNETCORE_URLS, value: "http://+:80" }
+            - { name: ASPNETCORE_ENVIRONMENT, value: "Azure" }
+            - { name: DB_DIR, value: "/app/data" }
+          volumeMounts: [{ name: data, mountPath: /app/data }]
+          readinessProbe: { httpGet: { path: /health, port: 80 }, initialDelaySeconds: 5, periodSeconds: 10 }
+          livenessProbe:  { httpGet: { path: /health, port: 80 }, initialDelaySeconds: 10, periodSeconds: 30 }
+          resources:
+            requests: { cpu: "100m", memory: "256Mi" }
+            limits:   { cpu: "500m", memory: "512Mi" }
+      volumes: [{ name: data, emptyDir: {} }]
+---
+apiVersion: v1
+kind: Service
+metadata: { name: urp-benefits-catalogue, namespace: urp }
+spec:
+  selector: { app: urp-benefits-catalogue }
+  ports: [{ port: 80, targetPort: 80 }]
+# ─────────────────────────────────────────────────────────────────────────────────────────────
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: urp-compensation-rules, namespace: urp }
+spec:
+  replicas: 1
+  selector: { matchLabels: { app: urp-compensation-rules } }
+  template:
+    metadata: { labels: { app: urp-compensation-rules } }
+    spec:
+      containers:
+        - name: app
+          image: urpprodacr.azurecr.io/compensation-rules:latest
+          ports: [{ containerPort: 80 }]
+          env:
+            - { name: ASPNETCORE_URLS, value: "http://+:80" }
+            - { name: ASPNETCORE_ENVIRONMENT, value: "Azure" }
+            - { name: DB_DIR, value: "/app/data" }
+          volumeMounts: [{ name: data, mountPath: /app/data }]
+          readinessProbe: { httpGet: { path: /health, port: 80 }, initialDelaySeconds: 5, periodSeconds: 10 }
+          livenessProbe:  { httpGet: { path: /health, port: 80 }, initialDelaySeconds: 10, periodSeconds: 30 }
+          resources:
+            requests: { cpu: "100m", memory: "256Mi" }
+            limits:   { cpu: "500m", memory: "512Mi" }
+      volumes: [{ name: data, emptyDir: {} }]
+---
+apiVersion: v1
+kind: Service
+metadata: { name: urp-compensation-rules, namespace: urp }
+spec:
+  selector: { app: urp-compensation-rules }
+  ports: [{ port: 80, targetPort: 80 }]
+# ─────────────────────────────────────────────────────────────────────────────────────────────
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: urp-reimbursement-workflow, namespace: urp }
+spec:
+  replicas: 1
+  selector: { matchLabels: { app: urp-reimbursement-workflow } }
+  template:
+    metadata: { labels: { app: urp-reimbursement-workflow } }
+    spec:
+      containers:
+        - name: app
+          image: urpprodacr.azurecr.io/reimbursement-workflow:latest
+          ports: [{ containerPort: 80 }]
+          env:
+            - { name: ASPNETCORE_URLS, value: "http://+:80" }
+            - { name: ASPNETCORE_ENVIRONMENT, value: "Azure" }
+            - { name: DB_DIR, value: "/app/data" }
+            - { name: Messaging__Provider, value: "ServiceBus" }
+            - { name: Messaging__ServiceBus__Topic, value: "urp-events" }
+            - { name: Messaging__ServiceBus__Subscription, value: "reimbursement-workflow" }
+            - name: Messaging__ServiceBus__ConnectionString
+              valueFrom: { secretKeyRef: { name: urp-secrets, key: ServiceBusConnection } }
+          volumeMounts: [{ name: data, mountPath: /app/data }]
+          readinessProbe: { httpGet: { path: /health, port: 80 }, initialDelaySeconds: 5, periodSeconds: 10 }
+          livenessProbe:  { httpGet: { path: /health, port: 80 }, initialDelaySeconds: 10, periodSeconds: 30 }
+          resources:
+            requests: { cpu: "100m", memory: "256Mi" }
+            limits:   { cpu: "500m", memory: "512Mi" }
+      volumes: [{ name: data, emptyDir: {} }]
+---
+apiVersion: v1
+kind: Service
+metadata: { name: urp-reimbursement-workflow, namespace: urp }
+spec:
+  selector: { app: urp-reimbursement-workflow }
+  ports: [{ port: 80, targetPort: 80 }]
+# ─────────────────────────────────────────────────────────────────────────────────────────────
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: urp-document-processing, namespace: urp }
+spec:
+  replicas: 1
+  selector: { matchLabels: { app: urp-document-processing } }
+  template:
+    metadata: { labels: { app: urp-document-processing } }
+    spec:
+      containers:
+        - name: app
+          image: urpprodacr.azurecr.io/document-processing:latest
+          ports: [{ containerPort: 80 }]
+          env:
+            - { name: ASPNETCORE_URLS, value: "http://+:80" }
+            - { name: ASPNETCORE_ENVIRONMENT, value: "Azure" }
+            - { name: DB_DIR, value: "/app/data" }
+            - { name: Messaging__Provider, value: "ServiceBus" }
+            - { name: Messaging__ServiceBus__Topic, value: "urp-events" }
+            - { name: Storage__Provider, value: "AzureBlob" }
+            - { name: Storage__AzureBlob__Container, value: "receipts" }
+            - name: Messaging__ServiceBus__ConnectionString
+              valueFrom: { secretKeyRef: { name: urp-secrets, key: ServiceBusConnection } }
+            - name: Storage__AzureBlob__ConnectionString
+              valueFrom: { secretKeyRef: { name: urp-secrets, key: BlobConnection } }
+          volumeMounts: [{ name: data, mountPath: /app/data }]
+          readinessProbe: { httpGet: { path: /health, port: 80 }, initialDelaySeconds: 5, periodSeconds: 10 }
+          livenessProbe:  { httpGet: { path: /health, port: 80 }, initialDelaySeconds: 10, periodSeconds: 30 }
+          resources:
+            requests: { cpu: "250m", memory: "512Mi" }
+            limits:   { cpu: "1",    memory: "1Gi" }
+      volumes: [{ name: data, emptyDir: {} }]
+---
+apiVersion: v1
+kind: Service
+metadata: { name: urp-document-processing, namespace: urp }
+spec:
+  selector: { app: urp-document-processing }
+  ports: [{ port: 80, targetPort: 80 }]
+# ─────────────────────────────────────────────────────────────────────────────────────────────
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: urp-payroll-integration, namespace: urp }
+spec:
+  replicas: 1
+  selector: { matchLabels: { app: urp-payroll-integration } }
+  template:
+    metadata: { labels: { app: urp-payroll-integration } }
+    spec:
+      containers:
+        - name: app
+          image: urpprodacr.azurecr.io/payroll-integration:latest
+          ports: [{ containerPort: 80 }]
+          env:
+            - { name: ASPNETCORE_URLS, value: "http://+:80" }
+            - { name: ASPNETCORE_ENVIRONMENT, value: "Azure" }
+            - { name: DB_DIR, value: "/app/data" }
+            - { name: Messaging__Provider, value: "ServiceBus" }
+            - { name: Messaging__ServiceBus__Topic, value: "urp-events" }
+            - { name: Messaging__ServiceBus__Subscription, value: "payroll-integration" }
+            - name: Messaging__ServiceBus__ConnectionString
+              valueFrom: { secretKeyRef: { name: urp-secrets, key: ServiceBusConnection } }
+          volumeMounts: [{ name: data, mountPath: /app/data }]
+          readinessProbe: { httpGet: { path: /health, port: 80 }, initialDelaySeconds: 5, periodSeconds: 10 }
+          livenessProbe:  { httpGet: { path: /health, port: 80 }, initialDelaySeconds: 10, periodSeconds: 30 }
+          resources:
+            requests: { cpu: "100m", memory: "256Mi" }
+            limits:   { cpu: "500m", memory: "512Mi" }
+      volumes: [{ name: data, emptyDir: {} }]
+---
+apiVersion: v1
+kind: Service
+metadata: { name: urp-payroll-integration, namespace: urp }
+spec:
+  selector: { app: urp-payroll-integration }
+  ports: [{ port: 80, targetPort: 80 }]
+# ─────────────────────────────────────────────────────────────────────────────────────────────
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: urp-reporting-compliance, namespace: urp }
+spec:
+  replicas: 1
+  selector: { matchLabels: { app: urp-reporting-compliance } }
+  template:
+    metadata: { labels: { app: urp-reporting-compliance } }
+    spec:
+      containers:
+        - name: app
+          image: urpprodacr.azurecr.io/reporting-compliance:latest
+          ports: [{ containerPort: 80 }]
+          env:
+            - { name: ASPNETCORE_URLS, value: "http://+:80" }
+            - { name: ASPNETCORE_ENVIRONMENT, value: "Azure" }
+            - { name: DB_DIR, value: "/app/data" }
+            - { name: Messaging__Provider, value: "ServiceBus" }
+            - { name: Messaging__ServiceBus__Topic, value: "urp-events" }
+            - { name: Messaging__ServiceBus__Subscription, value: "reporting-compliance" }
+            # In-cluster service DNS (plain http between pods — no TLS/301 issue):
+            - { name: Services__Reimbursement, value: "http://urp-reimbursement-workflow" }
+            - { name: Services__Payroll, value: "http://urp-payroll-integration" }
+            - name: Messaging__ServiceBus__ConnectionString
+              valueFrom: { secretKeyRef: { name: urp-secrets, key: ServiceBusConnection } }
+          volumeMounts: [{ name: data, mountPath: /app/data }]
+          readinessProbe: { httpGet: { path: /health, port: 80 }, initialDelaySeconds: 5, periodSeconds: 10 }
+          livenessProbe:  { httpGet: { path: /health, port: 80 }, initialDelaySeconds: 10, periodSeconds: 30 }
+          resources:
+            requests: { cpu: "100m", memory: "256Mi" }
+            limits:   { cpu: "500m", memory: "512Mi" }
+      volumes: [{ name: data, emptyDir: {} }]
+---
+apiVersion: v1
+kind: Service
+metadata: { name: urp-reporting-compliance, namespace: urp }
+spec:
+  selector: { app: urp-reporting-compliance }
+  ports: [{ port: 80, targetPort: 80 }]

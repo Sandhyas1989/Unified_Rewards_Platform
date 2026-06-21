@@ -1,0 +1,72 @@
+# API gateway (YARP) + autoscaler + ingress.
+# The gateway is stateless, so it scales freely (HLD HPA target 2–10).
+# Its YARP cluster addresses use in-cluster service DNS (http://urp-<service>) — pod-to-pod is
+# plain HTTP, so there is none of the http->https 301 problem the Container Apps deploy hit.
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: urp-gateway, namespace: urp }
+spec:
+  replicas: 2
+  selector: { matchLabels: { app: urp-gateway } }
+  template:
+    metadata: { labels: { app: urp-gateway } }
+    spec:
+      containers:
+        - name: app
+          image: urpprodacr.azurecr.io/gateway:latest
+          ports: [{ containerPort: 80 }]
+          env:
+            - { name: ASPNETCORE_URLS, value: "http://+:80" }
+            - { name: ReverseProxy__Clusters__employee-profile__Destinations__primary__Address,       value: "http://urp-employee-profile" }
+            - { name: ReverseProxy__Clusters__benefits-catalogue__Destinations__primary__Address,     value: "http://urp-benefits-catalogue" }
+            - { name: ReverseProxy__Clusters__compensation-rules__Destinations__primary__Address,     value: "http://urp-compensation-rules" }
+            - { name: ReverseProxy__Clusters__reimbursement-workflow__Destinations__primary__Address, value: "http://urp-reimbursement-workflow" }
+            - { name: ReverseProxy__Clusters__document-processing__Destinations__primary__Address,    value: "http://urp-document-processing" }
+            - { name: ReverseProxy__Clusters__payroll-integration__Destinations__primary__Address,    value: "http://urp-payroll-integration" }
+            - { name: ReverseProxy__Clusters__reporting-compliance__Destinations__primary__Address,   value: "http://urp-reporting-compliance" }
+            # After the frontend is live, set the allowed CORS origin (Front Door / SWA URL):
+            # - { name: Cors__AllowedOrigins__0, value: "https://<your-frontend-host>" }
+          readinessProbe: { httpGet: { path: /health, port: 80 }, initialDelaySeconds: 5, periodSeconds: 10 }
+          livenessProbe:  { httpGet: { path: /health, port: 80 }, initialDelaySeconds: 10, periodSeconds: 30 }
+          resources:
+            requests: { cpu: "100m", memory: "256Mi" }
+            limits:   { cpu: "500m", memory: "512Mi" }
+---
+apiVersion: v1
+kind: Service
+metadata: { name: urp-gateway, namespace: urp }
+spec:
+  selector: { app: urp-gateway }
+  ports: [{ port: 80, targetPort: 80 }]
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata: { name: urp-gateway, namespace: urp }
+spec:
+  scaleTargetRef: { apiVersion: apps/v1, kind: Deployment, name: urp-gateway }
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource: { name: cpu, target: { type: Utilization, averageUtilization: 70 } }
+---
+# Public entry point. Requires an ingress controller (e.g. ingress-nginx) installed on the cluster.
+# In the full production architecture, Azure Front Door sits in front of this ingress.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: urp-ingress
+  namespace: urp
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: urp-gateway
+                port: { number: 80 }

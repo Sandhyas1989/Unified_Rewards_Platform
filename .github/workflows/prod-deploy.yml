@@ -1,0 +1,96 @@
+name: URP Production Deploy (AKS)
+
+# Manual trigger. Deploys: infra (Bicep) -> builds & pushes images -> deploys to AKS.
+on:
+  workflow_dispatch:
+    inputs:
+      imageTag:
+        description: "Image tag to build & deploy"
+        default: "latest"
+
+permissions:
+  id-token: write   # for OIDC azure/login
+  contents: read
+
+env:
+  PREFIX: urpprod
+  RG: urpprod-rg
+  ACR: urpprodacr
+  AKS: urpprod-aks
+  LOCATION: eastus2
+
+jobs:
+  # 1) Provision infrastructure (RG, VNet, ACR, AKS, Key Vault, Service Bus, Event Hub, data tier)
+  infra:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Deploy Bicep
+        run: |
+          az deployment sub create \
+            --location "$LOCATION" \
+            --template-file infra/prod/main.bicep \
+            --parameters infra/prod/parameters/prod.json \
+            --parameters sqlAdminPassword='${{ secrets.AZURE_SQL_PASSWORD }}' \
+            --name urp-prod
+
+  # 2) Build & push the 8 images to ACR (built in the cloud — no Docker needed)
+  build:
+    runs-on: ubuntu-latest
+    needs: infra
+    strategy:
+      matrix:
+        svc: [employee-profile, benefits-catalogue, compensation-rules, reimbursement-workflow,
+              document-processing, payroll-integration, reporting-compliance, gateway]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: az acr build
+        run: |
+          az acr build --registry "$ACR" \
+            --image ${{ matrix.svc }}:${{ inputs.imageTag }} \
+            --file services/${{ matrix.svc }}/Dockerfile .
+
+  # 3) Deploy workloads to AKS
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Get AKS credentials
+        run: az aks get-credentials -g "$RG" -n "$AKS" --overwrite-existing
+      - name: Namespace + connection-string secret
+        run: |
+          kubectl apply -f k8s/00-namespace-and-secrets.yaml || true
+          SB=$(az servicebus namespace authorization-rule keys list -g "$RG" \
+                --namespace-name "${PREFIX}-bus" -n RootManageSharedAccessKey \
+                --query primaryConnectionString -o tsv)
+          BLOB=$(az storage account show-connection-string -g "$RG" -n "${PREFIX}stg" -o tsv)
+          kubectl -n urp create secret generic urp-secrets \
+            --from-literal=ServiceBusConnection="$SB" \
+            --from-literal=BlobConnection="$BLOB" \
+            --dry-run=client -o yaml | kubectl apply -f -
+      - name: Apply manifests + pin image tag
+        run: |
+          kubectl apply -f k8s/10-backend-services.yaml
+          kubectl apply -f k8s/20-gateway-and-ingress.yaml
+          ACR_SERVER=$(az acr show -n "$ACR" --query loginServer -o tsv)
+          for s in employee-profile benefits-catalogue compensation-rules reimbursement-workflow \
+                   document-processing payroll-integration reporting-compliance gateway; do
+            kubectl -n urp set image deployment/urp-$s app=$ACR_SERVER/$s:${{ inputs.imageTag }}
+          done
+          kubectl -n urp rollout status deployment/urp-gateway --timeout=180s
