@@ -72,7 +72,7 @@
 <text x="32" y="309" font-size="9" font-weight="700" fill="#0C447C">L4 · APPLICATION SERVICES — 7 Modules · ASP.NET Core 8 · CQRS (one AKS microservice per module)</text>
 <rect x="32"  y="314" width="84" height="56" rx="5" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
 <text x="74"  y="330" text-anchor="middle" font-size="8" font-weight="600" fill="#042C53">User Mgmt</text>
-<text x="74"  y="343" text-anchor="middle" font-size="7" fill="#0C447C">Profile · Org</text>
+<text x="74"  y="343" text-anchor="middle" font-size="7" fill="#0C447C">Profile · Promotions</text>
 <text x="74"  y="355" text-anchor="middle" font-size="7" fill="#0C447C">Stateless</text>
 <rect x="124" y="314" width="84" height="56" rx="5" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
 <text x="166" y="330" text-anchor="middle" font-size="8" font-weight="600" fill="#042C53">Benefits</text>
@@ -83,17 +83,17 @@
 <text x="258" y="343" text-anchor="middle" font-size="7" fill="#0C447C">NRules Engine</text>
 <text x="258" y="355" text-anchor="middle" font-size="7" fill="#0C447C">CTC · Bonus</text>
 <rect x="308" y="314" width="84" height="56" rx="5" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
-<text x="350" y="330" text-anchor="middle" font-size="8" font-weight="600" fill="#042C53">Claims &amp; Docs</text>
+<text x="350" y="330" text-anchor="middle" font-size="8" font-weight="600" fill="#042C53">Claims</text>
 <text x="350" y="343" text-anchor="middle" font-size="7" fill="#0C447C">State Machine</text>
-<text x="350" y="355" text-anchor="middle" font-size="7" fill="#0C447C">OCR · Stateful</text>
+<text x="350" y="355" text-anchor="middle" font-size="7" fill="#0C447C">Stateful</text>
 <rect x="400" y="314" width="84" height="56" rx="5" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
 <text x="442" y="330" text-anchor="middle" font-size="8" font-weight="600" fill="#042C53">Payroll</text>
 <text x="442" y="343" text-anchor="middle" font-size="7" fill="#0C447C">HttpClient+Polly</text>
 <text x="442" y="355" text-anchor="middle" font-size="7" fill="#0C447C">Settlement</text>
 <rect x="492" y="314" width="84" height="56" rx="5" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
-<text x="534" y="330" text-anchor="middle" font-size="8" font-weight="600" fill="#042C53">Promotions</text>
-<text x="534" y="343" text-anchor="middle" font-size="7" fill="#0C447C">Nomination</text>
-<text x="534" y="355" text-anchor="middle" font-size="7" fill="#0C447C">Eligibility</text>
+<text x="534" y="330" text-anchor="middle" font-size="8" font-weight="600" fill="#042C53">Documents</text>
+<text x="534" y="343" text-anchor="middle" font-size="7" fill="#0C447C">Document Proc.</text>
+<text x="534" y="355" text-anchor="middle" font-size="7" fill="#0C447C">OCR · Tesseract</text>
 <rect x="584" y="314" width="84" height="56" rx="5" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
 <text x="626" y="330" text-anchor="middle" font-size="8" font-weight="600" fill="#042C53">Reporting &amp; Audit</text>
 <text x="626" y="343" text-anchor="middle" font-size="7" fill="#0C447C">LINQ+ClosedXML</text>

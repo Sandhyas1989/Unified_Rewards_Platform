@@ -75,7 +75,7 @@
   <text x="32" y="448" font-size="7.5" font-weight="700" fill="#0C447C">Core HR Services</text>
   <!-- 3 tiles: inner 668; 2 gaps 8 = 16; tile = (668-16)/3 = 217.33 -->
   <rect x="32" y="454" width="217.33" height="36" rx="5" fill="#B5D4F4" stroke="#185FA5" stroke-width="1"/>
-  <text x="140.67" y="476" text-anchor="middle" font-size="8" fill="#0C447C">User Management</text>
+  <text x="140.67" y="476" text-anchor="middle" font-size="8" fill="#0C447C">User Management + Promotions</text>
   <rect x="257.33" y="454" width="217.33" height="36" rx="5" fill="#B5D4F4" stroke="#185FA5" stroke-width="1"/>
   <text x="366" y="476" text-anchor="middle" font-size="8" fill="#0C447C">Benefits</text>
   <rect x="482.67" y="454" width="217.33" height="36" rx="5" fill="#B5D4F4" stroke="#185FA5" stroke-width="1"/>
@@ -85,11 +85,11 @@
   <text x="32" y="504" font-size="7.5" font-weight="700" fill="#0C447C">Transactional Services</text>
   <!-- 4 tiles: inner 668; 3 gaps 8 = 24; tile = (668-24)/4 = 161 -->
   <rect x="32" y="510" width="161" height="36" rx="5" fill="#B5D4F4" stroke="#185FA5" stroke-width="1"/>
-  <text x="112.5" y="532" text-anchor="middle" font-size="8" fill="#0C447C">Claims &amp; Documents</text>
+  <text x="112.5" y="532" text-anchor="middle" font-size="8" fill="#0C447C">Claims</text>
   <rect x="201" y="510" width="161" height="36" rx="5" fill="#B5D4F4" stroke="#185FA5" stroke-width="1"/>
   <text x="281.5" y="532" text-anchor="middle" font-size="8" fill="#0C447C">Payroll</text>
   <rect x="370" y="510" width="161" height="36" rx="5" fill="#B5D4F4" stroke="#185FA5" stroke-width="1"/>
-  <text x="450.5" y="532" text-anchor="middle" font-size="8" fill="#0C447C">Promotions</text>
+  <text x="450.5" y="532" text-anchor="middle" font-size="8" fill="#0C447C">Documents</text>
   <rect x="539" y="510" width="161" height="36" rx="5" fill="#B5D4F4" stroke="#185FA5" stroke-width="1"/>
   <text x="619.5" y="532" text-anchor="middle" font-size="8" fill="#0C447C">Reporting &amp; Audit</text>
 
@@ -163,5 +163,5 @@
   <text x="382" y="738" font-size="8" fill="#2C2C2A">External Systems</text>
 
   <!-- Footnote -->
-  <text x="510" y="772" text-anchor="middle" font-size="7.5" fill="#5F5E5A">Aligned to the canonical 7-module taxonomy: User Management &#183; Benefits &#183; Compensation &#183; Claims &amp; Documents &#183; Payroll &#183; Promotions &#183; Reporting &amp; Audit.</text>
+  <text x="510" y="772" text-anchor="middle" font-size="7.5" fill="#5F5E5A">Aligned to the requirement's 7 services: User Management (incl. Promotions) &#183; Benefits &#183; Compensation &#183; Claims &#183; Documents &#183; Payroll &#183; Reporting &amp; Audit.</text>
 </svg>

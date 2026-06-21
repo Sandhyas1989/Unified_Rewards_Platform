@@ -95,14 +95,14 @@
 <text x="376" y="359" text-anchor="middle" font-size="7"  fill="#0C447C">GET payslip</text>
 
 <rect x="417" y="335" width="72" height="30" rx="4" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
-<text x="453" y="346" text-anchor="middle" font-size="8"  font-weight="600" fill="#042C53">Promotions</text>
-<text x="453" y="359" text-anchor="middle" font-size="7"  fill="#0C447C">GET · PUT</text>
+<text x="453" y="346" text-anchor="middle" font-size="8"  font-weight="600" fill="#042C53">Documents</text>
+<text x="453" y="359" text-anchor="middle" font-size="7"  fill="#0C447C">POST · GET</text>
 
 <rect x="494" y="335" width="72" height="30" rx="4" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
 <text x="530" y="346" text-anchor="middle" font-size="8"  font-weight="600" fill="#042C53">Reports</text>
 <text x="530" y="359" text-anchor="middle" font-size="7"  fill="#0C447C">GET</text>
 
-<text x="32" y="372" font-size="7" fill="#378ADD">Routes: /api/v1/{users | benefits | compensation | claims | payroll | promotions | reports}  ·  Payroll = GET payslips on-demand (sync) + monthly settlement async (Background Jobs)</text>
+<text x="32" y="372" font-size="7" fill="#378ADD">Routes: /api/v1/{users | benefits | compensation | claims | payroll | documents | reports}  ·  Payroll = GET payslips on-demand (sync) + monthly settlement async (Background Jobs)</text>
 
 <!-- ══════════════════════════════════════════════════
      MEDIATR ARROW  — explicit gap between API and Business
@@ -122,7 +122,7 @@
 <rect x="32"  y="420" width="72" height="52" rx="5" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
 <text x="68"  y="434" text-anchor="middle" font-size="8" font-weight="600" fill="#042C53">User Mgmt</text>
 <text x="68"  y="446" text-anchor="middle" font-size="7" fill="#0C447C">Stateless | Sync</text>
-<text x="68"  y="458" text-anchor="middle" font-size="7" fill="#0C447C">IMemCache 15m</text>
+<text x="68"  y="458" text-anchor="middle" font-size="7" fill="#0C447C">incl. Promotions</text>
 
 <rect x="109" y="420" width="72" height="52" rx="5" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
 <text x="145" y="434" text-anchor="middle" font-size="8" font-weight="600" fill="#042C53">Benefits</text>
@@ -135,9 +135,9 @@
 <text x="222" y="458" text-anchor="middle" font-size="7" fill="#0C447C">IMemCache 60m</text>
 
 <rect x="263" y="420" width="72" height="52" rx="5" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
-<text x="299" y="434" text-anchor="middle" font-size="8" font-weight="600" fill="#042C53">Claims &amp; Docs</text>
+<text x="299" y="434" text-anchor="middle" font-size="8" font-weight="600" fill="#042C53">Claims</text>
 <text x="299" y="446" text-anchor="middle" font-size="7" fill="#0C447C">Stateful | Async</text>
-<text x="299" y="458" text-anchor="middle" font-size="7" fill="#0C447C">State Machine+OCR</text>
+<text x="299" y="458" text-anchor="middle" font-size="7" fill="#0C447C">State Machine</text>
 
 <rect x="340" y="420" width="72" height="52" rx="5" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
 <text x="376" y="434" text-anchor="middle" font-size="8" font-weight="600" fill="#042C53">Payroll</text>
@@ -145,9 +145,9 @@
 <text x="376" y="458" text-anchor="middle" font-size="7" fill="#0C447C">HttpClient+Polly</text>
 
 <rect x="417" y="420" width="72" height="52" rx="5" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
-<text x="453" y="434" text-anchor="middle" font-size="8" font-weight="600" fill="#042C53">Promotions</text>
-<text x="453" y="446" text-anchor="middle" font-size="7" fill="#0C447C">Stateless | Sync</text>
-<text x="453" y="458" text-anchor="middle" font-size="7" fill="#0C447C">State Machine</text>
+<text x="453" y="434" text-anchor="middle" font-size="8" font-weight="600" fill="#042C53">Documents</text>
+<text x="453" y="446" text-anchor="middle" font-size="7" fill="#0C447C">Stateless | Async</text>
+<text x="453" y="458" text-anchor="middle" font-size="7" fill="#0C447C">OCR · Tesseract</text>
 
 <rect x="494" y="420" width="72" height="52" rx="5" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
 <text x="530" y="434" text-anchor="middle" font-size="8" font-weight="600" fill="#042C53">Reporting &amp; Audit</text>
