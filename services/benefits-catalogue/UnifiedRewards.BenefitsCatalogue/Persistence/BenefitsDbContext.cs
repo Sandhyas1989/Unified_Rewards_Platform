@@ -32,15 +32,18 @@ public class BenefitsDbContext : DbContext
             e.HasKey(x => x.Id);
             e.Property(x => x.Id).ValueGeneratedNever();
             e.Property(x => x.Category).HasConversion<int>();
-            e.HasQueryFilter(x => !_tenantId.HasValue || x.TenantId == _tenantId.GetValueOrDefault());
             if (isCosmos)
             {
                 e.ToContainer("benefitPlans");
                 e.HasPartitionKey(x => x.TenantId);
                 e.HasNoDiscriminator();
+                // No global query filter on Cosmos: the nullable-tenant OR predicate isn't translatable
+                // to Cosmos SQL (it throws on every query, including the startup seeder). Each controller
+                // query already filters by TenantId explicitly, so tenant isolation is preserved.
             }
             else
             {
+                e.HasQueryFilter(x => !_tenantId.HasValue || x.TenantId == _tenantId.GetValueOrDefault());
                 e.ToTable("BenefitPlans");
                 e.Property(x => x.MonthlyCost).HasColumnType("decimal(18,2)");
                 e.HasIndex(x => new { x.TenantId, x.Name }).IsUnique();
@@ -51,15 +54,16 @@ public class BenefitsDbContext : DbContext
             e.HasKey(x => x.Id);
             e.Property(x => x.Id).ValueGeneratedNever();
             e.Property(x => x.Status).HasConversion<int>();
-            e.HasQueryFilter(x => !_tenantId.HasValue || x.TenantId == _tenantId.GetValueOrDefault());
             if (isCosmos)
             {
                 e.ToContainer("benefitEnrollments");
                 e.HasPartitionKey(x => x.TenantId);
                 e.HasNoDiscriminator();
+                // No global query filter on Cosmos (see BenefitPlan above); queries filter by TenantId explicitly.
             }
             else
             {
+                e.HasQueryFilter(x => !_tenantId.HasValue || x.TenantId == _tenantId.GetValueOrDefault());
                 e.ToTable("BenefitEnrollments");
                 e.HasIndex(x => new { x.TenantId, x.EmployeeId, x.BenefitPlanId });
             }

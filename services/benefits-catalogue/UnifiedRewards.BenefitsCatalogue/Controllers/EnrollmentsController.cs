@@ -68,9 +68,11 @@ public sealed class EnrollmentsController : ControllerBase
     [HttpGet("me")]
     public async Task<ActionResult<IReadOnlyList<BenefitEnrollmentDto>>> GetMine(CancellationToken ct)
     {
+        // Order client-side: Cosmos can't reliably translate OrderBy over a DateOnly. The per-user
+        // enrolment set is tiny, so this is cheap.
         var items = await _db.Enrollments.AsNoTracking()
             .Where(e => e.TenantId == TenantId && e.EmployeeId == CurrentUserId)
-            .OrderByDescending(e => e.CoverageStartDate).ToListAsync(ct);
-        return Ok(items.Select(ToDto).ToList());
+            .ToListAsync(ct);
+        return Ok(items.OrderByDescending(e => e.CoverageStartDate).Select(ToDto).ToList());
     }
 }

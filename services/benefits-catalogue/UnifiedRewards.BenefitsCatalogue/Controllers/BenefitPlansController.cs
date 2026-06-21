@@ -23,14 +23,18 @@ public sealed class BenefitPlansController : ControllerBase
     public async Task<ActionResult<PagedResult<BenefitPlanDto>>> Get(
         [FromQuery] int? category, [FromQuery] bool activeOnly = true, [FromQuery] int? page = null, [FromQuery] int? pageSize = null, CancellationToken ct = default)
     {
-        var query = _db.Plans.AsNoTracking().Where(p => p.TenantId == TenantId);
-        if (activeOnly) query = query.Where(p => p.IsActive);
-        if (category is not null) query = query.Where(p => (int)p.Category == category);
+        // Fetch this tenant's catalogue by partition key (Cosmos-friendly), then filter/sort/page in
+        // memory. The catalogue is small and per-tenant, and Cosmos can't translate offset pagination
+        // (Skip/Take) or the enum-cast predicate, so client-side evaluation is correct and inexpensive.
+        var plans = await _db.Plans.AsNoTracking().Where(p => p.TenantId == TenantId).ToListAsync(ct);
+        IEnumerable<BenefitPlan> filtered = plans;
+        if (activeOnly) filtered = filtered.Where(p => p.IsActive);
+        if (category is not null) filtered = filtered.Where(p => (int)p.Category == category);
+        var ordered = filtered.OrderBy(p => p.Name).ToList();
         var p2 = Math.Max(page ?? 1, 1);
         var size = Math.Clamp(pageSize ?? 25, 1, 200);
-        var total = await query.CountAsync(ct);
-        var items = await query.OrderBy(p => p.Name).Skip((p2 - 1) * size).Take(size).ToListAsync(ct);
-        return Ok(new PagedResult<BenefitPlanDto>(items.Select(ToDto).ToList(), p2, size, total));
+        var items = ordered.Skip((p2 - 1) * size).Take(size).Select(ToDto).ToList();
+        return Ok(new PagedResult<BenefitPlanDto>(items, p2, size, ordered.Count));
     }
 
     /// <summary>Creates a benefit plan. HR Admin only.</summary>
