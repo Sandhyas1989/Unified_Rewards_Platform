@@ -14,7 +14,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Own audit DB (database-per-service). No outbox needed — this service only consumes, never publishes.
 var dbDir  = Environment.GetEnvironmentVariable("DB_DIR") ?? AppContext.BaseDirectory;
 var dbPath = Path.Combine(dbDir, "reporting-compliance.db");
-builder.Services.AddDbContext<ReportingDbContext>(o => o.UseSqlite($"Data Source={dbPath}"));
+var sqlConn = builder.Configuration.GetConnectionString("Sql");
+builder.Services.AddDbContext<ReportingDbContext>(o =>
+{
+    if (string.IsNullOrWhiteSpace(sqlConn)) o.UseSqlite($"Data Source={dbPath}");
+    else o.UseSqlServer(sqlConn);
+});
 
 builder.Services.AddControllers();
 builder.Services.Configure<HostOptions>(o => o.ShutdownTimeout = TimeSpan.FromSeconds(30));
@@ -74,7 +79,10 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    scope.ServiceProvider.GetRequiredService<ReportingDbContext>().Database.EnsureCreated();
+    var __db = scope.ServiceProvider.GetRequiredService<ReportingDbContext>();
+    var __c = Microsoft.EntityFrameworkCore.Infrastructure.AccessorExtensions.GetService<Microsoft.EntityFrameworkCore.Storage.IRelationalDatabaseCreator>(__db);
+    if (!__c.Exists()) __c.Create();
+    if (!__c.HasTables()) __c.CreateTables();
 }
 
 app.UseSwagger();

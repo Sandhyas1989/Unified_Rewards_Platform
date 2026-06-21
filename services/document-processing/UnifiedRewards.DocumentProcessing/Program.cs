@@ -15,7 +15,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 var dbDir  = Environment.GetEnvironmentVariable("DB_DIR") ?? AppContext.BaseDirectory;
 var dbPath = Path.Combine(dbDir, "document-processing.db");
-builder.Services.AddDbContext<DocumentDbContext>(o => o.UseSqlite($"Data Source={dbPath}"));
+var sqlConn = builder.Configuration.GetConnectionString("Sql");
+builder.Services.AddDbContext<DocumentDbContext>(o =>
+{
+    if (string.IsNullOrWhiteSpace(sqlConn)) o.UseSqlite($"Data Source={dbPath}");
+    else o.UseSqlServer(sqlConn);
+});
 // Switch to Azure Blob Storage when Storage:Provider = AzureBlob (set via env var in Azure deployment).
 if (string.Equals(builder.Configuration["Storage:Provider"], "AzureBlob", StringComparison.OrdinalIgnoreCase))
 {
@@ -85,7 +90,10 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    scope.ServiceProvider.GetRequiredService<DocumentDbContext>().Database.EnsureCreated();
+    var __db = scope.ServiceProvider.GetRequiredService<DocumentDbContext>();
+    var __c = Microsoft.EntityFrameworkCore.Infrastructure.AccessorExtensions.GetService<Microsoft.EntityFrameworkCore.Storage.IRelationalDatabaseCreator>(__db);
+    if (!__c.Exists()) __c.Create();
+    if (!__c.HasTables()) __c.CreateTables();
 }
 
 app.UseSwagger();

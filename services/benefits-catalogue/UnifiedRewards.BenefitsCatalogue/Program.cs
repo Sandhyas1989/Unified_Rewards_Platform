@@ -11,7 +11,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 var dbDir  = Environment.GetEnvironmentVariable("DB_DIR") ?? AppContext.BaseDirectory;
 var dbPath = Path.Combine(dbDir, "benefits-catalogue.db");
-builder.Services.AddDbContext<BenefitsDbContext>(o => o.UseSqlite($"Data Source={dbPath}"));
+var sqlConn = builder.Configuration.GetConnectionString("Sql");
+builder.Services.AddDbContext<BenefitsDbContext>(o =>
+{
+    if (string.IsNullOrWhiteSpace(sqlConn)) o.UseSqlite($"Data Source={dbPath}");
+    else o.UseSqlServer(sqlConn);
+});
 builder.Services.AddControllers();
 builder.Services.Configure<HostOptions>(o => o.ShutdownTimeout = TimeSpan.FromSeconds(30));
 builder.Services.AddHttpContextAccessor();
@@ -62,7 +67,9 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<BenefitsDbContext>();
-    db.Database.EnsureCreated();
+    var __c = Microsoft.EntityFrameworkCore.Infrastructure.AccessorExtensions.GetService<Microsoft.EntityFrameworkCore.Storage.IRelationalDatabaseCreator>(db);
+    if (!__c.Exists()) __c.Create();
+    if (!__c.HasTables()) __c.CreateTables();
     if (!db.Plans.Any())
     {
         var tenant = Guid.Parse("11111111-1111-1111-1111-111111111111");

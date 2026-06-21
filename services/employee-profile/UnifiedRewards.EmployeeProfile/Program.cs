@@ -15,7 +15,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Deterministic DB location (under the app base dir) so it doesn't depend on the launch working directory.
 var dbDir  = Environment.GetEnvironmentVariable("DB_DIR") ?? AppContext.BaseDirectory;
 var dbPath = Path.Combine(dbDir, "employee-profile.db");
-builder.Services.AddDbContext<EmployeeProfileDbContext>(o => o.UseSqlite($"Data Source={dbPath}"));
+var sqlConn = builder.Configuration.GetConnectionString("Sql");
+builder.Services.AddDbContext<EmployeeProfileDbContext>(o =>
+{
+    if (string.IsNullOrWhiteSpace(sqlConn)) o.UseSqlite($"Data Source={dbPath}");
+    else o.UseSqlServer(sqlConn);
+});
 builder.Services.AddScoped<JwtTokenService>();
 builder.Services.AddControllers();
 builder.Services.Configure<HostOptions>(o => o.ShutdownTimeout = TimeSpan.FromSeconds(30));
@@ -74,7 +79,9 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<EmployeeProfileDbContext>();
-    db.Database.EnsureCreated();
+    var __c = Microsoft.EntityFrameworkCore.Infrastructure.AccessorExtensions.GetService<Microsoft.EntityFrameworkCore.Storage.IRelationalDatabaseCreator>(db);
+    if (!__c.Exists()) __c.Create();
+    if (!__c.HasTables()) __c.CreateTables();
     if (!db.Users.Any())
     {
         var tenant = Guid.Parse("11111111-1111-1111-1111-111111111111");

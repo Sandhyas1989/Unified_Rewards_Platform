@@ -14,7 +14,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 var dbDir  = Environment.GetEnvironmentVariable("DB_DIR") ?? AppContext.BaseDirectory;
 var dbPath = Path.Combine(dbDir, "reimbursement-workflow.db");
-builder.Services.AddDbContext<ReimbursementDbContext>(o => o.UseSqlite($"Data Source={dbPath}"));
+var sqlConn = builder.Configuration.GetConnectionString("Sql");
+builder.Services.AddDbContext<ReimbursementDbContext>(o =>
+{
+    if (string.IsNullOrWhiteSpace(sqlConn)) o.UseSqlite($"Data Source={dbPath}");
+    else o.UseSqlServer(sqlConn);
+});
 builder.Services.AddControllers();
 builder.Services.Configure<HostOptions>(o => o.ShutdownTimeout = TimeSpan.FromSeconds(30));
 builder.Services.AddHttpContextAccessor();
@@ -77,7 +82,10 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    scope.ServiceProvider.GetRequiredService<ReimbursementDbContext>().Database.EnsureCreated();
+    var __db = scope.ServiceProvider.GetRequiredService<ReimbursementDbContext>();
+    var __c = Microsoft.EntityFrameworkCore.Infrastructure.AccessorExtensions.GetService<Microsoft.EntityFrameworkCore.Storage.IRelationalDatabaseCreator>(__db);
+    if (!__c.Exists()) __c.Create();
+    if (!__c.HasTables()) __c.CreateTables();
 }
 
 app.UseSwagger();
