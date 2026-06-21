@@ -80,7 +80,7 @@ using (var scope = app.Services.CreateScope())
         if (!__c.Exists()) __c.Create();
         if (!__c.HasTables()) __c.CreateTables();
     }
-    if (!db.Plans.Any())
+    if (!db.Plans.AsEnumerable().Any())   // Cosmos can't translate the Any() aggregate; enumerate client-side
     {
         var tenant = Guid.Parse("11111111-1111-1111-1111-111111111111");
         db.Plans.AddRange(

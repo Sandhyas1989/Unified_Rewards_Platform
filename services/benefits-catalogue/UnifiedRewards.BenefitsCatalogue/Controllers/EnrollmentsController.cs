@@ -36,8 +36,10 @@ public sealed class EnrollmentsController : ControllerBase
         var plan = await _db.Plans.FirstOrDefaultAsync(p => p.Id == req.BenefitPlanId && p.TenantId == TenantId && p.IsActive, ct);
         if (plan is null) return BadRequest(new { title = "The benefit plan does not exist or is not open for enrolment." });
 
-        if (await _db.Enrollments.AnyAsync(e => e.TenantId == TenantId && e.EmployeeId == CurrentUserId
-                && e.BenefitPlanId == plan.Id && e.Status == EnrollmentStatus.Active, ct))
+        // Cosmos can't translate Any(); fetch this user's enrolments (partition-key query) and check client-side.
+        var myEnrollments = await _db.Enrollments.AsNoTracking()
+            .Where(e => e.TenantId == TenantId && e.EmployeeId == CurrentUserId).ToListAsync(ct);
+        if (myEnrollments.Any(e => e.BenefitPlanId == plan.Id && e.Status == EnrollmentStatus.Active))
             return Conflict(new { title = "Already actively enrolled in this plan." });
 
         var enrollment = new BenefitEnrollment

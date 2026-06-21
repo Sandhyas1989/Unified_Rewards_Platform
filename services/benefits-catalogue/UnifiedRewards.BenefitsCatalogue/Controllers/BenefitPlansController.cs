@@ -42,12 +42,16 @@ public sealed class BenefitPlansController : ControllerBase
     [Authorize(Roles = "HrAdmin")]
     public async Task<ActionResult<BenefitPlanDto>> Create(CreatePlanRequest req, CancellationToken ct)
     {
-        if (await _db.Plans.AnyAsync(p => p.TenantId == TenantId && p.Name == req.Name.Trim(), ct))
+        // Cosmos can't translate the Any() aggregate; fetch this tenant's plans (partition-key query)
+        // and check the name client-side.
+        var name = req.Name.Trim();
+        var tenantPlans = await _db.Plans.AsNoTracking().Where(p => p.TenantId == TenantId).ToListAsync(ct);
+        if (tenantPlans.Any(p => p.Name == name))
             return Conflict(new { title = "A benefit plan with this name already exists." });
 
         var plan = new BenefitPlan
         {
-            TenantId = TenantId, Name = req.Name.Trim(), Description = req.Description.Trim(),
+            TenantId = TenantId, Name = name, Description = req.Description.Trim(),
             Category = (BenefitCategory)req.Category, MonthlyCost = req.MonthlyCost,
         };
         _db.Plans.Add(plan);
