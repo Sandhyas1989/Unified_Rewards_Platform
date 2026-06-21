@@ -25,24 +25,44 @@ public class BenefitsDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder b)
     {
+        var isCosmos = Database.IsCosmos();
+
         b.Entity<BenefitPlan>(e =>
         {
-            e.ToTable("BenefitPlans");
             e.HasKey(x => x.Id);
             e.Property(x => x.Id).ValueGeneratedNever();
             e.Property(x => x.Category).HasConversion<int>();
-            e.Property(x => x.MonthlyCost).HasColumnType("decimal(18,2)");
-            e.HasIndex(x => new { x.TenantId, x.Name }).IsUnique();
             e.HasQueryFilter(x => !_tenantId.HasValue || x.TenantId == _tenantId.GetValueOrDefault());
+            if (isCosmos)
+            {
+                e.ToContainer("benefitPlans");
+                e.HasPartitionKey(x => x.TenantId);
+                e.HasNoDiscriminator();
+            }
+            else
+            {
+                e.ToTable("BenefitPlans");
+                e.Property(x => x.MonthlyCost).HasColumnType("decimal(18,2)");
+                e.HasIndex(x => new { x.TenantId, x.Name }).IsUnique();
+            }
         });
         b.Entity<BenefitEnrollment>(e =>
         {
-            e.ToTable("BenefitEnrollments");
             e.HasKey(x => x.Id);
             e.Property(x => x.Id).ValueGeneratedNever();
             e.Property(x => x.Status).HasConversion<int>();
-            e.HasIndex(x => new { x.TenantId, x.EmployeeId, x.BenefitPlanId });
             e.HasQueryFilter(x => !_tenantId.HasValue || x.TenantId == _tenantId.GetValueOrDefault());
+            if (isCosmos)
+            {
+                e.ToContainer("benefitEnrollments");
+                e.HasPartitionKey(x => x.TenantId);
+                e.HasNoDiscriminator();
+            }
+            else
+            {
+                e.ToTable("BenefitEnrollments");
+                e.HasIndex(x => new { x.TenantId, x.EmployeeId, x.BenefitPlanId });
+            }
         });
     }
 }

@@ -11,11 +11,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 var dbDir  = Environment.GetEnvironmentVariable("DB_DIR") ?? AppContext.BaseDirectory;
 var dbPath = Path.Combine(dbDir, "benefits-catalogue.db");
+var cosmosConn = builder.Configuration.GetConnectionString("Cosmos");
 var sqlConn = builder.Configuration.GetConnectionString("Sql");
 builder.Services.AddDbContext<BenefitsDbContext>(o =>
 {
-    if (string.IsNullOrWhiteSpace(sqlConn)) o.UseSqlite($"Data Source={dbPath}");
-    else o.UseSqlServer(sqlConn);
+    if (!string.IsNullOrWhiteSpace(cosmosConn)) o.UseCosmos(cosmosConn, "urp");
+    else if (!string.IsNullOrWhiteSpace(sqlConn)) o.UseSqlServer(sqlConn);
+    else o.UseSqlite($"Data Source={dbPath}");
 });
 builder.Services.AddControllers();
 builder.Services.Configure<HostOptions>(o => o.ShutdownTimeout = TimeSpan.FromSeconds(30));
@@ -67,9 +69,16 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<BenefitsDbContext>();
-    var __c = Microsoft.EntityFrameworkCore.Infrastructure.AccessorExtensions.GetService<Microsoft.EntityFrameworkCore.Storage.IRelationalDatabaseCreator>(db);
-    if (!__c.Exists()) __c.Create();
-    if (!__c.HasTables()) __c.CreateTables();
+    if (db.Database.IsCosmos())
+    {
+        db.Database.EnsureCreated();
+    }
+    else
+    {
+        var __c = Microsoft.EntityFrameworkCore.Infrastructure.AccessorExtensions.GetService<Microsoft.EntityFrameworkCore.Storage.IRelationalDatabaseCreator>(db);
+        if (!__c.Exists()) __c.Create();
+        if (!__c.HasTables()) __c.CreateTables();
+    }
     if (!db.Plans.Any())
     {
         var tenant = Guid.Parse("11111111-1111-1111-1111-111111111111");
