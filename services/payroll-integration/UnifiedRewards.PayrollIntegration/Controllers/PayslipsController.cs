@@ -19,6 +19,16 @@ public sealed class PayslipsController : ControllerBase
 
     private Guid TenantId => Guid.TryParse(User.FindFirst(TenantClaim)?.Value, out var t) ? t : Guid.Empty;
 
+    private Guid CurrentUserId
+    {
+        get
+        {
+            var v = User.FindFirst("sub")?.Value
+                    ?? User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
+            return Guid.TryParse(v, out var id) ? id : Guid.Empty;
+        }
+    }
+
     private static PayslipDto ToDto(Payslip p) =>
         new(p.Id, p.EmployeeId, p.Year, p.Month, p.GrossMonthly, p.TotalDeductionsMonthly, p.NetMonthly, p.GeneratedAtUtc);
 
@@ -47,12 +57,36 @@ public sealed class PayslipsController : ControllerBase
         return CreatedAtAction(nameof(Get), new { employeeId = req.EmployeeId }, ToDto(payslip));
     }
 
+    /// <summary>The current employee's own payslips, newest first. Scoped by the JWT identity
+    /// (the sub claim), not a client-supplied id — so an employee only ever sees their own.</summary>
+    [HttpGet("me")]
+    public async Task<ActionResult<PagedResult<PayslipDto>>> GetMine(
+        [FromQuery] int? page, [FromQuery] int? pageSize, CancellationToken ct)
+    {
+        var query = _db.Payslips.AsNoTracking().Where(p => p.TenantId == TenantId && p.EmployeeId == CurrentUserId);
+        var p2 = Math.Max(page ?? 1, 1);
+        var size = Math.Clamp(pageSize ?? 25, 1, 200);
+        var total = await query.CountAsync(ct);
+        var items = await query.OrderByDescending(p => p.Year).ThenByDescending(p => p.Month).Skip((p2 - 1) * size).Take(size).ToListAsync(ct);
+        return Ok(new PagedResult<PayslipDto>(items.Select(ToDto).ToList(), p2, size, total));
+    }
+
+    /// <summary>Lists payslips, newest first. Finance/HR may filter by any employeeId; everyone else is
+    /// scoped to their own payslips — a client-supplied employeeId is ignored for non-admins (so an
+    /// employee can never see another's, and a stale/empty client id can't break their own view).</summary>
     [HttpGet]
     public async Task<ActionResult<PagedResult<PayslipDto>>> Get(
         [FromQuery] Guid? employeeId, [FromQuery] int? page, [FromQuery] int? pageSize, CancellationToken ct)
     {
         var query = _db.Payslips.AsNoTracking().Where(p => p.TenantId == TenantId);
-        if (employeeId is not null) query = query.Where(p => p.EmployeeId == employeeId);
+        if (User.IsInRole("Finance") || User.IsInRole("HrAdmin"))
+        {
+            if (employeeId is not null) query = query.Where(p => p.EmployeeId == employeeId);
+        }
+        else
+        {
+            query = query.Where(p => p.EmployeeId == CurrentUserId);
+        }
         var p2 = Math.Max(page ?? 1, 1);
         var size = Math.Clamp(pageSize ?? 25, 1, 200);
         var total = await query.CountAsync(ct);

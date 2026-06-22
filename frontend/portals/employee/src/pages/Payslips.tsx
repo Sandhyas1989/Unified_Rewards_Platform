@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { api, getUser, Card, Table, Banner, money, type PayslipDto } from '@urp/shared';
+import { api, Card, Table, Banner, money, type PayslipDto } from '@urp/shared';
 
 const MONTHS = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -9,7 +9,7 @@ export function Payslips() {
 
   useEffect(() => {
     (async () => {
-      try { setPayslips(await api.getItems<PayslipDto>(`/payslips?employeeId=${getUser()?.id ?? ''}&pageSize=100`)); }
+      try { setPayslips(await api.getItems<PayslipDto>(`/payslips/me?pageSize=100`)); }
       catch (e: any) { setErr(e.message); }
     })();
   }, []);
