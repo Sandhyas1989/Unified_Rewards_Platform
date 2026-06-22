@@ -70,24 +70,33 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<BenefitsDbContext>();
-    if (db.Database.IsCosmos())
+    // DB init + demo seed is best-effort: never let a transient store issue crash startup, so the
+    // container always reaches a healthy/Running state and the service stays available.
+    try
     {
-        db.Database.EnsureCreated();
+        if (db.Database.IsCosmos())
+        {
+            db.Database.EnsureCreated();
+        }
+        else
+        {
+            var __c = Microsoft.EntityFrameworkCore.Infrastructure.AccessorExtensions.GetService<Microsoft.EntityFrameworkCore.Storage.IRelationalDatabaseCreator>(db);
+            if (!__c.Exists()) __c.Create();
+            if (!__c.HasTables()) __c.CreateTables();
+        }
+        if (!db.Plans.AsEnumerable().Any())   // Cosmos can't translate the Any() aggregate; enumerate client-side
+        {
+            var tenant = Guid.Parse("11111111-1111-1111-1111-111111111111");
+            db.Plans.AddRange(
+                new BenefitPlan { TenantId = tenant, Name = "Comprehensive Health Insurance", Description = "Family floater up to 5 lakh.", Category = BenefitCategory.Insurance, MonthlyCost = 1200m },
+                new BenefitPlan { TenantId = tenant, Name = "Gym & Wellness Membership", Description = "Gym, yoga and wellness reimbursement.", Category = BenefitCategory.Wellness, MonthlyCost = 500m },
+                new BenefitPlan { TenantId = tenant, Name = "Meal Card", Description = "Tax-exempt meal allowance.", Category = BenefitCategory.Food, MonthlyCost = 2200m });
+            db.SaveChanges();
+        }
     }
-    else
+    catch (Exception ex)
     {
-        var __c = Microsoft.EntityFrameworkCore.Infrastructure.AccessorExtensions.GetService<Microsoft.EntityFrameworkCore.Storage.IRelationalDatabaseCreator>(db);
-        if (!__c.Exists()) __c.Create();
-        if (!__c.HasTables()) __c.CreateTables();
-    }
-    if (!db.Plans.AsEnumerable().Any())   // Cosmos can't translate the Any() aggregate; enumerate client-side
-    {
-        var tenant = Guid.Parse("11111111-1111-1111-1111-111111111111");
-        db.Plans.AddRange(
-            new BenefitPlan { TenantId = tenant, Name = "Comprehensive Health Insurance", Description = "Family floater up to 5 lakh.", Category = BenefitCategory.Insurance, MonthlyCost = 1200m },
-            new BenefitPlan { TenantId = tenant, Name = "Gym & Wellness Membership", Description = "Gym, yoga and wellness reimbursement.", Category = BenefitCategory.Wellness, MonthlyCost = 500m },
-            new BenefitPlan { TenantId = tenant, Name = "Meal Card", Description = "Tax-exempt meal allowance.", Category = BenefitCategory.Food, MonthlyCost = 2200m });
-        db.SaveChanges();
+        app.Logger.LogError(ex, "Benefits DB init/seed failed (non-fatal); continuing startup.");
     }
 }
 
