@@ -35,6 +35,8 @@ public class PayrollDbContext : DbContext
             e.Property(x => x.Id).ValueGeneratedNever();
             e.Property(x => x.Status).HasConversion<int>();
             e.Property(x => x.Amount).HasColumnType("decimal(18,2)");
+            // Store-generated rowversion on SQL Server only; plain column on SQLite/local (see SettlementRequest).
+            if (Database.IsSqlServer()) e.Property(x => x.RowVersion).IsRowVersion();
             e.HasIndex(x => new { x.TenantId, x.EmployeeId });
             e.HasIndex(x => new { x.TenantId, x.ClaimId });
             e.HasQueryFilter(x => !_tenantId.HasValue || x.TenantId == _tenantId.GetValueOrDefault());

@@ -30,7 +30,9 @@ public class Claim
     public DateTime? SettledAtUtc { get; private set; }
     public ICollection<ClaimTransition> History { get; set; } = new List<ClaimTransition>();
 
-    [Timestamp]
+    // Optimistic-concurrency token. Configured as a store-generated rowversion on SQL Server only
+    // (see ReimbursementDbContext); on SQLite/local it stays a plain column so inserts don't hit a
+    // NOT NULL/store-generation mismatch.
     public byte[] RowVersion { get; set; } = Array.Empty<byte>();
 
     private static readonly IReadOnlyDictionary<ClaimStatus, ClaimStatus[]> Allowed =

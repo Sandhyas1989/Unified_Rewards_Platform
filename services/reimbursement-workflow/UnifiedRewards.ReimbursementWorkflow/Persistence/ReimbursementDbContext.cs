@@ -35,6 +35,10 @@ public class ReimbursementDbContext : DbContext
             e.Property(x => x.Type).HasConversion<int>();
             e.Property(x => x.Status).HasConversion<int>();
             e.Property(x => x.Amount).HasColumnType("decimal(18,2)");
+            // Store-generated rowversion on SQL Server (real optimistic concurrency). On SQLite/local
+            // it stays a plain column — SQLite has no auto-rowversion, so leaving it unconfigured lets
+            // inserts send the default empty value instead of failing the NOT NULL/store-gen contract.
+            if (Database.IsSqlServer()) e.Property(x => x.RowVersion).IsRowVersion();
             e.HasIndex(x => new { x.TenantId, x.EmployeeId });
             e.HasIndex(x => new { x.TenantId, x.Status });
             e.HasMany(x => x.History).WithOne().HasForeignKey(h => h.ClaimId).OnDelete(DeleteBehavior.Cascade);

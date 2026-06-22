@@ -21,7 +21,8 @@ public class SettlementRequest
     public DateTime RequestedAtUtc { get; set; } = DateTime.UtcNow;
     public DateTime? CompletedAtUtc { get; private set; }
 
-    [Timestamp]
+    // Optimistic-concurrency token — store-generated rowversion on SQL Server only (see PayrollDbContext);
+    // plain column on SQLite/local so inserts don't hit a NOT NULL/store-generation mismatch.
     public byte[] RowVersion { get; set; } = Array.Empty<byte>();
 
     public void MarkProcessing() { Status = SettlementStatus.Processing; Attempts++; }
